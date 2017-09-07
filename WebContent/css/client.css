@@ -1,0 +1,14 @@
+.error {
+	color: red;
+}
+
+.feedback {
+	position: fixed;
+	right: 30px;
+	bottom: 30px;
+	cursor: pointer;
+}
+.btnpressed {
+	background-color: deepskyblue;
+	color: white;
+}

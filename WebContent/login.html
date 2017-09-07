@@ -1,0 +1,272 @@
+<!doctype html>
+<html>
+
+	<head>
+		<title>用户注册登录</title>
+		<link rel="shortcut icon" href="img/bi.ico" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="css/client.css" rel="stylesheet" type="text/css" />
+		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
+		<script src="js/jquery-1.11.3.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/jquery.validate.js"></script>
+		<script type="text/javascript" src="js/html2canvas.js"></script>
+		<script type="text/javascript" src="js/frontend.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$('#problem').popover();
+				$("#registerForm").validate({
+					rules: {
+						username: "required",
+						phone: {
+							required: true,
+							isMobile: true
+						},
+						password: {
+							required: true,
+							rangelength: [6, 12]
+						},
+						code: {
+							required: true
+						}
+					},
+					messages: {
+						username: "请填写用户名",
+						phone: {
+							required: "请填写手机号",
+						},
+						password: {
+							required: "请填写密码",
+							rangelength: "密码应为{0}-{1}位"
+						},
+						code: {
+							required: "请填写验证码",
+						}
+					},
+					errorPlacement: function(error, element) {
+						error.appendTo(element.next("label"));
+					}
+				});
+
+				//自定义validate手机号验证
+				$.validator.addMethod("isMobile", function(value, element) {
+					var length = value.length;
+					var mobile = /^1[34578]\d{9}$/;
+					return this.optional(element) || (length == 11 && mobile.test(value));
+				}, "请输入正确的手机号");
+
+			});
+		</script>
+		<style type="text/css">
+			body {
+				background-image: url(img/bg.jpg);
+			}
+			
+			#out {
+				width: 440px;
+				padding-bottom: 30px;
+				background-color: white;
+				margin-top: 20px;
+				text-align: center;
+				border-radius: 5px;
+			}
+			
+			#in {
+				width: 320px;
+				margin: auto;
+			}
+			
+			.input {
+				width: 100%;
+				height: 50px;
+				font-size: 16px;
+				padding-left: 10px;
+			}
+			.errordiv {
+				position: relative;
+				width: 320px;
+			}
+			.errorPlace {
+				position: absolute;
+				right: 5px;
+				top: 15px;
+			}
+			#xieyi a {
+				text-decoration: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container-fluid" align="center">
+			<!--外边框-->
+			<div id="out">
+				<div style="color: deepskyblue;font-family: '黑体';font-size: 80px;">
+					逼<span style="margin-left: 20px;">乎</span>
+				</div>
+				<div>
+					<h4>与世界分享你刚编的故事，段子和工资</h4>
+				</div>
+				<!--内部框-->
+				<div id="in">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#loginPage" data-toggle="tab" style="margin-left: 90px;">
+								<font size="4" color="#000000">登录</font>
+							</a>
+						</li>
+						<li>
+							<a href="#registerPage" data-toggle="tab" style="margin-left: 30px;">
+								<font size="4" color="#000000">注册</font>
+							</a>
+						</li>
+					</ul>
+
+					<div class="tab-content">
+						<!--登录div-->
+						<div class="tab-pane active" id="loginPage">
+							<div style="width:46px;height: 4px;background-color: deepskyblue;margin-left: 100px;"></div>
+							<div style="padding-top: 20px;">
+								<div>
+									<form action="index.html" method="get">
+										<input type="text" class="input" placeholder="用户名" required="">
+										<input type="password" class="input" placeholder="密码" required=""><br /><br />
+										<button type="submit" class="btn btn-info btn-lg btn-block">登录</button>
+									</form>
+								</div>
+								<div style="margin-top: 16px;margin-bottom: 16px;">
+									<input type="checkbox" />记住我
+									<span id="problem" style="margin-left: 180px;cursor: pointer;" data-original-title="解决方法:" data-trigger="hover" data-content="点我就告诉你!" data-toggle="modal" data-target="#forgetModal">
+											无法登录?
+									</span>
+								</div>
+								<button type="submit" class="btn btn-default btn-lg btn-block" style="color: deepskyblue;border-color: deepskyblue;" data-toggle="modal" data-target="#appModal">
+									下载逼乎APP
+								</button>
+							</div>
+						</div>
+
+						<!--注册div-->
+						<div class="tab-pane" id="registerPage">
+							<div style="width:46px;height: 4px;background-color: deepskyblue;margin-left: 200px;"></div>
+							<div style="padding-top: 20px;">
+								<div>
+									<form id="registerForm" action="#" method="get">
+										<div style="height: 210px;margin-bottom: 15px;">
+											<div class="errordiv"><input name="username" type="text" class="input" placeholder="用户名"><label class="errorPlace"></label></div>
+											<div class="errordiv"><input name="password" type="password" class="input" placeholder="密码"><label class="errorPlace"></label></div>
+											<div class="errordiv"><input name="phone" type="text" class="input" placeholder="手机号"><label class="errorPlace"></label></div>
+											<div class="errordiv">
+												<input name="code" type="text" class="input" style="width: 210px;position: absolute;left: 0;" placeholder="验证码">
+												<label class="errorPlace" style="right: 115px;"></label>
+												<img src="img/check.jpg" width="90px" style="position: absolute;right: 0;margin: 4px 10px 20px;" />
+											</div>
+										</div>
+										<button type="submit" class="btn btn-info btn-lg btn-block">注册逼乎</button>
+									</form>
+								</div>
+								<div id="xieyi" style="margin-top: 16px;margin-bottom: 16px;">
+									<span style="font-size: 14px;color: darkgray;">
+										点击「注册」按钮，即代表你同意
+										<a href="contract.html" target="_blank" style="color: deepskyblue;cursor: pointer;">
+											《逼乎协议》
+										</a>
+									</span>
+								</div>
+								<div>
+									<button type="submit" class="btn btn-default btn-lg btn-block" style="color: deepskyblue;border-color: deepskyblue;" data-toggle="modal" data-target="#appModal">
+										下载逼乎APP
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--忘记密码Modal-->
+			<div id="forgetModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+				<div class="modal-dialog">
+					<div class="modal-content">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h4 class="modal-title" id="myModalLabel">无法登录</h4>
+						</div>
+						<div class="modal-body" style="text-align: center; margin: 0 20px 0 20px;">
+							<span>真乖,看你如此听话的份上我就大发慈悲地告诉你两种方法吧!</span>
+							<div style="margin-top: 80px;">
+								<button type="button" class="btn btn-info" data-dismiss="modal" style="width: 300px;">找回密码</button>
+							</div>
+							<div style="margin-top: 50px;margin-bottom: 80px;">
+								<button type="button" class="btn btn-info" data-dismiss="modal" style="width: 300px;">人工申诉</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 二维码Modal -->
+			<div class="modal fade" id="appModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel">扫描二维码</h4>
+						</div>
+						<div class="modal-body">
+							<span><img src="img/app.png" /></span>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--结尾谢幕-->
+			<div style="width:780px;text-align: left;">
+				<span style="position: absolute;bottom:12px;color: white;font-size: 12px;margin: auto;">
+					© 2016 逼乎 · 逼乎圆桌 · 发现 · 移动应用 · 使用机构帐号登录 · 联系我们 · 来逼乎工作 · 京 ICP 备 13052560 号 · 京公网安备 11010802010035 号
+				</span>
+			</div>
+
+			<!--feedBack -->
+			<span class="feedback" data-toggle="modal" data-target="#feedBackModal">
+				<img src="img/feedBack.jpg" class="img-circle" height="40px" onclick="snapscreen()"/>
+			</span>
+			<!--反馈Modal-->
+			<div id="feedBackModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h4 class="modal-title" id="myModalLabel">提交反馈</h4>
+						</div>
+						<form action="http://www.adb.com" method="get">
+							<div class="modal-body" style="text-align: left; margin: 0 20px 0 20px;">
+								<div style="margin-top: 20px;">
+									<textarea class="form-control" rows="4" style="font-size: 16px;" placeholder="告诉我们你的建议或遇到的问题" required=""></textarea>
+								</div>
+								<br /><br />
+								<label>屏幕截图(可选):</label>
+								<div id="showScreen" style="width: 530px;height: 280px;"></div>
+								<div class="checkbox">
+									<br />
+									<label>
+      									<input type="checkbox" checked=""> 提交屏幕截图<br />
+    								</label>
+								</div>
+							</div>
+							<div class="modal-footer" style="text-align: center;">
+								<!--需要给此按钮绑定ajax事件-->
+								<button type="submit" class="btn btn-info btn-lg " style="width: 250px;" data-dismiss="modal">提交</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
