@@ -3,15 +3,16 @@
 
 	<head>
 		<title>个人主页</title>
-		<link rel="shortcut icon" href="img/bi.ico" />
+		<link rel="shortcut icon" href="../img/bi.ico" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
-		<link href="css/client.css" rel="stylesheet" type="text/css" />
-		<script src="js/jquery-1.11.3.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="js/html2canvas.js"></script>
-		<script type="text/javascript" src="js/frontend.js"></script>
+		<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen" />
+		<link href="../css/client.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="../font_awesome/css/font-awesome.css" />
+		<script src="../js/jquery-1.11.3.min.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../js/html2canvas.js"></script>
+		<script type="text/javascript" src="../js/frontend.js"></script>
 		<style type="text/css">
 			body {
 				background-color: #F3F3F3;
@@ -230,7 +231,6 @@
 		<style type="text/css">
 			#personalshow {
 				width: 1015px;
-				/*height: 300px;*/
 				position: relative;
 				margin: auto;
 				top: 60px;
@@ -245,15 +245,16 @@
 			
 			#bottomdiv {
 				width: 1015px;
-				height: 170px;
 				background-color: white;
+				position: relative;
+				border: 1px white solid;
 			}
 			
 			#photoback {
 				background-color: white;
 				width: 170px;
 				height: 170px;
-				position: relative;
+				position: absolute;
 				top: -20px;
 				left: 20px;
 				border-radius: 8px;
@@ -281,40 +282,30 @@
 			#personalname {
 				font-size: 28px;
 				font-weight: bold;
-				position: relative;
-				left: 220px;
-				top: -160px;
 			}
 			
 			#personalsignal {
 				font-size: 18px;
-				position: relative;
-				left: 230px;
-				top: -160px;
-			}
-			
-			#adreesico {
-				position: relative;
-				top: -115px;
-				left: -55px;
+				margin-left: 10px;
 			}
 			
 			#address {
-				position: relative;
 				margin-left: 20px;
-				top: -3px;
 			}
 			
-			#morepersonalmsg {
+			#personalinfo {
+				width: 780px;
 				position: relative;
-				top: -55px;
-				left: -165px;
+				margin: 15px 0 20px 215px;
+			}
+			#personalinfo div {
+				margin-bottom: 10px;
 			}
 			
 			#editpersonal {
 				position: absolute;
-				right: 20px;
-				bottom: 20px;
+				right: 0px;
+				bottom: 0px;
 				border: deepskyblue 1px solid;
 				color: deepskyblue;
 			}
@@ -494,7 +485,7 @@
 						<span class="glyphicon glyphicon-comment topmenu" style="font-size: 22px;color: lightgray;"></span>
 					</a>
 					<a href="home.html" style="position: relative;top: -5px;margin-left: 30px;">
-						<img src="img/photo.jpg" height="30px" />
+						<img src="../img/default.jpg" height="30px" />
 					</a>
 				</span>
 			</span>	
@@ -511,18 +502,24 @@
 				</div>
 				<div id="bottomdiv">
 					<div id="photoback">
-						<img src="img/personal.jpg" id="personalimg" />
+						<img src="../img/defaultbig.jpg" id="personalimg" />
 					</div>
-					<span id="personalname">silito</span>
-					<span id="personalsignal">这个人很懒,什么也没留下</span>
-					<span id="adreesico" class="glyphicon glyphicon-credit-card"><span id="address">电子游戏</span></span>
-					<span style="position: relative;top: -90px;left: -150px;">男</span>
-					<a href="#">
-						<span class="glyphicon glyphicon-chevron-down" id="morepersonalmsg">
-							<span style="position: relative;top: -3px;">查看详细资料</span>
-						</span>
-					</a>
-					<button type="button" class="btn btn-default" id="editpersonal" onclick="window.location.href='personalPage.html'">编辑个人资料</button>
+					<div id="personalinfo">
+						<div>
+							<span id="personalname">silito</span>
+							<span id="personalsignal">这个人很懒,什么也没留下</span>
+						</div>
+						<div id="adreesico" class="glyphicon glyphicon-credit-card"><span id="address">电子游戏</span></div>
+						<div><i class="fa fa-mars fa-1x "></i></div>
+						<div>
+							<a href="#">
+								<span class="glyphicon glyphicon-chevron-down" id="morepersonalmsg">
+									<span>查看详细资料</span>
+								</span>
+							</a>
+						</div>							
+						<button type="button" class="btn btn-default" id="editpersonal" onclick="window.location.href='personalPage.html'">编辑个人资料</button>
+					</div>
 				</div>
 			</div>
 
@@ -587,7 +584,7 @@
 								<a href="#" class="text-title-a">你有哪些一鸣惊人的操作？</a>
 							</div>
 							<div class="text-author">
-								<a href="#"><img class="photo" src="img/dynamic01.jpg" /></a>
+								<a href="#"><img class="photo" src="../img/dynamic01.jpg" /></a>
 								<span class="personalmsg">
 									<div class="name">
 										<a href="#" style="color: black;">Seasee Youl</a>
@@ -656,7 +653,7 @@
 							<div class="user-comment">
 								<div style="position:relative">
 									<a href="#">
-										<img class="comment-user-photo" src="img/default.jpg" />
+										<img class="comment-user-photo" src="../img/default.jpg" />
 										<span style="margin-left: 10px;color: black;">you conquer</span>
 									</a>
 									<span class="comment-time">2年前</span>
@@ -697,7 +694,7 @@
 							<div class="user-comment">
 								<div style="position:relative">
 									<a href="#">
-										<img class="comment-user-photo" src="img/default.jpg" />
+										<img class="comment-user-photo" src="../img/default.jpg" />
 										<span style="margin-left: 10px;color: black;">you conquer</span>
 									</a>
 									<span class="comment-time">2年前</span>
@@ -738,7 +735,7 @@
 							<div class="user-comment">
 								<div style="position:relative">
 									<a href="#">
-										<img class="comment-user-photo" src="img/default.jpg" />
+										<img class="comment-user-photo" src="../img/default.jpg" />
 										<span style="margin-left: 10px;color: black;">you conquer</span>
 									</a>
 									<span class="comment-time">2年前</span>
@@ -795,7 +792,7 @@
 							</div>
 							<div class="text-title">华为做了哪些恶？</div>
 							<div class="text-author">
-								<img class="photo" src="img/dynamic02.png" />
+								<img class="photo" src="../img/dynamic02.png" />
 								<span class="personalmsg">
 								<div class="name">
 									阿噗
@@ -849,7 +846,7 @@
 							</div>
 							<div class="text-title">你最庆幸自己当初做了什么事？</div>
 							<div class="text-author">
-								<img class="photo" src="img/dynamic01.jpg" />
+								<img class="photo" src="../img/dynamic01.jpg" />
 								<span class="personalmsg">
 								<div class="name">
 							Seasee Youl
@@ -902,7 +899,7 @@
 							</div>
 							<div class="text-title">你为什么卸载美团？</div>
 							<div class="text-author">
-								<img class="photo" src="img/annoymouse.jpg" />
+								<img class="photo" src="../img/annoymouse.jpg" />
 								<span class="personalmsg">
 								<div class="name">
 							杨剑锋
@@ -914,7 +911,7 @@
 							</div>
 							<div class="text-status">5234人也赞同了该回答</div>
 							<div class="text-content">
-								<img src="img/wudi.png" width="190" height="105" /> 凭这个
+								<img src="../img/wudi.png" width="190" height="105" /> 凭这个
 								<a href="#" class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>
 							</div>
 							<div class="text-end">
@@ -957,7 +954,7 @@
 						<div class="separator"></div>
 						<div style="height: 280px;padding-top: 80px;">
 							<div align="center">
-								<img src="img/noanswer.png" />
+								<img src="../img/noanswer.png" />
 							</div>
 							<div style="color: darkgray;font-size: 15px;text-align: center;">
 								还没有回答，看看
@@ -973,7 +970,7 @@
 						<div class="separator"></div>
 						<div style="height: 280px;padding-top: 80px;">
 							<div align="center">
-								<img src="img/noqestion.png" />
+								<img src="../img/noqestion.png" />
 							</div>
 							<div style="color: darkgray;font-size: 15px;text-align: center;">
 								还没有提问
@@ -989,7 +986,7 @@
 						<div class="separator"></div>
 						<div style="height: 280px;padding-top: 80px;">
 							<div align="center">
-								<img src="img/noworks.png" />
+								<img src="../img/noworks.png" />
 							</div>
 							<div style="color: darkgray;font-size: 15px;text-align: center;">
 								还没有文章，开始写
@@ -1005,7 +1002,7 @@
 						<div class="separator"></div>
 						<div style="height: 280px;padding-top: 80px;">
 							<div align="center">
-								<img src="img/nocolumn.png" />
+								<img src="../img/nocolumn.png" />
 							</div>
 							<div style="color: darkgray;font-size: 15px;text-align: center;">
 								想在逼乎进行主题创作？
@@ -1021,7 +1018,7 @@
 						<div class="separator"></div>
 						<div style="height: 280px;padding-top: 80px;">
 							<div align="center">
-								<img src="img/noworks.png" />
+								<img src="../img/noworks.png" />
 							</div>
 							<div style="color: darkgray;font-size: 15px;text-align: center;">
 								还没有分享
@@ -1131,14 +1128,14 @@
 										<h5 style="margin-top: 30px;margin-left: 10px;">问题描述（可选）：</h5>
 
 										<!--问题描述(使用editor)-->
-										<script type="text/javascript" src="ueditor/ueditor.config.js"></script>
-										<script type="text/javascript" src="ueditor/ueditor.all.min.js">
+										<script type="text/javascript" src="../ueditor/ueditor.config.js"></script>
+										<script type="text/javascript" src="../ueditor/ueditor.all.min.js">
 										</script>
-										<script type="text/javascript" src="ueditor/lang/zh-cn/zh-cn.js"></script>
+										<script type="text/javascript" src="../ueditor/lang/zh-cn/zh-cn.js"></script>
 										<div id="editordiv" style="margin-bottom: 15px;">
 											<script id="editor" type="text/plain" style="width:568px;height:150px;"></script>
 										</div>
-										<script src="js/editorInstance.js" type="text/javascript"></script>
+										<script src="../js/editorInstance.js" type="text/javascript"></script>
 
 										<div class="checkbox">
 											<label>
