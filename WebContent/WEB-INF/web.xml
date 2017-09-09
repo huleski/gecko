@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
-  <display-name>gecko_backend</display-name>
+  <display-name>gecko</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
@@ -11,7 +11,6 @@
   </welcome-file-list>
   <servlet>
     <description></description>
-    <display-name>UserServlet</display-name>
     <servlet-name>UserServlet</servlet-name>
     <servlet-class>com.myself.gecko.web.servlet.UserServlet</servlet-class>
   </servlet>
@@ -19,4 +18,22 @@
     <servlet-name>UserServlet</servlet-name>
     <url-pattern>/userServlet</url-pattern>
   </servlet-mapping>
+  
+  
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>com.myself.gecko.web.filter.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>AutoLoginFilter</filter-name>
+    <filter-class>com.myself.gecko.web.filter.AutoLoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>AutoLoginFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 </web-app>

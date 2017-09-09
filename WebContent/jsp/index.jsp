@@ -1,17 +1,19 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
 	<head>
 		<title>首页</title>
-		<link rel="shortcut icon" href="../img/bi.ico" />
+		<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/bi.ico" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="../css/client.css" rel="stylesheet" type="text/css" />
-		<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen" />
-		<script src="../js/jquery-1.11.3.min.js"></script>
-		<script src="../js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../js/html2canvas.js"></script>
-		<script type="text/javascript" src="../js/frontend.js"></script>
+		<link href="${pageContext.request.contextPath}/css/client.css" rel="stylesheet" type="text/css" />
+		<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+		<script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
+		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+		<script src="${pageContext.request.contextPath}/js/html2canvas.js" type="text/javascript"></script>
+		<script src="${pageContext.request.contextPath}/js/frontend.js" type="text/javascript"></script>
 		<style type="text/css">
 			body {
 				background-color: #F3F3F3;
@@ -395,7 +397,7 @@
 					<a class="topmenu" href="index.html" style="margin-left: 30px;">首页</a>
 					<a class="topmenu" href="topic.html" style="margin-left: 30px;">话题</a>
 					<a class="topmenu" href="find.html" style="margin-left: 30px;">发现</a>
-					<form action="#" method="get" style="display: inline;position: relative;top: -2px;">
+					<form action="${pageContext.request.contextPath}/" method="get" style="display: inline;position: relative;top: -2px;">
 						<input type="text" placeholder="搜索你感兴趣的内容..." style="width: 315px;height: 35px;border-top-left-radius: 3px;border-bottom-left-radius: 3px;border: 0;
 							position: relative;left: 30px;top: 2px;padding-left: 10px;background-color: #F7F8FA;" required=""/>
 						<button type="submit" class="btn btn-default" style="background-color: #F7F8FA;height: 35px;width:40px;border: 0;position: absolute;top: -7px;right: -25px;">
@@ -413,8 +415,8 @@
 				<a href="#" style="margin-left: 30px;">
 					<span class="glyphicon glyphicon-comment topmenu" style="font-size: 22px;color: lightgray;"></span>
 				</a>
-				<a href="home.html" style="position: relative;top: -5px;margin-left: 30px;">
-					<img src="../img/photo.jpg" height="30px" />
+				<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=${user.id}" style="position: relative;top: -5px;margin-left: 30px;">
+					<img src="${pageContext.request.contextPath}/img/default.jpg" height="30px" />
 				</a>
 				</span>
 				</span>
@@ -447,7 +449,7 @@
 						</div>
 						<div class="text-author">
 							<a href="#">
-								<img class="photo" src="../img/author1.jpg" />
+								<img class="photo" src="${pageContext.request.contextPath}/img/author1.jpg" />
 								<span class="name">
 								Sean Ye
 								</span>
@@ -585,7 +587,7 @@
 							<div class="user-comment">
 								<div style="position:relative">
 									<a href="#">
-										<img class="comment-user-photo" src="../img/default.jpg" />
+										<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
 										<span style="margin-left: 10px;color: black;">you conquer</span>
 									</a>
 									<span class="comment-time">2年前</span>
@@ -612,7 +614,7 @@
 									</a>
 								</div>
 								<div class="comment-reply" style="display: none;">
-									<form action="#" method="post">
+									<form action="${pageContext.request.contextPath}/" method="post">
 										<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
 										<div style="text-align: right;">
 											<button type="button" class="btn btn-default comment-cancel">取消</button>
@@ -626,7 +628,7 @@
 							<div class="user-comment">
 								<div style="position:relative">
 									<a href="#">
-										<img class="comment-user-photo" src="../img/default.jpg" />
+										<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
 										<span style="margin-left: 10px;color: black;">you conquer</span>
 									</a>
 									<span class="comment-time">2年前</span>
@@ -653,7 +655,7 @@
 									</a>
 								</div>
 								<div class="comment-reply" style="display: none;">
-									<form action="#" method="post">
+									<form action="${pageContext.request.contextPath}/" method="post">
 										<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
 										<div style="text-align: right;">
 											<button type="button" class="btn btn-default comment-cancel">取消</button>
@@ -667,7 +669,7 @@
 							<div class="user-comment">
 								<div style="position:relative">
 									<a href="#">
-										<img class="comment-user-photo" src="../img/default.jpg" />
+										<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
 										<span style="margin-left: 10px;color: black;">you conquer</span>
 									</a>
 									<span class="comment-time">2年前</span>
@@ -694,7 +696,7 @@
 									</a>
 								</div>
 								<div class="comment-reply" style="display: none;">
-									<form action="#" method="post">
+									<form action="${pageContext.request.contextPath}/" method="post">
 										<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
 										<div style="text-align: right;">
 											<button type="button" class="btn btn-default comment-cancel">取消</button>
@@ -707,7 +709,7 @@
 							
 							<!--回复评论-->
 							<div>
-								<form action="#" method="post">
+								<form action="${pageContext.request.contextPath}/" method="post">
 									<input class="form-control commentAnswer" type="input" placeholder="写下你的评论"/>
 									<button class="btn btn-info" type="submit">评论</button>
 								</form>
@@ -722,7 +724,7 @@
 							<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 						</div>
 						<div class="text-author">
-							<img class="photo" src="../img/annoymouse.jpg" />
+							<img class="photo" src="${pageContext.request.contextPath}/img/annoymouse.jpg" />
 							<span class="name">
 							熊Sir
 						</span>
@@ -785,7 +787,7 @@
 							<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 						</div>
 						<div class="text-author">
-							<img class="photo" src="../img/author2.jpg" />
+							<img class="photo" src="${pageContext.request.contextPath}/img/author2.jpg" />
 							<span class="name">
 							LuvDDDD
 						</span>
@@ -834,7 +836,7 @@
 							<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 						</div>
 						<div class="text-author">
-							<img class="photo" src="../img/author3.jpg" />
+							<img class="photo" src="${pageContext.request.contextPath}/img/author3.jpg" />
 							<span class="name">
 							冷漠.jpg
 						</span>
@@ -984,21 +986,21 @@
 								<span style="color: darkgray;">描述精确的问题更易得到解答</span>
 							</div>
 							<div>
-								<form action="http://www.adb.com" method="get">
+								<form action="${pageContext.request.contextPath}/" method="get">
 									<div>
 										<textarea class="form-control" rows="3" placeholder="问题标题"></textarea>
 										<input class="form-control input-lg" style="font-size: 15px;margin-top: 12px;" name="topic" placeholder="添加话题" />
 										<h5 style="margin-top: 30px;margin-left: 10px;">问题描述（可选）：</h5>
 
 										<!--问题描述(使用editor)-->
-										<script type="text/javascript" src="../ueditor/ueditor.config.js"></script>
-										<script type="text/javascript" src="../ueditor/ueditor.all.min.js">
+										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
+										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js">
 										</script>
-										<script type="text/javascript" src="../ueditor/lang/zh-cn/zh-cn.js"></script>
+										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
 										<div id="editordiv" style="margin-bottom: 15px;">
 											<script id="editor" type="text/plain" style="width:568px;height:150px;"></script>
 										</div>
-										<script src="../js/editorInstance.js" type="text/javascript"></script>
+										<script src="${pageContext.request.contextPath}/js/editorInstance.js" type="text/javascript"></script>
 
 										<div class="checkbox">
 											<label>
@@ -1031,7 +1033,7 @@
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 							<h4 class="modal-title" id="myModalLabel">提交反馈</h4>
 						</div>
-						<form action="http://www.adb.com" method="get">
+						<form action="${pageContext.request.contextPath}/" method="get">
 							<div class="modal-body" style="text-align: left; margin: 0 20px 0 20px;">
 								<div style="margin-top: 20px;">
 									<textarea class="form-control" rows="4" style="font-size: 18px;" placeholder="告诉我们你的建议或遇到的问题" required=""></textarea>

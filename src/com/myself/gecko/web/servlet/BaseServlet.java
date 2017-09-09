@@ -11,6 +11,7 @@ public class BaseServlet extends HttpServlet {
 
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) {
+		response.setContentType("text/html; charset=UTF-8");
 		String methodStr = request.getParameter("method");
 		Class clazz = this.getClass();
 		try {

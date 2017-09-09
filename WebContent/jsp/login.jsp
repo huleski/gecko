@@ -1,18 +1,20 @@
-<!doctype html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
 	<head>
 		<title>用户注册登录</title>
-		<link rel="shortcut icon" href="../img/bi.ico" />
+		<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/bi.ico" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="../css/client.css" rel="stylesheet" type="text/css" />
-		<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen" />
-		<script src="../js/jquery-1.11.3.min.js"></script>
-		<script src="../js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../js/jquery.validate.js"></script>
-		<script type="text/javascript" src="../js/html2canvas.js"></script>
-		<script type="text/javascript" src="../js/frontend.js"></script>
+		<link href="${pageContext.request.contextPath}/css/client.css" rel="stylesheet" type="text/css" />
+		<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+		<script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js" type="text/javascript"></script>
+		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="${pageContext.request.contextPath}/js/jquery.validate.js" type="text/javascript"></script>
+		<script src="${pageContext.request.contextPath}/js/html2canvas.js" type="text/javascript"></script>
+		<script src="${pageContext.request.contextPath}/js/frontend.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			$(function() {
 				$('#problem').popover();
@@ -60,7 +62,7 @@
 		</script>
 		<style type="text/css">
 			body {
-				background-image: url(../img/bg.jpg);
+				background-image: url(${pageContext.request.contextPath}/img/bg.jpg);
 			}
 			
 			#out {
@@ -106,7 +108,7 @@
 					逼<span style="margin-left: 20px;">乎</span>
 				</div>
 				<div>
-					<h4>与世界分享你刚编的故事，段子和工资</h4>
+					<h4>与世界分享你装逼的姿势,经验和见解</h4>
 				</div>
 				<!--内部框-->
 				<div id="in">
@@ -128,19 +130,20 @@
 						<div class="tab-pane active" id="loginPage">
 							<div style="width:46px;height: 4px;background-color: deepskyblue;margin-left: 100px;"></div>
 							<div style="padding-top: 20px;">
-								<div>
-									<form action="index.html" method="get">
-										<input type="text" class="input" placeholder="用户名" required="">
-										<input type="password" class="input" placeholder="密码" required=""><br /><br />
+								<form action="${pageContext.request.contextPath}/userServlet" method="post">
+									<div>
+										<input type="hidden" name="method" value="login" />
+										<input type="text" name="name" class="input" placeholder="用户名" required="">
+										<input type="password" name="password" class="input" placeholder="密码" required=""><br /><br />
 										<button type="submit" class="btn btn-info btn-lg btn-block">登录</button>
-									</form>
-								</div>
-								<div style="margin-top: 16px;margin-bottom: 16px;">
-									<input type="checkbox" />记住我
-									<span id="problem" style="margin-left: 180px;cursor: pointer;" data-original-title="解决方法:" data-trigger="hover" data-content="点我就告诉你!" data-toggle="modal" data-target="#forgetModal">
-											无法登录?
-									</span>
-								</div>
+									</div>
+									<div style="margin-top: 16px;margin-bottom: 16px;">
+										<input type="checkbox" id="rememberme" name="remember" value="yes"/><label for="rememberme">记住我</label>
+										<span id="problem" style="margin-left: 180px;cursor: pointer;" data-original-title="解决方法:" data-trigger="hover" data-content="点我就告诉你!" data-toggle="modal" data-target="#forgetModal">
+												无法登录?
+										</span>
+									</div>
+								</form>
 								<button type="submit" class="btn btn-default btn-lg btn-block" style="color: deepskyblue;border-color: deepskyblue;" data-toggle="modal" data-target="#appModal">
 									下载逼乎APP
 								</button>
@@ -152,15 +155,16 @@
 							<div style="width:46px;height: 4px;background-color: deepskyblue;margin-left: 200px;"></div>
 							<div style="padding-top: 20px;">
 								<div>
-									<form id="registerForm" action="#" method="get">
+									<form id="registerForm" action="${pageContext.request.contextPath}/userServlet" method="post">
 										<div style="height: 210px;margin-bottom: 15px;">
-											<div class="errordiv"><input name="username" type="text" class="input" placeholder="用户名"><label class="errorPlace"></label></div>
+											<input type="hidden" name="method" value="register" />
+											<div class="errordiv"><input name="name" type="text" class="input" placeholder="用户名"><label class="errorPlace"></label></div>
 											<div class="errordiv"><input name="password" type="password" class="input" placeholder="密码"><label class="errorPlace"></label></div>
 											<div class="errordiv"><input name="phone" type="text" class="input" placeholder="手机号"><label class="errorPlace"></label></div>
 											<div class="errordiv">
 												<input name="code" type="text" class="input" style="width: 210px;position: absolute;left: 0;" placeholder="验证码">
 												<label class="errorPlace" style="right: 115px;"></label>
-												<img src="../img/check.jpg" width="90px" style="position: absolute;right: 0;margin: 4px 10px 20px;" />
+												<img src="${pageContext.request.contextPath}/img/check.jpg" width="90px" style="position: absolute;right: 0;margin: 4px 10px 20px;" />
 											</div>
 										</div>
 										<button type="submit" class="btn btn-info btn-lg btn-block">注册逼乎</button>
@@ -216,7 +220,7 @@
 							<h4 class="modal-title" id="myModalLabel">扫描二维码</h4>
 						</div>
 						<div class="modal-body">
-							<span><img src="../img/app.png" /></span>
+							<span><img src="${pageContext.request.contextPath}/img/app.png" /></span>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -234,7 +238,7 @@
 
 			<!--feedBack -->
 			<span class="feedback" data-toggle="modal" data-target="#feedBackModal">
-				<img src="../img/feedBack.jpg" class="img-circle" height="40px" onclick="snapscreen()"/>
+				<img src="${pageContext.request.contextPath}/img/feedBack.jpg" class="img-circle" height="40px" onclick="snapscreen()"/>
 			</span>
 			<!--反馈Modal-->
 			<div id="feedBackModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">

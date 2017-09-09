@@ -1,17 +1,20 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
 	<head>
 		<title>编辑个人资料</title>
-		<link rel="shortcut icon" href="../img/bi.ico" />
+		<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/bi.ico" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="../css/client.css" rel="stylesheet" type="text/css" />
-		<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen" />
-		<script src="../js/jquery-1.11.3.min.js"></script>
-		<script src="../js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../js/html2canvas.js"></script>
-		<script type="text/javascript" src="../js/frontend.js"></script>
+		<link href="${pageContext.request.contextPath}/css/client.css" rel="stylesheet" type="text/css" />
+		<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+		<script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
+		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+		<script src="${pageContext.request.contextPath}/js/html2canvas.js" type="text/javascript"></script>
+		<script src="${pageContext.request.contextPath}/js/frontend.js" type="text/javascript"></script>
 		<style type="text/css">
 			body {
 				background-color: #F3F3F3;
@@ -258,8 +261,9 @@
 				<a href="#" style="margin-left: 30px;">
 					<span class="glyphicon glyphicon-comment topmenu" style="font-size: 22px;color: lightgray;"></span>
 				</a>
-				<a href="home.html" style="position: relative;top: -5px;margin-left: 30px;">
-					<img src="../img/default.jpg" height="30px" />
+				<a href="${pageContext.request.contextPath}/jsp/home.jsp" style="position: relative;top: -5px;margin-left: 30px;">
+					<c:if test="${empty user.photo }"><img src="${pageContext.request.contextPath}/img/default.jpg" height="30px" /></c:if>
+					<c:if test="${not empty user.photo }"><img src="${pageContext.request.contextPath}/${user.photo}" height="30px" /></c:if>
 				</a>
 				</span>
 				</span>
@@ -282,13 +286,18 @@
                     	描述：头像
                     -->
 					<div id="photoback">
-						<img src="../img/defaultbig.jpg" id="personalimg" />
+						<c:if test="${empty user.photo }">
+							<img src="${pageContext.request.contextPath}/img/defaultbig.jpg" id="personalimg" />
+						</c:if>
+						<c:if test="${not empty user.photo }">
+							<img src="${pageContext.request.contextPath}/${user.photo}" id="personalimg" />
+						</c:if>
 						<div id="personalimgcover"></div>
 						<div class="glyphicon glyphicon-camera" style="font-size: 30px;position: absolute;left: 70px;top: 60px;color: white;"></div>
 						<label style="font-size: 15px;position: absolute;top: 100px;left: 40px;color: white;">修改我的头像</label>
 					</div>
 
-					<a id="returnpersonal" href="home.html">
+					<a id="returnpersonal" href="${pageContext.request.contextPath}/jsp/home.jsp">
 						返回我的主页
 						<span class="glyphicon glyphicon-chevron-right"></span>
 					</a>
@@ -302,46 +311,49 @@
                     	描述：个人信息
                     -->
 					<div style="width: 790px;position: relative;left: 215px;top: 20px;">
-						<span id="personalname">silito</span>
+						<span id="personalname">${user.name }</span>
 						<div class="separator"></div>
 						<form role="form">
 							<div class="form-group">
 								<label>性别</label>
-								<select class="form-control personalinfo" disabled="" name="">
-									<option value="0">请选择性别</option>
-									<option value="0">男</option>
-									<option value="0">女</option>
+								<select class="form-control personalinfo" disabled="" name="sex">
+									<option>请选择性别</option>
+									<c:if test="${user.sex == '男' }"><option value="男" checked="">男</option></c:if>
+									<c:if test="${user.sex != '男' }"><option value="男">男</option></c:if>
+									
+									<c:if test="${user.sex == '女' }"><option value="女" checked="">女</option></c:if>
+									<c:if test="${user.sex != '女' }"><option value="女">女</option></c:if>
 								</select>
 							</div>
 							<div class="separator"></div>
 							<div class="form-group">
 								<label>一句话介绍</label>
-								<input type="text" class="form-control personalinfo" disabled="" placeholder="介绍自己" value="德玛西亚万岁">
+								<input type="text" class="form-control personalinfo" disabled="" placeholder="介绍自己" name="sentence" value="${user.sentence }">
 							</div>
 							<div class="separator"></div>
 							<div class="form-group">
 								<label>居住地</label>
-								<input type="text" class="form-control personalinfo" disabled="" placeholder="请填写居住地" value="深圳市">
+								<input type="text" class="form-control personalinfo" disabled="" placeholder="请填写居住地" name="address" value="${user.address }">
 							</div>
 							<div class="separator"></div>
 							<div class="form-group">
 								<label>所在行业</label>
-								<input type="text" class="form-control personalinfo" disabled="" placeholder="请填写从事行业" value="建筑业">
+								<input type="text" class="form-control personalinfo" disabled="" placeholder="请填写从事行业" name="industry" value="${user.industry }">
 							</div>
 							<div class="separator"></div>
 							<div class="form-group">
 								<label>职业经历</label>
-								<input type="text" class="form-control personalinfo" disabled="" placeholder="请填写从事职位" value="搬砖工">
+								<input type="text" class="form-control personalinfo" disabled="" placeholder="请填写从事职位" name="profession" value="${user.profession }">
 							</div>
 							<div class="separator"></div>
 							<div class="form-group">
 								<label>教育经历</label>
-								<input type="text" class="form-control personalinfo" disabled="" placeholder="请填写教育经历" value="幼儿园">
+								<input type="text" class="form-control personalinfo" disabled="" placeholder="请填写教育经历" name="education" value="${user.education }">
 							</div>
 							<div class="separator"></div>
 							<div class="form-group">
 								<label>个人简介</label>
-								<input type="text" class="form-control personalinfo" disabled="" placeholder="请填写个人简介" value="假的,都是假的,这个世界都是假的!">
+								<input type="text" class="form-control personalinfo" disabled="" placeholder="请填写个人简介" name="description" value="${user.description }">
 							</div>
 							<div class="separator"></div>
 						</form>
@@ -360,21 +372,21 @@
 								<span style="color: darkgray;">描述精确的问题更易得到解答</span>
 							</div>
 							<div>
-								<form action="http://www.adb.com" method="get">
+								<form action="${pageContext.request.contextPath}/" method="post">
 									<div>
 										<textarea class="form-control" rows="3" placeholder="问题标题"></textarea>
 										<input class="form-control input-lg" style="font-size: 15px;margin-top: 12px;" name="topic" placeholder="添加话题" />
 										<h5 style="margin-top: 30px;margin-left: 10px;">问题描述（可选）：</h5>
 
 										<!--问题描述(使用editor)-->
-										<script type="text/javascript" src="../ueditor/ueditor.config.js"></script>
-										<script type="text/javascript" src="../ueditor/ueditor.all.min.js">
+										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
+										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js">
 										</script>
-										<script type="text/javascript" src="../ueditor/lang/zh-cn/zh-cn.js"></script>
+										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
 										<div id="editordiv" style="margin-bottom: 15px;">
 											<script id="editor" type="text/plain" style="width:568px;height:150px;"></script>
 										</div>
-										<script src="../js/editorInstance.js" type="text/javascript"></script>
+										<script src="${pageContext.request.contextPath}/js/editorInstance.js" type="text/javascript"></script>
 
 										<div class="checkbox">
 											<label>

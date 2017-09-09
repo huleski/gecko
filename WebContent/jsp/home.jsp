@@ -1,18 +1,21 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
 	<head>
 		<title>个人主页</title>
-		<link rel="shortcut icon" href="../img/bi.ico" />
+		<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/bi.ico" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen" />
-		<link href="../css/client.css" rel="stylesheet" type="text/css" />
-		<link rel="stylesheet" href="../font_awesome/css/font-awesome.css" />
-		<script src="../js/jquery-1.11.3.min.js"></script>
-		<script src="../js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../js/html2canvas.js"></script>
-		<script type="text/javascript" src="../js/frontend.js"></script>
+		<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+		<link href="${pageContext.request.contextPath}/css/client.css" rel="stylesheet" type="text/css" />
+		<link href="${pageContext.request.contextPath}/font_awesome/css/font-awesome.css" rel="stylesheet" />
+		<script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
+		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+		<script src="${pageContext.request.contextPath}/js/html2canvas.js" type="text/javascript" ></script>
+		<script src="${pageContext.request.contextPath}/js/frontend.js" type="text/javascript"></script>
 		<style type="text/css">
 			body {
 				background-color: #F3F3F3;
@@ -466,7 +469,7 @@
 					<a class="topmenu" href="index.html" style="margin-left: 30px;">首页</a>
 					<a class="topmenu" href="topic.html" style="margin-left: 30px;">话题</a>
 					<a class="topmenu" href="find.html" style="margin-left: 30px;">发现</a>
-					<form action="#" method="get" style="display: inline;position: relative;top: -2px;">
+					<form action="${pageContext.request.contextPath}/" method="get" style="display: inline;position: relative;top: -2px;">
 						<input type="text" placeholder="搜索你感兴趣的内容..." style="width: 315px;height: 35px;border-top-left-radius: 3px;border-bottom-left-radius: 3px;border: 0;
 							position: relative;left: 30px;top: 2px;padding-left: 10px;background-color: #F7F8FA;" required=""/>
 						<button type="submit" class="btn btn-default" style="background-color: #F7F8FA;height: 35px;width:40px;border: 0;position: absolute;top: -7px;right: -25px;">
@@ -484,8 +487,8 @@
 					<a href="#" style="margin-left: 30px;">
 						<span class="glyphicon glyphicon-comment topmenu" style="font-size: 22px;color: lightgray;"></span>
 					</a>
-					<a href="home.html" style="position: relative;top: -5px;margin-left: 30px;">
-						<img src="../img/default.jpg" height="30px" />
+					<a href="javascript:void(0)" style="position: relative;top: -5px;margin-left: 30px;">
+						<img src="${pageContext.request.contextPath}/img/default.jpg" height="30px" />
 					</a>
 				</span>
 			</span>	
@@ -502,12 +505,12 @@
 				</div>
 				<div id="bottomdiv">
 					<div id="photoback">
-						<img src="../img/defaultbig.jpg" id="personalimg" />
+						<img src="${pageContext.request.contextPath}/img/defaultbig.jpg" id="personalimg" />
 					</div>
 					<div id="personalinfo">
 						<div>
-							<span id="personalname">silito</span>
-							<span id="personalsignal">这个人很懒,什么也没留下</span>
+							<span id="personalname">${person.name}</span>
+							<span id="personalsignal">${person.sentence}</span>
 						</div>
 						<div id="adreesico" class="glyphicon glyphicon-credit-card"><span id="address">电子游戏</span></div>
 						<div><i class="fa fa-mars fa-1x "></i></div>
@@ -517,8 +520,13 @@
 									<span>查看详细资料</span>
 								</span>
 							</a>
-						</div>							
-						<button type="button" class="btn btn-default" id="editpersonal" onclick="window.location.href='personalPage.html'">编辑个人资料</button>
+						</div>
+						<c:if test="${user.id == person.id}">						
+							<button type="button" class="btn btn-default" id="editpersonal" onclick="window.location.href='${pageContext.request.contextPath}/userServlet?method=editUserUI&id=${user.id }'">编辑个人资料</button>
+						</c:if>
+						<c:if test="${user.id != person.id}">						
+							<button type="button" class="btn btn-default" id="editpersonal" onclick="window.location.href='#'">关注他</button>
+						</c:if>
 					</div>
 				</div>
 			</div>
@@ -584,7 +592,7 @@
 								<a href="#" class="text-title-a">你有哪些一鸣惊人的操作？</a>
 							</div>
 							<div class="text-author">
-								<a href="#"><img class="photo" src="../img/dynamic01.jpg" /></a>
+								<a href="#"><img class="photo" src="${pageContext.request.contextPath}/img/dynamic01.jpg" /></a>
 								<span class="personalmsg">
 									<div class="name">
 										<a href="#" style="color: black;">Seasee Youl</a>
@@ -653,7 +661,7 @@
 							<div class="user-comment">
 								<div style="position:relative">
 									<a href="#">
-										<img class="comment-user-photo" src="../img/default.jpg" />
+										<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
 										<span style="margin-left: 10px;color: black;">you conquer</span>
 									</a>
 									<span class="comment-time">2年前</span>
@@ -680,7 +688,7 @@
 									</a>
 								</div>
 								<div class="comment-reply" style="display: none;">
-									<form action="#" method="post">
+									<form action="${pageContext.request.contextPath}/" method="post">
 										<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
 										<div style="text-align: right;">
 											<button type="button" class="btn btn-default comment-cancel">取消</button>
@@ -694,7 +702,7 @@
 							<div class="user-comment">
 								<div style="position:relative">
 									<a href="#">
-										<img class="comment-user-photo" src="../img/default.jpg" />
+										<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
 										<span style="margin-left: 10px;color: black;">you conquer</span>
 									</a>
 									<span class="comment-time">2年前</span>
@@ -721,7 +729,7 @@
 									</a>
 								</div>
 								<div class="comment-reply" style="display: none;">
-									<form action="#" method="post">
+									<form action="${pageContext.request.contextPath}/" method="post">
 										<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
 										<div style="text-align: right;">
 											<button type="button" class="btn btn-default comment-cancel">取消</button>
@@ -735,7 +743,7 @@
 							<div class="user-comment">
 								<div style="position:relative">
 									<a href="#">
-										<img class="comment-user-photo" src="../img/default.jpg" />
+										<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
 										<span style="margin-left: 10px;color: black;">you conquer</span>
 									</a>
 									<span class="comment-time">2年前</span>
@@ -762,7 +770,7 @@
 									</a>
 								</div>
 								<div class="comment-reply" style="display: none;">
-									<form action="#" method="post">
+									<form action="${pageContext.request.contextPath}/" method="post">
 										<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
 										<div style="text-align: right;">
 											<button type="button" class="btn btn-default comment-cancel">取消</button>
@@ -775,7 +783,7 @@
 							
 							<!--回复评论-->
 							<div>
-								<form action="#" method="post">
+								<form action="${pageContext.request.contextPath}/" method="post">
 									<input class="form-control commentAnswer" type="input" placeholder="写下你的评论"/>
 									<button class="btn btn-info" type="submit">评论</button>
 								</form>
@@ -792,7 +800,7 @@
 							</div>
 							<div class="text-title">华为做了哪些恶？</div>
 							<div class="text-author">
-								<img class="photo" src="../img/dynamic02.png" />
+								<img class="photo" src="${pageContext.request.contextPath}/img/dynamic02.png" />
 								<span class="personalmsg">
 								<div class="name">
 									阿噗
@@ -846,7 +854,7 @@
 							</div>
 							<div class="text-title">你最庆幸自己当初做了什么事？</div>
 							<div class="text-author">
-								<img class="photo" src="../img/dynamic01.jpg" />
+								<img class="photo" src="${pageContext.request.contextPath}/img/dynamic01.jpg" />
 								<span class="personalmsg">
 								<div class="name">
 							Seasee Youl
@@ -899,7 +907,7 @@
 							</div>
 							<div class="text-title">你为什么卸载美团？</div>
 							<div class="text-author">
-								<img class="photo" src="../img/annoymouse.jpg" />
+								<img class="photo" src="${pageContext.request.contextPath}/img/annoymouse.jpg" />
 								<span class="personalmsg">
 								<div class="name">
 							杨剑锋
@@ -911,7 +919,7 @@
 							</div>
 							<div class="text-status">5234人也赞同了该回答</div>
 							<div class="text-content">
-								<img src="../img/wudi.png" width="190" height="105" /> 凭这个
+								<img src="${pageContext.request.contextPath}/img/wudi.png" width="190" height="105" /> 凭这个
 								<a href="#" class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>
 							</div>
 							<div class="text-end">
@@ -954,7 +962,7 @@
 						<div class="separator"></div>
 						<div style="height: 280px;padding-top: 80px;">
 							<div align="center">
-								<img src="../img/noanswer.png" />
+								<img src="${pageContext.request.contextPath}/img/noanswer.png" />
 							</div>
 							<div style="color: darkgray;font-size: 15px;text-align: center;">
 								还没有回答，看看
@@ -970,7 +978,7 @@
 						<div class="separator"></div>
 						<div style="height: 280px;padding-top: 80px;">
 							<div align="center">
-								<img src="../img/noqestion.png" />
+								<img src="${pageContext.request.contextPath}/img/noqestion.png" />
 							</div>
 							<div style="color: darkgray;font-size: 15px;text-align: center;">
 								还没有提问
@@ -986,7 +994,7 @@
 						<div class="separator"></div>
 						<div style="height: 280px;padding-top: 80px;">
 							<div align="center">
-								<img src="../img/noworks.png" />
+								<img src="${pageContext.request.contextPath}/img/noworks.png" />
 							</div>
 							<div style="color: darkgray;font-size: 15px;text-align: center;">
 								还没有文章，开始写
@@ -1002,7 +1010,7 @@
 						<div class="separator"></div>
 						<div style="height: 280px;padding-top: 80px;">
 							<div align="center">
-								<img src="../img/nocolumn.png" />
+								<img src="${pageContext.request.contextPath}/img/nocolumn.png" />
 							</div>
 							<div style="color: darkgray;font-size: 15px;text-align: center;">
 								想在逼乎进行主题创作？
@@ -1018,7 +1026,7 @@
 						<div class="separator"></div>
 						<div style="height: 280px;padding-top: 80px;">
 							<div align="center">
-								<img src="../img/noworks.png" />
+								<img src="${pageContext.request.contextPath}/img/noworks.png" />
 							</div>
 							<div style="color: darkgray;font-size: 15px;text-align: center;">
 								还没有分享
@@ -1121,21 +1129,21 @@
 								<span style="color: darkgray;">描述精确的问题更易得到解答</span>
 							</div>
 							<div>
-								<form action="http://www.adb.com" method="get">
+								<form action="${pageContext.request.contextPath}/" method="get">
 									<div>
 										<textarea class="form-control" rows="3" placeholder="问题标题"></textarea>
 										<input class="form-control input-lg" style="font-size: 15px;margin-top: 12px;" name="topic" placeholder="添加话题" />
 										<h5 style="margin-top: 30px;margin-left: 10px;">问题描述（可选）：</h5>
 
 										<!--问题描述(使用editor)-->
-										<script type="text/javascript" src="../ueditor/ueditor.config.js"></script>
-										<script type="text/javascript" src="../ueditor/ueditor.all.min.js">
+										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
+										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js">
 										</script>
-										<script type="text/javascript" src="../ueditor/lang/zh-cn/zh-cn.js"></script>
+										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
 										<div id="editordiv" style="margin-bottom: 15px;">
 											<script id="editor" type="text/plain" style="width:568px;height:150px;"></script>
 										</div>
-										<script src="../js/editorInstance.js" type="text/javascript"></script>
+										<script src="${pageContext.request.contextPath}/js/editorInstance.js" type="text/javascript"></script>
 
 										<div class="checkbox">
 											<label>
@@ -1169,7 +1177,7 @@
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 							<h4 class="modal-title" id="myModalLabel">提交反馈</h4>
 						</div>
-						<form action="http://www.adb.com" method="get">
+						<form action="${pageContext.request.contextPath}/" method="get">
 							<div class="modal-body" style="text-align: left; margin: 0 20px 0 20px;">
 								<div style="margin-top: 20px;">
 									<textarea class="form-control" rows="4" style="font-size: 18px;" placeholder="告诉我们你的建议或遇到的问题" required=""></textarea>

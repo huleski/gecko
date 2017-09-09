@@ -1,6 +1,10 @@
 package com.myself.gecko.dao;
 
-public interface IUserDao {
+import java.sql.SQLException;
+
+import com.myself.gecko.domain.User;
+
+public interface IUserDao extends IBaseDao<User> {
 	/**
 	 * 用户关注
 	 * @param userId 		用户id
@@ -19,4 +23,6 @@ public interface IUserDao {
 	 * @param QuestionId	被关注问题id
 	 */
 	public abstract void updateQuestionWatch(int userId, int QuestionId);
+	public abstract User findUserByNameAndPwd(String name, String password) throws SQLException;
+	public abstract void save(User user) throws SQLException;
 }

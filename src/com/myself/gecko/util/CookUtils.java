@@ -21,4 +21,11 @@ public class CookUtils {
 		}
 		return null;
 	}
+	public static String getCookieValueByName(String name, Cookie[] cookies) {
+		Cookie cookie = getCookieByName(name, cookies);
+		if(cookie != null) {
+			return cookie.getValue();
+		}
+		return null;
+	}
 }
