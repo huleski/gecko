@@ -1,17 +1,17 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
 	<head>
 		<title>关于人性，你最想讲的一个故事是什么？</title>
-		<link rel="shortcut icon" href="../img/bi.ico" />
+		<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/bi.ico" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="../css/client.css" rel="stylesheet" type="text/css" />
-		<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen" />
-		<script src="../js/jquery-1.11.3.min.js"></script>
-		<script src="../js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../js/html2canvas.js"></script>
-		<script type="text/javascript" src="../js/frontend.js"></script>
+		<link href="${pageContext.request.contextPath}/css/client.css" rel="stylesheet" type="text/css" />
+		<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+		<script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
+		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 		<style type="text/css">
 			body {
 				background-color: #F3F3F3;
@@ -339,7 +339,7 @@
 							<span class="glyphicon glyphicon-comment topmenu" style="font-size: 22px;color: lightgray;"></span>
 						</a>
 						<a href="home.html" style="margin-left: 30px;position: relative;top: -5px;">
-							<img src="../img/photo.jpg" height="30px" />
+							<img src="${pageContext.request.contextPath}/img/photo.jpg" height="30px" />
 						</a>
 					</span>
 				</div>	
@@ -429,7 +429,7 @@
 						<div class="separator"></div>
 						<div class="text-author">
 							<a href="#">
-								<img class="photo" src="../img/hanshuo.jpg" />
+								<img class="photo" src="${pageContext.request.contextPath}/img/hanshuo.jpg" />
 							</a>
 							<span class="personalmsg">
 								<a href="#" style="color: black;">
@@ -482,7 +482,7 @@
 						<div class="separator"></div>
 						<div class="text-author">
 							<a href="#">
-								<img class="photo" src="../img/sagiri.jpg" />
+								<img class="photo" src="${pageContext.request.contextPath}/img/sagiri.jpg" />
 							</a>
 							<span class="personalmsg">
 								<a href="#" style="color: black;">
@@ -541,7 +541,7 @@
 						<div class="separator"></div>
 						<div class="text-author">
 							<a href="#">
-								<img class="photo" src="../img/annoymouse.jpg" />
+								<img class="photo" src="${pageContext.request.contextPath}/img/annoymouse.jpg" />
 							</a>
 							<span class="personalmsg">
 								<a href="#" style="color: black;">
@@ -600,7 +600,7 @@
 						<div class="separator"></div>
 						<div class="text-author">
 							<a href="#">
-								<img class="photo" src="../img/wangraw.jpg" />
+								<img class="photo" src="${pageContext.request.contextPath}/img/wangraw.jpg" />
 							</a>
 							<span class="personalmsg">
 								<a href="#" style="color: black;">
@@ -662,7 +662,7 @@
 						<div class="separator"></div>
 						<div class="text-author">
 							<a href="#">
-								<img class="photo" src="../img/dotokl.jpg" />
+								<img class="photo" src="${pageContext.request.contextPath}/img/dotokl.jpg" />
 							</a>
 							<span class="personalmsg">
 								<a href="#" style="color: black;">
@@ -718,7 +718,7 @@
 						<div class="separator"></div>
 						<div class="text-author">
 							<a href="#">
-								<img class="photo" src="../img/yewind.jpg" />
+								<img class="photo" src="${pageContext.request.contextPath}/img/yewind.jpg" />
 							</a>
 							<span class="personalmsg">
 								<a href="#" style="color: black;">
@@ -771,7 +771,7 @@
 						<div class="separator"></div>
 						<div class="text-author">
 							<a href="#">
-								<img class="photo" src="../img/zhan.jpg" />
+								<img class="photo" src="${pageContext.request.contextPath}/img/zhan.jpg" />
 							</a>
 							<span class="personalmsg">
 								<a href="#" style="color: black;">
@@ -824,13 +824,15 @@
 				
 				
 				<!--写答案-->
-				<script type="text/javascript" src="../ueditor/ueditor.config.js"></script>
-				<script type="text/javascript" src="../ueditor/ueditor.all.min.js"> </script>
-				<script type="text/javascript" src="../ueditor/lang/zh-cn/zh-cn.js"></script>
+				<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
+				<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js"> </script>
+				<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
 				<div id="editordiv" style="margin-bottom: 90px;">
-					<script id="editor" type="text/plain" style="width:700px;height:200px;"></script>
+					<script id="editAnswer" type="text/plain" style="width:700px;height:200px;"></script>
 				</div>
-				<script src="../js/editorInstance.js" type="text/javascript"></script>
+				<script type="text/javascript">
+					UE.getEditor('editAnswer');
+				</script>
 			</div>
 
 
@@ -881,97 +883,18 @@
 			</div>
 		</div>
 		
-		<div class="feedback">
-			<!--feedBack -->
-			<div>
-				<span data-toggle="modal" data-target="#feedBackModal">
-					<button class="btn btn-default" style="font-size: 18px;color: gray;">
-						<span class="glyphicon glyphicon-briefcase" onclick="snapscreen()"></span>
-					</button>
-				</span>
-			</div>
-			
-			<!--回到顶部-->
-			<div id="gotobtn" style="margin-top: 10px;display: none;">
-				<button class="glyphicon glyphicon-arrow-up btn btn-default" style="font-size: 20px;padding: 5px 10px;" ></button>
-			</div>
-		</div>	
+		<!--反馈模态框-->
+		<%@ include file="/jsp/feedback.jsp" %>
 		
-		<!--提问Modal-->
-			<div id="askModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<div style="margin-top: 40px;text-align: center;">
-								<h3>写下你的问题</h3>
-								<span style="color: darkgray;">描述精确的问题更易得到解答</span>
-							</div>
-							<div>
-								<form action="http://www.adb.com" method="get">
-									<div>
-										<textarea class="form-control" rows="3" placeholder="问题标题"></textarea>
-										<input class="form-control input-lg" style="font-size: 15px;margin-top: 12px;" name="topic" placeholder="添加话题" />
-										<h5 style="margin-top: 30px;margin-left: 10px;">问题描述（可选）：</h5>
-
-										<!--问题描述(使用editor)-->
-										<div id="editQuetion" style="margin-bottom: 15px;">
-											<script id="questionEditor" type="text/plain" style="width:568px;height:150px;"></script>
-										</div>
-										<script type="text/javascript">
-											var ue = UE.getEditor('questionEditor');
-										</script>
-
-										<div class="checkbox">
-											<label>
-										    <input type="checkbox" name="anonymous" value="1">
-										    匿名提交
-										  </label>
-										</div>
-									</div>
-									<div style="text-align: center;">
-										<!--需要给此按钮绑定ajax事件-->
-										<button type="submit" class="btn btn-info" style="width: 250px;" data-dismiss="modal">提交问题</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
+		<!--回到顶部-->
+		<div id="gotobtn" style="position: fixed;right: 30px;bottom: 80px;display:none" >
+			<button class="glyphicon glyphicon-arrow-up btn btn-default" style="font-size: 20px;padding: 5px 10px;" ></button>
+		</div>
 		
-			<!--反馈Modal-->
-			<div id="feedBackModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<h4 class="modal-title" id="myModalLabel">提交反馈</h4>
-						</div>
-						<form action="http://www.adb.com" method="get">
-							<div class="modal-body" style="text-align: left; margin: 0 20px 0 20px;">
-								<div style="margin-top: 20px;">
-									<textarea class="form-control" rows="4" style="font-size: 18px;" placeholder="告诉我们你的建议或遇到的问题" required=""></textarea>
-								</div>
-								<br /><br />
-								<label>屏幕截图(可选):</label>
-								<div id="showScreen" style="width: 530px;height: 280px;"></div>
-								<div class="checkbox">
-									<br />
-									<label>
-      									<input type="checkbox" checked=""> 提交屏幕截图<br />
-    								</label>
-								</div>
-							</div>
-							<div class="modal-footer" style="text-align: center;">
-								<!--需要给此按钮绑定ajax事件-->
-								<button type="submit" class="btn btn-info btn-lg " style="width: 250px;" data-dismiss="modal">提交</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
+		<!--提问模态框-->
+ 		<%@ include file="/jsp/askmodal.jsp" %>
+		
+		
 		</div>
 	</body>
 

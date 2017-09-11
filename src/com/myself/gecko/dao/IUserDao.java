@@ -25,4 +25,5 @@ public interface IUserDao extends IBaseDao<User> {
 	public abstract void updateQuestionWatch(int userId, int QuestionId);
 	public abstract User findUserByNameAndPwd(String name, String password) throws SQLException;
 	public abstract void save(User user) throws SQLException;
+	public abstract void update(User user) throws SQLException;
 }

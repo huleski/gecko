@@ -13,8 +13,6 @@
 		<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 		<script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
 		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-		<script src="${pageContext.request.contextPath}/js/html2canvas.js" type="text/javascript"></script>
-		<script src="${pageContext.request.contextPath}/js/frontend.js" type="text/javascript"></script>
 		<style type="text/css">
 			body {
 				background-color: #F3F3F3;
@@ -228,47 +226,19 @@
 					$("#saveinfo").hide();
 					$("#editinfo").show();
 				});
+				
+				//保存用户修改资料
+				$("#saveinfo").click(function() {
+					$("#editForm").submit();
+				});
 			});
 		</script>
 	</head>
 
 	<body>
 		<div class="">
-			<!--导航栏-->
-			<div id="topbar">
-				<span style="position: relative;margin: auto;width: 1000px;">
-				<span style="font-size: 15px;">
-					<a href="index.html" style="font-size: 32px; color: deepskyblue;font-family: '黑体';">逼乎</a>
-					<span style="position: relative;top: -5px;">
-					<a class="topmenu" href="index.html" style="margin-left: 30px;">首页</a>
-					<a class="topmenu" href="topic.html" style="margin-left: 30px;">话题</a>
-					<a class="topmenu" href="find.html" style="margin-left: 30px;">发现</a>
-					<form action="#" method="get" style="display: inline;position: relative;top: -2px;">
-						<input type="text" placeholder="搜索你感兴趣的内容..." style="width: 315px;height: 35px;border-top-left-radius: 3px;border-bottom-left-radius: 3px;border: 0;
-							position: relative;left: 30px;top: 2px;padding-left: 10px;background-color: #F7F8FA;" required=""/>
-						<button type="submit" class="btn btn-default" style="background-color: #F7F8FA;height: 35px;width:40px;border: 0;position: absolute;top: -7px;right: -25px;">
-	  						<span class="glyphicon glyphicon-search" style="color: lightgray;font-size: 18px;"></span>
-				</button>
-				</form>
-				<button type="button" class="btn btn-info" data-toggle="modal" data-target="#askModal" style="width:60px;font-size: 14px;margin-left: 50px;">提问</button>
-				</span>
-				</span>
-				<span style="margin-left: 150px;">
-					<a href="#">
-						<span class="glyphicon glyphicon-bell topmenu" style="font-size: 22px;color: lightgray;"></span>
-				<span class="markcount">42</span>
-				</a>
-				<a href="#" style="margin-left: 30px;">
-					<span class="glyphicon glyphicon-comment topmenu" style="font-size: 22px;color: lightgray;"></span>
-				</a>
-				<a href="${pageContext.request.contextPath}/jsp/home.jsp" style="position: relative;top: -5px;margin-left: 30px;">
-					<c:if test="${empty user.photo }"><img src="${pageContext.request.contextPath}/img/default.jpg" height="30px" /></c:if>
-					<c:if test="${not empty user.photo }"><img src="${pageContext.request.contextPath}/${user.photo}" height="30px" /></c:if>
-				</a>
-				</span>
-				</span>
-				<div style="height: 1px;background-color: lightgray;"></div>
-			</div>
+			<!-- 引入导航栏 -->
+			<%@ include file="/jsp/header1.jsp" %>
 
 			<!--个人展示div-->
 			<div id="personalshow">
@@ -297,7 +267,7 @@
 						<label style="font-size: 15px;position: absolute;top: 100px;left: 40px;color: white;">修改我的头像</label>
 					</div>
 
-					<a id="returnpersonal" href="${pageContext.request.contextPath}/jsp/home.jsp">
+					<a id="returnpersonal" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${user.id}">
 						返回我的主页
 						<span class="glyphicon glyphicon-chevron-right"></span>
 					</a>
@@ -313,15 +283,17 @@
 					<div style="width: 790px;position: relative;left: 215px;top: 20px;">
 						<span id="personalname">${user.name }</span>
 						<div class="separator"></div>
-						<form role="form">
+						<form id="editForm" role="form" action="${pageContext.request.contextPath}/userServlet" method="post">
+							<input type="hidden" name="method" value="editUser" />
+							<input type="hidden" name="id" value="${user.id }" />
 							<div class="form-group">
 								<label>性别</label>
 								<select class="form-control personalinfo" disabled="" name="sex">
 									<option>请选择性别</option>
-									<c:if test="${user.sex == '男' }"><option value="男" checked="">男</option></c:if>
+									<c:if test="${user.sex == '男' }"><option value="男" selected="">男</option></c:if>
 									<c:if test="${user.sex != '男' }"><option value="男">男</option></c:if>
 									
-									<c:if test="${user.sex == '女' }"><option value="女" checked="">女</option></c:if>
+									<c:if test="${user.sex == '女' }"><option value="女" selected="">女</option></c:if>
 									<c:if test="${user.sex != '女' }"><option value="女">女</option></c:if>
 								</select>
 							</div>
@@ -362,87 +334,11 @@
 			</div>
 
 			<!--提问Modal-->
-			<div id="askModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<div style="margin-top: 40px;text-align: center;">
-								<h3>写下你的问题</h3>
-								<span style="color: darkgray;">描述精确的问题更易得到解答</span>
-							</div>
-							<div>
-								<form action="${pageContext.request.contextPath}/" method="post">
-									<div>
-										<textarea class="form-control" rows="3" placeholder="问题标题"></textarea>
-										<input class="form-control input-lg" style="font-size: 15px;margin-top: 12px;" name="topic" placeholder="添加话题" />
-										<h5 style="margin-top: 30px;margin-left: 10px;">问题描述（可选）：</h5>
+			<%@ include file="/jsp/askmodal.jsp" %>
 
-										<!--问题描述(使用editor)-->
-										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
-										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js">
-										</script>
-										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
-										<div id="editordiv" style="margin-bottom: 15px;">
-											<script id="editor" type="text/plain" style="width:568px;height:150px;"></script>
-										</div>
-										<script src="${pageContext.request.contextPath}/js/editorInstance.js" type="text/javascript"></script>
-
-										<div class="checkbox">
-											<label>
-										    <input type="checkbox" name="anonymous" value="1">
-										    匿名提交
-										  </label>
-										</div>
-									</div>
-									<div style="text-align: center;">
-										<!--需要给此按钮绑定ajax事件-->
-										<button type="submit" class="btn btn-info" style="width: 250px;" data-dismiss="modal">提交问题</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!--feedBack -->
-			<span class="feedback" data-toggle="modal" data-target="#feedBackModal">
-				<button class="btn btn-default" style="font-size: 18px;color: gray;">
-					<span class="glyphicon glyphicon-briefcase" onclick="snapscreen()"></span>
-			</button>
-			</span>
 			<!--反馈Modal-->
-			<div id="feedBackModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<h4 class="modal-title" id="myModalLabel">提交反馈</h4>
-						</div>
-						<form action="http://www.adb.com" method="get">
-							<div class="modal-body" style="text-align: left; margin: 0 20px 0 20px;">
-								<div style="margin-top: 20px;">
-									<textarea class="form-control" rows="4" style="font-size: 18px;" placeholder="告诉我们你的建议或遇到的问题" required=""></textarea>
-								</div>
-								<br /><br />
-								<label>屏幕截图(可选):</label>
-								<div id="showScreen" style="width: 530px;height: 280px;"></div>
-								<div class="checkbox">
-									<br />
-									<label>
-      									<input type="checkbox" checked=""> 提交屏幕截图<br />
-    								</label>
-								</div>
-							</div>
-							<div class="modal-footer" style="text-align: center;">
-								<!--需要给此按钮绑定ajax事件-->
-								<button type="submit" class="btn btn-info btn-lg " style="width: 250px;" data-dismiss="modal">提交</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
+			<%@ include file="/jsp/feedback.jsp" %>
+			
 		</div>
 	</body>
 

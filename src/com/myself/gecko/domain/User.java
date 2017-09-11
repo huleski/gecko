@@ -6,16 +6,24 @@ public class User {
 	private String password;
 	private String phone;
 	private String sex;
-	
+
 	private String sentence;
 	private String address;
 	private String industry;
 	private String profession;
 	private String education;
-	
+
 	private String description;
 	private String photo;
 	private String backphoto;
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", password=" + password + ", phone=" + phone + ", sex=" + sex
+				+ ", sentence=" + sentence + ", address=" + address + ", industry=" + industry + ", profession="
+				+ profession + ", education=" + education + ", description=" + description + ", photo=" + photo
+				+ ", backphoto=" + backphoto + "]";
+	}
 
 	public String getPhone() {
 		return phone;

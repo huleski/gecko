@@ -1,12 +1,14 @@
 package com.myself.gecko.web.servlet;
 
 import java.net.URLEncoder;
-import java.sql.SQLException;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.commons.beanutils.BeanUtils;
 
 import com.myself.gecko.domain.User;
 import com.myself.gecko.service.impl.IUserService;
@@ -19,8 +21,27 @@ public class UserServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 	private static IUserService userService = UserServiceImpl.getUserService();
 
+	public String editUser(HttpServletRequest request, HttpServletResponse response) {
+		String idStr = request.getParameter("id");
+		try {
+			int id = Integer.parseInt(idStr);
+			//根据id获取用户信息,并填充修改好的信息保存
+			User user = userService.findById(id);
+			Map<String, String[]> map = request.getParameterMap();
+			BeanUtils.populate(user, map);
+			//保存用户修改资料
+			userService.update(user);
+			request.getSession().setAttribute("user", user);
+			response.sendRedirect(request.getContextPath() + "/jsp/edituser.jsp");
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "/error.jsp";
+		}
+	}
+
 	public String editUserUI(HttpServletRequest request, HttpServletResponse response) {
-		return "/jsp/editUser.jsp";
+		return "/jsp/edituser.jsp";
 	}
 
 	public String findById(HttpServletRequest request, HttpServletResponse response) {

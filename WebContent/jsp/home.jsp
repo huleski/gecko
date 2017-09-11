@@ -292,14 +292,24 @@
 				margin-left: 10px;
 			}
 			
-			#address {
-				margin-left: 20px;
-			}
-			
 			#personalinfo {
 				width: 780px;
 				position: relative;
 				margin: 15px 0 20px 215px;
+			}
+			#simpleInfo div{
+				margin:15px 0;
+			}
+			#completedInfo {
+				display:none;
+			}
+			#scrollMsg{
+				display:none;
+			}
+			.icoValue {
+				position:absolute;
+				left:100px;
+				width:650px
 			}
 			#personalinfo div {
 				margin-bottom: 10px;
@@ -453,47 +463,30 @@
 						$("#gotobtn").hide();
 					}
 				});
-
+				
+				//查看详细资料
+				$("#moreMsg").click(function() {
+					$(this).hide();
+					$("#scrollMsg").show();
+					$("#simpleInfo").hide();
+					$("#completedInfo").show();
+				});
+				//收起详细资料
+				$("#scrollMsg").click(function() {
+					$(this).hide();
+					$("#moreMsg").show();
+					$("#simpleInfo").show();
+					$("#completedInfo").hide();
+				});
+				
 			});
 		</script>
 	</head>
 
 	<body>
 		<div>
-			<!--导航栏-->
-			<div id="topbar">
-			<span style="position: relative;margin: auto;width: 1000px;">
-				<span style="font-size: 15px;">
-					<a href="index.html" style="font-size: 32px; color: deepskyblue;font-family: '黑体';">逼乎</a>
-					<span style="position: relative;top: -5px;">
-					<a class="topmenu" href="index.html" style="margin-left: 30px;">首页</a>
-					<a class="topmenu" href="topic.html" style="margin-left: 30px;">话题</a>
-					<a class="topmenu" href="find.html" style="margin-left: 30px;">发现</a>
-					<form action="${pageContext.request.contextPath}/" method="get" style="display: inline;position: relative;top: -2px;">
-						<input type="text" placeholder="搜索你感兴趣的内容..." style="width: 315px;height: 35px;border-top-left-radius: 3px;border-bottom-left-radius: 3px;border: 0;
-							position: relative;left: 30px;top: 2px;padding-left: 10px;background-color: #F7F8FA;" required=""/>
-						<button type="submit" class="btn btn-default" style="background-color: #F7F8FA;height: 35px;width:40px;border: 0;position: absolute;top: -7px;right: -25px;">
-	  						<span class="glyphicon glyphicon-search" style="color: lightgray;font-size: 18px;"></span>
-						</button>
-					</form>
-				<button type="button" class="btn btn-info" data-toggle="modal" data-target="#askModal" style="width:60px;font-size: 14px;margin-left: 50px;">提问</button>
-					</span>
-				</span>
-				<span style="margin-left: 150px;">
-					<a href="#">
-						<span class="glyphicon glyphicon-bell topmenu" style="font-size: 22px;color: lightgray;"></span>
-					<span class="markcount">42</span>
-					</a>
-					<a href="#" style="margin-left: 30px;">
-						<span class="glyphicon glyphicon-comment topmenu" style="font-size: 22px;color: lightgray;"></span>
-					</a>
-					<a href="javascript:void(0)" style="position: relative;top: -5px;margin-left: 30px;">
-						<img src="${pageContext.request.contextPath}/img/default.jpg" height="30px" />
-					</a>
-				</span>
-			</span>	
-			<div style="height: 1px;background-color: lightgray;"></div>
-			</div>
+			<!-- 引入导航栏 -->
+			<%@ include file="/jsp/header1.jsp" %>
 
 			<!--个人展示div-->
 			<div id="personalshow">
@@ -508,16 +501,52 @@
 						<img src="${pageContext.request.contextPath}/img/defaultbig.jpg" id="personalimg" />
 					</div>
 					<div id="personalinfo">
-						<div>
-							<span id="personalname">${person.name}</span>
-							<span id="personalsignal">${person.sentence}</span>
+						<div id="simpleInfo">
+							<div>
+								<span id="personalname">${person.name}</span>
+								<span id="personalsignal">${person.sentence}</span>
+							</div>
+							<c:set value="0" var="count"/>
+							<c:if test="${count < 3}">
+								<c:if test="${person.sex == '男'}"><div style="font-size:20px;color:deepskyblue"><i class="fa fa-mars fa-fw"></i></div><c:set value="${count + 1 }" var="count"/></c:if>
+								<c:if test="${person.sex == '女'}"><div style="font-size:20px;color:deeppink"><i class="fa fa-venus fa-fw"></i></div><c:set value="${count + 1 }" var="count"/></c:if>
+							</c:if>		
+							<c:if test="${count < 3}">
+								<c:if test="${not empty person.address}"><div><i class="fa fa-address-book fa-fw fa-lg"></i><span class="icoValue">${person.address }</span></div><c:set value="${count + 1 }" var="count"/></c:if>
+							</c:if>		
+							<c:if test="${count < 3}">
+								<c:if test="${not empty person.industry}"><div><i class="fa fa-industry fa-fw  fa-lg"></i><span class="icoValue">${person.industry }</span></div><c:set value="${count + 1 }" var="count"/></c:if>
+							</c:if>		
+							<c:if test="${count < 3}">
+								<c:if test="${not empty person.profession}"><div><i class="fa fa-envira fa-fw fa-lg"></i><span class="icoValue">${person.profession }</span></div><c:set value="${count + 1 }" var="count"/></c:if>
+							</c:if>		
+							<c:if test="${count < 3}">
+								<c:if test="${not empty person.education}"><div><i class="fa fa-graduation-cap fa-fw fa-lg"></i><span class="icoValue">${person.education }</span></div><c:set value="${count + 1 }" var="count"/></c:if>
+							</c:if>		
+							<c:if test="${count < 3}">
+								<c:if test="${not empty person.description}"><div><i class="fa fa-info-circle fa-fw fa-lg"></i><span class="icoValue">${person.description }</span></div><c:set value="${count + 1 }" var="count"/></c:if>
+							</c:if>		
 						</div>
-						<div id="adreesico" class="glyphicon glyphicon-credit-card"><span id="address">电子游戏</span></div>
-						<div><i class="fa fa-mars fa-1x "></i></div>
-						<div>
-							<a href="#">
-								<span class="glyphicon glyphicon-chevron-down" id="morepersonalmsg">
+						
+						<div id="completedInfo">
+							<c:if test="${not empty person.sex}"><div><label>性别</label><span class="icoValue">${person.sex }</span></div></c:if>
+							<c:if test="${not empty person.sentence}"><div><label>一句话介绍</label><span class="icoValue">${person.sentence }</span></div></c:if>
+							<c:if test="${not empty person.address}"><div><label>居住地</label><span class="icoValue">${person.address }</span></div></c:if>
+							<c:if test="${not empty person.industry}"><div><label>所在行业</label><span class="icoValue">${person.industry }</span></div></c:if>
+							<c:if test="${not empty person.profession}"><div><label>职业经历</label><span class="icoValue">${person.profession }</span></div></c:if>
+							<c:if test="${not empty person.education}"><div><label>教育经历</label><span class="icoValue">${person.education }</span></div></c:if>
+							<c:if test="${not empty person.description}"><div><label>个人简介</label><span class="icoValue">${person.description }</span></div></c:if>
+						</div>
+						
+						<div style="padding:15px 0;">
+							<a href="javascript:void(0)" id="moreMsg">
+								<span class="glyphicon glyphicon-chevron-down">
 									<span>查看详细资料</span>
+								</span>
+							</a>
+							<a href="javascript:void(0)" id="scrollMsg">
+								<span class="glyphicon glyphicon-chevron-up">
+									<span>收起详细资料</span>
 								</span>
 							</a>
 						</div>
@@ -1117,89 +1146,11 @@
 				<button class="glyphicon glyphicon-arrow-up btn" style="font-size: 20px;padding: 5px 10px;"></button>
 			</a>
 		
-		
-			<!--提问Modal-->
-			<div id="askModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<div style="margin-top: 40px;text-align: center;">
-								<h3>写下你的问题</h3>
-								<span style="color: darkgray;">描述精确的问题更易得到解答</span>
-							</div>
-							<div>
-								<form action="${pageContext.request.contextPath}/" method="get">
-									<div>
-										<textarea class="form-control" rows="3" placeholder="问题标题"></textarea>
-										<input class="form-control input-lg" style="font-size: 15px;margin-top: 12px;" name="topic" placeholder="添加话题" />
-										<h5 style="margin-top: 30px;margin-left: 10px;">问题描述（可选）：</h5>
+			<!--提问模态框-->
+ 			<%@ include file="/jsp/askmodal.jsp" %>
 
-										<!--问题描述(使用editor)-->
-										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
-										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js">
-										</script>
-										<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
-										<div id="editordiv" style="margin-bottom: 15px;">
-											<script id="editor" type="text/plain" style="width:568px;height:150px;"></script>
-										</div>
-										<script src="${pageContext.request.contextPath}/js/editorInstance.js" type="text/javascript"></script>
-
-										<div class="checkbox">
-											<label>
-										    <input type="checkbox" name="anonymous" value="1">
-										    匿名提交
-										  </label>
-										</div>
-									</div>
-									<div style="text-align: center;">
-										<!--需要给此按钮绑定ajax事件-->
-										<button type="submit" class="btn btn-info" style="width: 250px;" data-dismiss="modal">提交问题</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!--feedBack -->
-			<span class="feedback" data-toggle="modal" data-target="#feedBackModal">
-				<button class="btn btn-default" style="font-size: 18px;color: gray;">
-					<span class="glyphicon glyphicon-briefcase" onclick="snapscreen()"></span>
-			</button>
-			</span>
 			<!--反馈Modal-->
-			<div id="feedBackModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<h4 class="modal-title" id="myModalLabel">提交反馈</h4>
-						</div>
-						<form action="${pageContext.request.contextPath}/" method="get">
-							<div class="modal-body" style="text-align: left; margin: 0 20px 0 20px;">
-								<div style="margin-top: 20px;">
-									<textarea class="form-control" rows="4" style="font-size: 18px;" placeholder="告诉我们你的建议或遇到的问题" required=""></textarea>
-								</div>
-								<br /><br />
-								<label>屏幕截图(可选):</label>
-								<div id="showScreen" style="width: 530px;height: 280px;"></div>
-								<div class="checkbox">
-									<br />
-									<label>
-      									<input type="checkbox" checked=""> 提交屏幕截图<br />
-    								</label>
-								</div>
-							</div>
-							<div class="modal-footer" style="text-align: center;">
-								<!--需要给此按钮绑定ajax事件-->
-								<button type="submit" class="btn btn-info btn-lg " style="width: 250px;" data-dismiss="modal">提交</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
+			<%@ include file="/jsp/feedback.jsp" %>
 		</div>
 	</body>
 

@@ -1,14 +1,16 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title>写文章</title>
-		<link rel="shortcut icon" href="../img/bi.ico" />
+		<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/bi.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="../css/client.css" rel="stylesheet" type="text/css" />
-		<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen" />
-		<script src="../js/jquery-1.11.3.min.js"></script>
-		<script src="../js/bootstrap.min.js"></script>
+		<link href="${pageContext.request.contextPath}/css/client.css" rel="stylesheet" type="text/css" />
+		<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+		<script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
+		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				$("#addpicdiv").hover(function() {
@@ -64,13 +66,18 @@
 			</div>
 			
 			<!--写答案-->
-			<script type="text/javascript" src="../ueditor/ueditor.config.js"></script>
-			<script type="text/javascript" src="../ueditor/ueditor.all.min.js"> </script>
-			<script type="text/javascript" src="../ueditor/lang/zh-cn/zh-cn.js"></script>
+			<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
+			<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js"> </script>
+			<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
 			<div id="editordiv" style="margin-bottom: 90px;">
 				<script id="editor" type="text/plain" style="width:660px;height:200px;"></script>
 			</div>
-			<script src="../js/editorInstance.js" type="text/javascript"></script>
+			<script src="${pageContext.request.contextPath}/js/editorInstance.js" type="text/javascript"></script>
 		</div>
+		
+		
+		<!--反馈Modal-->
+		<%@ include file="/jsp/feedback.jsp" %>
+
 	</body>
 </html>

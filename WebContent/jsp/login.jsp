@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -13,8 +14,6 @@
 		<script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/js/jquery.validate.js" type="text/javascript"></script>
-		<script src="${pageContext.request.contextPath}/js/html2canvas.js" type="text/javascript"></script>
-		<script src="${pageContext.request.contextPath}/js/frontend.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			$(function() {
 				$('#problem').popover();
@@ -57,7 +56,11 @@
 					var mobile = /^1[34578]\d{9}$/;
 					return this.optional(element) || (length == 11 && mobile.test(value));
 				}, "请输入正确的手机号");
-
+				
+				//判断是否是注册
+				if("${param.register}" == 1) {
+					$("#registerLi a").click();
+				}
 			});
 		</script>
 		<style type="text/css">
@@ -118,7 +121,7 @@
 								<font size="4" color="#000000">登录</font>
 							</a>
 						</li>
-						<li>
+						<li id="registerLi">
 							<a href="#registerPage" data-toggle="tab" style="margin-left: 30px;">
 								<font size="4" color="#000000">注册</font>
 							</a>
@@ -173,7 +176,7 @@
 								<div id="xieyi" style="margin-top: 16px;margin-bottom: 16px;">
 									<span style="font-size: 14px;color: darkgray;">
 										点击「注册」按钮，即代表你同意
-										<a href="contract.html" target="_blank" style="color: deepskyblue;cursor: pointer;">
+										<a href="${pageContext.request.contextPath}/jsp/contract.jsp" target="_blank" style="color: deepskyblue;cursor: pointer;">
 											《逼乎协议》
 										</a>
 									</span>
@@ -236,41 +239,8 @@
 				</span>
 			</div>
 
-			<!--feedBack -->
-			<span class="feedback" data-toggle="modal" data-target="#feedBackModal">
-				<img src="${pageContext.request.contextPath}/img/feedBack.jpg" class="img-circle" height="40px" onclick="snapscreen()"/>
-			</span>
 			<!--反馈Modal-->
-			<div id="feedBackModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<h4 class="modal-title" id="myModalLabel">提交反馈</h4>
-						</div>
-						<form action="http://www.adb.com" method="get">
-							<div class="modal-body" style="text-align: left; margin: 0 20px 0 20px;">
-								<div style="margin-top: 20px;">
-									<textarea class="form-control" rows="4" style="font-size: 16px;" placeholder="告诉我们你的建议或遇到的问题" required=""></textarea>
-								</div>
-								<br /><br />
-								<label>屏幕截图(可选):</label>
-								<div id="showScreen" style="width: 530px;height: 280px;"></div>
-								<div class="checkbox">
-									<br />
-									<label>
-      									<input type="checkbox" checked=""> 提交屏幕截图<br />
-    								</label>
-								</div>
-							</div>
-							<div class="modal-footer" style="text-align: center;">
-								<!--需要给此按钮绑定ajax事件-->
-								<button type="submit" class="btn btn-info btn-lg " style="width: 250px;" data-dismiss="modal">提交</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
+			<%@ include file="/jsp/feedback.jsp" %>
 		</div>
 	</body>
 </html>
