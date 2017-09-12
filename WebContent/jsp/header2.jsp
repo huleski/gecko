@@ -25,7 +25,7 @@
 				<a class="topmenu" href="${pageContext.request.contextPath}/jsp/index.jsp" style="margin-left: 30px;">首页</a>
 				<a class="topmenu" href="${pageContext.request.contextPath}/jsp/topic.jsp" style="margin-left: 30px;">话题</a>
 				<a class="topmenu" href="${pageContext.request.contextPath}/jsp/find.jsp" style="margin-left: 30px;">发现</a>
-				<button type="button" class="btn btn-info" style="width:60px;font-size: 14px;margin-left: 100px;" data-toggle="modal" data-target="#askModal">提问</button>
+				<button type="button" class="btn btn-info" style="width:60px;font-size: 14px;margin-left: 100px;" onclick="writeQuestioin()">提问</button>
 				<a class="topmenu" href="${pageContext.request.contextPath}/jsp/login.jsp?register=1" style="margin-right: 30px;">
 					<span class="glyphicon glyphicon-user" style="color: #F5F5F5;margin-left: 30px;"></span> 注册逼乎
 			</a>

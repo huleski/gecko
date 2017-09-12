@@ -1,4 +1,4 @@
-package com.myself.gecko.service.impl;
+package com.myself.gecko.service;
 
 import java.sql.SQLException;
 

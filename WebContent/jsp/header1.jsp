@@ -12,7 +12,7 @@
 	<div id="topbar">
 		<span style="position: relative;margin: auto;width: 1000px;">
 			<span style="font-size: 15px;position: relative;">
-				<a href="index.html" style="font-size: 32px; color: deepskyblue;font-family: '黑体';">逼乎</a>
+				<a href="${pageContext.request.contextPath}/jsp/index.jsp" style="font-size: 32px; color: deepskyblue;font-family: '黑体';">逼乎</a>
 				<span style="position: relative;top: -5px;">
 					<a class="topmenu" href="${pageContext.request.contextPath}/jsp/index.jsp" style="margin-left: 30px;">首页</a>
 					<a class="topmenu" href="${pageContext.request.contextPath}/jsp/topic.jsp" style="margin-left: 30px;">话题</a>
@@ -32,7 +32,7 @@
 					      </span>
 					    </div>
 					</form>
-					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#askModal" style="width:60px;font-size: 14px;margin-left: 390px;position:relative;top:-2px">提问</button>
+					<button type="button" class="btn btn-info" onclick="writeQuestioin()" style="width:60px;font-size: 14px;margin-left: 390px;position:relative;top:-2px">提问</button>
 					<c:if test="${empty user}">	
 						<button type="button" class="btn btn-info" style="width:60px;font-size: 14px;margin-left: 140px;" onclick="location.href='${pageContext.request.contextPath}/jsp/login.jsp'">登录</button>
 						<button type="button" class="btn btn-default" style="font-size: 14px;margin-left: 20px;color:deepskyblue;border:1px deepskyblue solid;" onclick="location.href='${pageContext.request.contextPath}/jsp/login.jsp?register=1'">加入逼乎</button>

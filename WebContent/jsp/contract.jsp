@@ -268,7 +268,7 @@
 			<%@ include file="/jsp/feedback.jsp" %>
 			
 			<!--提问模态框-->
-			<%@ include file="/jsp/" %>			
+			<%@ include file="/jsp/askmodal.jsp" %>			
 			
 		</div>
 	</body>

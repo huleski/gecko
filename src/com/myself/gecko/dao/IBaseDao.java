@@ -49,5 +49,5 @@ public interface IBaseDao<E> {
 	 * @return				pageBean
 	 * @throws SQLException 
 	 */
-	public List<E> findByPage(int currentPage, int pageSize) throws SQLException;
+	public List<E> selectLimit(int currentPage, int pageSize) throws SQLException;
 }

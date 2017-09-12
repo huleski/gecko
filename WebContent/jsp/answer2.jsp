@@ -306,6 +306,7 @@
 					 $('body,html').animate({scrollTop:0}, 500);
 				});
 			});
+			
 		</script>
 	</head>
 
@@ -327,7 +328,7 @@
 			  						<span class="glyphicon glyphicon-search" style="color: lightgray;font-size: 18px;"></span>
 								</button>
 							</form>
-							<button type="button" data-toggle="modal" data-target="#askModal" class="btn btn-info" style="width:60px;font-size: 14px;">提问</button>
+							<button type="button" onclick="fnc()" class="btn btn-info" style="width:60px;font-size: 14px;">提问</button>
 						</span>
 					</span>
 					<span style="margin-left: 150px;">

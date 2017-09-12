@@ -85,7 +85,7 @@ public class BaseDao<E> implements IBaseDao<E> {
 	 * @return pageBean
 	 * @throws SQLException
 	 */
-	public List<E> findByPage(int currentPage, int pageSize) throws SQLException {
+	public List<E> selectLimit(int currentPage, int pageSize) throws SQLException {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "select * from " + tableName + " limit ?, ?";
 		return queryRunner.query(sql, new BeanListHandler<>(clazz), (currentPage - 1) * pageSize, pageSize);

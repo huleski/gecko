@@ -18,8 +18,6 @@
     <servlet-name>UserServlet</servlet-name>
     <url-pattern>/userServlet</url-pattern>
   </servlet-mapping>
-  
-  
   <filter>
     <filter-name>encodingFilter</filter-name>
     <filter-class>com.myself.gecko.web.filter.EncodingFilter</filter-class>
@@ -36,4 +34,24 @@
     <filter-name>AutoLoginFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  <servlet>
+    <description></description>
+    <display-name>TopicServlet</display-name>
+    <servlet-name>TopicServlet</servlet-name>
+    <servlet-class>com.myself.gecko.web.servlet.TopicServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TopicServlet</servlet-name>
+    <url-pattern>/topicServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>QuestionServlet</display-name>
+    <servlet-name>QuestionServlet</servlet-name>
+    <servlet-class>com.myself.gecko.web.servlet.QuestionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>QuestionServlet</servlet-name>
+    <url-pattern>/questionServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

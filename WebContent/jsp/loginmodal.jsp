@@ -21,10 +21,10 @@
 				<div class="modal-body" style="text-align: center; margin: 0 20px 0 20px;">
 					<span style="color: darkgray;">登录之后才可以回答或评论哦!</span>
 					<div style="margin-top: 80px;">
-						<button type="button" class="btn btn-info" data-dismiss="modal" style="width: 300px;">去登录</button>
+						<button type="button" onclick="location.href='${pageContext.request.contextPath}/jsp/login.jsp'" class="btn btn-info" data-dismiss="modal" style="width: 300px;">去登录</button>
 					</div>
 					<div style="margin-top: 50px;margin-bottom: 80px;">
-						<button type="button" class="btn btn-info" data-dismiss="modal" style="width: 300px;">还未注册</button>
+						<button type="button" onclick="location.href='${pageContext.request.contextPath}/jsp/login.jsp?register=1'"  class="btn btn-info" data-dismiss="modal" style="width: 300px;">还未注册</button>
 					</div>
 				</div>
 					

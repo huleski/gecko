@@ -307,10 +307,29 @@
 				});
 				
 			});
+			
+			//点击回答
+			function writeAnswer(){
+				if("${user}" == null) {
+					$('#loginModal').modal();
+				} else {
+					$("#answereditordiv").show();
+					location.href = "#answereditordiv";
+				}
+			}
+			
 		</script>
 	</head>
-
 	<body>
+		<!--提问模态框-->
+ 		<%@ include file="/jsp/askmodal.jsp" %>
+ 		
+		<!--反馈模态框-->
+		<%@ include file="/jsp/feedback.jsp" %>
+		
+		<!-- 未登录模态框 -->
+		<%@ include file="/jsp/loginmodal.jsp" %>
+		
 		<div class="">
 			
 			<!--导航栏-->
@@ -329,7 +348,7 @@
 			  						<span class="glyphicon glyphicon-search" style="color: lightgray;font-size: 18px;"></span>
 								</button>
 							</form>
-							<button data-toggle="modal" data-target="#askModal" type="button" class="btn btn-info" style="width:60px;font-size: 14px;">提问</button>
+							<button onclick="writeQuestioin()" type="button" class="btn btn-info" style="width:60px;font-size: 14px;">提问</button>
 						</span>
 					</span>
 					<span style="margin-left: 150px;">
@@ -351,7 +370,7 @@
 					</div>
 					<span style="position: absolute;top:8px;right: 20px;">
 						<button type="button" class="btn btn-info" id="focusquestion" onclick="">关注问题</button>
-						<button type="button" class="btn btn-default" id="writeanswer" onclick="location.href='#editordiv'">
+						<button type="button" class="btn btn-default" id="writeanswer" onclick="writeAnswer()">
 							<span class="glyphicon glyphicon-pencil"></span>
 							写回答
 						</button>
@@ -409,7 +428,7 @@
 					</div>
 					<div style="position: absolute;bottom: 15px;right: 20px;">
 						<button type="button" class="btn btn-info" id="focusquestion" onclick="">关注问题</button>
-						<button type="button" class="btn btn-default" id="writeanswer" onclick="location.href='#editordiv'">
+						<button type="button" class="btn btn-default" id="writeanswer" onclick="writeAnswer()">
 							<span class="glyphicon glyphicon-pencil"></span>
 							写回答
 						</button>
@@ -674,22 +693,33 @@
 				
 				
 				<!--写答案-->
-				<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
-				<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js"> </script>
-				<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
-				<div id="editordiv" style="margin-bottom: 90px;">
-					<script id="editAnswer" type="text/plain" style="width:700px;height:200px;"></script>
+				<div id="answereditordiv" style="margin-bottom: 90px;position:relative;display:none">
+					<script id="editorId" type="text/plain" style="width:700px;height:200px;">写回答...</script>
+					<div style="margin-top:10px">
+						<label class="checkbox-inline"><input type="checkbox" name="anonymous" value="1">匿名提交</label>
+						<button class="btn btn-info" style="position:absolute;right:0;">提交回答</button>
+					</div>
 				</div>
-				<script type="text/javascript">
-					var answerEditor = UE.getEditor('editAnswer');
+				<script type="text/javascript" >
+					var answerUE = UE.getEditor('editorId', {
+				        autoClearinitialContent:true, //focus时自动清空初始化时的内容
+				        wordCount:false, //关闭字数统计
+				        elementPathEnabled:false,//关闭elementPath
+				        saveInterval:30000,		//自动保存
+				        toolbars: [
+						           	['bold', 'italic','horizontal', 'paragraph', 'justifycenter', '|', 'blockquote','insertorderedlist','insertunorderedlist', 
+						           	'link','removeformat', '|','simpleupload', 'insertimage', 'insertvideo', 'music', 'fullscreen' ]
+						       	  ]
+				    });
+
 					
-					/* answerEditor.addListener("focus", function () {
-	                    alert("focus");
-	                }); */
-	                
-	                //alert(answerEditor.isFocus());
-	                
-					//alert(UE.getEditor('editor').isFocus());
+					
+					  /* ued.ready(function() {
+					        ued.addListener("click", function () {
+					            alert("登录后才能回答提问");
+					        })
+					 }); */
+					
 				</script>
 			</div>
 
@@ -741,19 +771,12 @@
 			</div>
 		</div>
 		
-		<!--反馈模态框-->
-		<%@ include file="/jsp/feedback.jsp" %>
-		
 		<!--回到顶部-->
 		<div id="gotobtn" style="position: fixed;right: 30px;bottom: 80px;display:none" >
 			<button class="glyphicon glyphicon-arrow-up btn btn-default" style="font-size: 20px;padding: 5px 10px;" ></button>
 		</div>
 		
-		<!--提问模态框-->
- 		<%@ include file="/jsp/askmodal.jsp" %>
 		
-		<!-- 未登录模态框 -->
-		<%@ include file="/jsp/loginmodal.jsp" %>
 		</div>
 	</body>
 

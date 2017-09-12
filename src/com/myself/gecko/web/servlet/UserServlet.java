@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.beanutils.BeanUtils;
 
 import com.myself.gecko.domain.User;
-import com.myself.gecko.service.impl.IUserService;
+import com.myself.gecko.service.IUserService;
 import com.myself.gecko.service.impl.UserServiceImpl;
 
 /**

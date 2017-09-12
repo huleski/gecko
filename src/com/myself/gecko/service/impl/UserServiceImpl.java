@@ -2,11 +2,10 @@ package com.myself.gecko.service.impl;
 
 import java.sql.SQLException;
 
-import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
-
 import com.myself.gecko.dao.IUserDao;
 import com.myself.gecko.dao.impl.UserDaoImpl;
 import com.myself.gecko.domain.User;
+import com.myself.gecko.service.IUserService;
 
 public class UserServiceImpl implements IUserService {
 	private static UserServiceImpl userService;
