@@ -17,6 +17,21 @@ import com.myself.gecko.service.impl.QuetionServiceImpl;
 public class QuestionServlet extends BaseServlet {
 	private static IQuestioinService questionService = new QuetionServiceImpl();
 	
+	public String ajaxLoad(HttpServletRequest request, HttpServletResponse response) {
+		String currentPageStr = request.getParameter("currentPage");
+		String personIdStr = request.getParameter("personId");
+		
+		try {
+			int currentPage = Integer.parseInt(currentPageStr);
+			int personId = Integer.parseInt(personIdStr);
+			String result = questionService.ajaxQueryByUid(currentPage, personId);
+			response.getWriter().print(result);
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "/error.jsp";
+	}
 	public String addQuestion(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 		

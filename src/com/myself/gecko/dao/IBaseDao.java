@@ -50,4 +50,6 @@ public interface IBaseDao<E> {
 	 * @throws SQLException 
 	 */
 	public List<E> selectLimit(int currentPage, int pageSize) throws SQLException;
+
+	List<E> selectLimitByWhere(int currentPage, int pageSize, String whereClause) throws SQLException;
 }

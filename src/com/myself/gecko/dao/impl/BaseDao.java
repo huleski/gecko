@@ -32,11 +32,13 @@ public class BaseDao<E> implements IBaseDao<E> {
 	 *            SQL语句参数
 	 * @throws SQLException
 	 */
+	@Override
 	public void CU(String sql, Object[] params) throws SQLException {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		queryRunner.update(sql, params);
 	}
 
+	@Override
 	public void deleteById(int id) throws SQLException {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "delete from " + tableName + " where id = ?";
@@ -51,6 +53,7 @@ public class BaseDao<E> implements IBaseDao<E> {
 	 * @return 所需对象
 	 * @throws SQLException
 	 */
+	@Override
 	public E findById(int id) throws SQLException {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "select * from " + tableName + " where id = ?";
@@ -63,12 +66,14 @@ public class BaseDao<E> implements IBaseDao<E> {
 	 * @return 返回包含所有对象的list
 	 * @throws SQLException
 	 */
+	@Override
 	public List<E> findAll() throws SQLException {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "select * from " + tableName;
 		return queryRunner.query(sql, new BeanListHandler<>(clazz));
 	}
 
+	@Override
 	public int selectCount() throws SQLException {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "select count(*) from " + tableName;
@@ -77,17 +82,27 @@ public class BaseDao<E> implements IBaseDao<E> {
 
 	/**
 	 * 分页查询
-	 * 
-	 * @param currentPage
-	 *            当前页码
-	 * @param pageSize
-	 *            页面大小(每页显示结果条数)
+	 * @param currentPage当前页码
+	 * @param pageSize页面大小(每页显示结果条数)
 	 * @return pageBean
-	 * @throws SQLException
 	 */
+	@Override
 	public List<E> selectLimit(int currentPage, int pageSize) throws SQLException {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "select * from " + tableName + " limit ?, ?";
+		return queryRunner.query(sql, new BeanListHandler<>(clazz), (currentPage - 1) * pageSize, pageSize);
+	}
+	
+	/**
+	 * 分页查询
+	 * @param currentPage当前页码
+	 * @param pageSize页面大小(每页显示结果条数)
+	 * @return pageBean
+	 */
+	@Override
+	public List<E> selectLimitByWhere(int currentPage, int pageSize, String whereClause) throws SQLException {
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "select * from " + tableName + " " + whereClause + " limit ?, ?";
 		return queryRunner.query(sql, new BeanListHandler<>(clazz), (currentPage - 1) * pageSize, pageSize);
 	}
 }

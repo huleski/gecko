@@ -369,18 +369,18 @@
 					$(this).parents(".comment-reply").prev(".comment-situation").show();
 				});
 				
-			// 滑动到页面底部实现自动加载
-			var totalheight = 0;
-			var htm_index = 0;
-			$(window).scroll(function() {
-				totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
-				if((totalheight >= $(document).height()) && (htm_index < 5)) {
-					alert("滑动到页面底部发送ajax自动加载");
-					/*$.get("/Load_List.aspx", { page: htm_index++ }, function(data) {
-						$("#LoadDIV").before(data);
-					});*/
-				}
-			});
+				// 滑动到页面底部实现自动加载
+				var totalheight = 0;
+				var htm_index = 0;
+				$(window).scroll(function() {
+					totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
+					if((totalheight >= $(document).height()) && (htm_index < 5)) {
+						alert("滑动到页面底部发送ajax自动加载");
+						/*$.get("/Load_List.aspx", { page: htm_index++ }, function(data) {
+							$("#LoadDIV").before(data);
+						});*/
+					}
+				});
 			});
 		</script>
 	</head>

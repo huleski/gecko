@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -14,8 +15,6 @@
 		<link href="${pageContext.request.contextPath}/font_awesome/css/font-awesome.css" rel="stylesheet" />
 		<script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
 		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-		<script src="${pageContext.request.contextPath}/js/html2canvas.js" type="text/javascript" ></script>
-		<script src="${pageContext.request.contextPath}/js/frontend.js" type="text/javascript"></script>
 		<style type="text/css">
 			body {
 				background-color: #F3F3F3;
@@ -75,7 +74,7 @@
 			.answerblock {
 				width: 700px;
 				background-color: white;
-				padding:0 16px;
+				padding:15px 16px;
 				line-height: 1.7;
 			}
 			
@@ -140,7 +139,6 @@
 			
 			.answerblock .text-end {
 				position: relative;
-				margin-bottom: 20px;
 			}
 			
 			.answerblock .text-content .expand {
@@ -349,7 +347,8 @@
 			}
 			.separator {
 				height: 1px;
-				background-color: lightgray;margin-bottom: 20px;
+				background-color: lightgray;
+				/* margin-bottom: 20px; */
 			}
 			.user-comment {
 				width: 670px;
@@ -387,6 +386,17 @@
 			}
 			.text-all {
 				display: none;
+			}
+			.question-div{
+				padding:15px 20px;
+			}
+			.question-title{
+				color:black;
+				font-size:20px;
+				font-weight:bold;
+			}
+			.question-state span{
+				margin-right:20px;
 			}
 		</style>
 
@@ -479,6 +489,56 @@
 					$("#completedInfo").hide();
 				});
 				
+				// 滑动到页面底部实现自动加载
+				var totalheight = 0;
+				var question_index = 0;
+				$(window).scroll(function() {
+					totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
+					if((totalheight >= $(document).height()) && question_index >= 0) {
+						var tabId = $(".tab-pane:visible").attr("id");
+						if(tabId == "question") {
+							$.getJSON("${pageContext.request.contextPath}/questionServlet", 
+									{"method":"ajaxLoad","currentPage": ++question_index, "personId":"${person.id}"}, 
+									function(result) {
+										if(result != "") {
+											$("#noQuestion").css("display", "none");
+											$(result).each(function(i, obj) {
+												$("#question").append(
+													"<div class='question-div'>"+
+													"<div><a class='question-title' href='#'>" + obj.title + "</a></div>" +
+													"<div class='question-state'>"+
+													"<span>" + new Date(obj.date.time).format("yyyy-MM-dd") +"</span>"+
+													"<span>" + obj.answerList.length + " 个回答</span>"+
+													"<span>" + obj.watchCount + " 个关注</span>"+
+													"</div></div>" + 
+													"<div class='separator'></div>"
+												);
+											});
+										} else {
+											$("#question").append("<h4 style='margin:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
+											question_index = -1;
+										}
+							});
+						}
+					}
+				});
+				
+				/*格式化日期*/
+				Date.prototype.format = function (fmt) { //author: meizz 
+				    var o = {
+				        "M+": this.getMonth() + 1, //月份 
+				        "d+": this.getDate(), //日 
+				        "h+": this.getHours(), //小时 
+				        "m+": this.getMinutes(), //分 
+				        "s+": this.getSeconds(), //秒 
+				        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+				        "S": this.getMilliseconds() //毫秒 
+				    };
+				    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+				    for (var k in o)
+				    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+				    return fmt;
+				}
 			});
 		</script>
 	</head>
@@ -575,7 +635,7 @@
 							<a href="#question" data-toggle="tab">提问 0</a>
 						</li>
 						<li>
-							<a href="#works" data-toggle="tab">文章 0</a>
+							<a href="#article" data-toggle="tab">文章 0</a>
 						</li>
 						<li>
 							<a href="#column" data-toggle="tab">专栏 0</a>
@@ -608,11 +668,13 @@
 
 				<!-- Tab panes -->
 				<div class="tab-content">
+					<!-- 动态板块 -->
 					<div class="tab-pane active" id="dynamic">
 						<div style="height: 1px;background-color: #F0F2F7;"></div>
 						<div style="padding: 12px 0 12px 20px;font-weight: bold;font-size: 15px;">我的动态</div>
+						
+						<div class="separator"></div>
 						<div class="answerblock">
-							<div class="separator"></div>
 							<div class="text-dynamic">
 								赞同了回答
 								<span style="float: right;top: -10px;right: -10px;">5天前</span>
@@ -819,10 +881,10 @@
 							</div>
 						</div>
 							
-						</div>
+					</div>
 						
+						<div class="separator"></div>
 						<div class="answerblock">
-							<div class="separator"></div>
 							<div class="text-dynamic">
 								赞同了回答
 								<span style="float: right;top: -10px;right: -10px;">14天前</span>
@@ -900,36 +962,38 @@
 							</div>
 							<div class="text-end">
 								<button class="btn btn-default active">
-							<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">19K</span></span>
-						</button>
+									<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">19K</span></span>
+								</button>
 								<button class="btn btn-default">
-							<span class="glyphicon glyphicon-chevron-down opinion"></span>
-						</button>
+									<span class="glyphicon glyphicon-chevron-down opinion"></span>
+								</button>
 								<span>
-							<a href="#" class="text-situation">
-								<span class="glyphicon glyphicon-comment"></span>
-								<span>1120条评论</span>
-								</a>
-								<a href="#" class="text-situation">
-									<span class="glyphicon glyphicon-share-alt"></span>
-									<span>分享</span>
-								</a>
-								<a href="#" class="text-situation">
-									<span class="glyphicon glyphicon-star"></span>
-									<span>收藏</span>
-								</a>
-								<a href="#" class="text-situation">
-									<span class="glyphicon glyphicon-heart"></span>
-									<span>感谢</span>
-								</a>
-								<a href="#" class="text-situation" style="font-size: 16px;font-weight: bold;">
-									···
-								</a>
+									<a href="#" class="text-situation">
+										<span class="glyphicon glyphicon-comment"></span>
+										<span>1120条评论</span>
+									</a>
+									<a href="#" class="text-situation">
+										<span class="glyphicon glyphicon-share-alt"></span>
+										<span>分享</span>
+									</a>
+									<a href="#" class="text-situation">
+										<span class="glyphicon glyphicon-star"></span>
+										<span>收藏</span>
+									</a>
+									<a href="#" class="text-situation">
+										<span class="glyphicon glyphicon-heart"></span>
+										<span>感谢</span>
+									</a>
+									<a href="#" class="text-situation" style="font-size: 16px;font-weight: bold;">
+										···
+									</a>
 								</span>
 							</div>
 						</div>
+						
+
+						<div class="separator"></div>
 						<div class="answerblock">
-							<div class="separator"></div>
 							<div class="text-dynamic">
 								来自话题: 互联网
 								<span style="float: right;top: -10px;right: -10px;">20天前</span>
@@ -982,6 +1046,8 @@
 							</div>
 						</div>
 					</div>
+					
+					<!-- 回答板块 -->
 					<div class="tab-pane" id="answer" style="fon">
 						<div style="height: 1px;background-color: #F0F2F7;"></div>
 						<div style="padding: 12px 0 12px 20px;font-weight: bold;font-size: 15px;">
@@ -999,13 +1065,15 @@
 							</div>
 						</div>
 					</div>
+					
+					<!-- 提问板块 -->
 					<div class="tab-pane" id="question">
 						<div style="height: 1px;background-color: #F0F2F7;"></div>
 						<div style="padding: 12px 0 12px 20px;font-weight: bold;font-size: 15px;">
 							<span>我的提问</span>
 						</div>
 						<div class="separator"></div>
-						<div style="height: 280px;padding-top: 80px;">
+						<div id="noQuestion" style="height: 280px;padding-top: 80px;">
 							<div align="center">
 								<img src="${pageContext.request.contextPath}/img/noqestion.png" />
 							</div>
@@ -1013,8 +1081,11 @@
 								还没有提问
 							</div>
 						</div>
+						
 					</div>
-					<div class="tab-pane" id="works">
+					
+					<!-- 文章板块 -->
+					<div class="tab-pane" id="article">
 						<div style="height: 1px;background-color: #F0F2F7;"></div>
 						<div style="padding: 12px 0 12px 20px;font-weight: bold;font-size: 15px;">
 							<span>我的文章</span>
@@ -1031,6 +1102,8 @@
 							</div>
 						</div>
 					</div>
+					
+					<!-- 专栏板块 -->
 					<div class="tab-pane" id="column">
 						<div style="height: 1px;background-color: #F0F2F7;"></div>
 						<div style="padding: 12px 0 12px 20px;font-weight: bold;font-size: 15px;">
@@ -1047,6 +1120,8 @@
 							</div>
 						</div>
 					</div>
+					
+					<!-- 分享板块 -->
 					<div class="tab-pane" id="share">
 						<div style="height: 1px;background-color: #F0F2F7;"></div>
 						<div style="padding: 12px 0 12px 20px;font-weight: bold;font-size: 15px;">
