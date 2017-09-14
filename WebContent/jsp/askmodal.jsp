@@ -8,7 +8,7 @@
 <script type="text/javascript">
 	//点击提问
 	function writeQuestioin(){
-		if("${user}" == null) {
+		if("${user}" == "") {
 			$('#loginModal').modal();
 		} else {
 			$("#askModal").modal();
@@ -38,6 +38,9 @@
 </script>
 </head>
 <body>
+	<!-- 登录模态框 -->
+	<%@ include file="/jsp/loginmodal.jsp" %>
+	
 	<!--提问Modal-->
 	<div id="askModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">

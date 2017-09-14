@@ -13,10 +13,23 @@ import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IQuestioinService;
 import com.myself.gecko.service.impl.QuetionServiceImpl;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 
 public class QuestionServlet extends BaseServlet {
 	private static IQuestioinService questionService = new QuetionServiceImpl();
 	
+	public String findById(HttpServletRequest request, HttpServletResponse response) {
+		String idStr = request.getParameter("id");
+		try {
+			int id = Integer.parseInt(idStr);
+			Question question = questionService.findQuestioinById(id);
+			request.setAttribute("question", question);
+			return "/jsp/question.jsp";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "/error.jsp";
+		}
+	}
 	public String ajaxLoad(HttpServletRequest request, HttpServletResponse response) {
 		String currentPageStr = request.getParameter("currentPage");
 		String personIdStr = request.getParameter("personId");

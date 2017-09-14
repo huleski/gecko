@@ -9,6 +9,7 @@
 <body>
 	<center>
 		<h2>服务器繁忙,请稍后再试</h2>
+		<h4>${msg }</h4>
 	</center>
 </body>
 </html>

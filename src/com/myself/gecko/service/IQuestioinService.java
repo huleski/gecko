@@ -8,4 +8,6 @@ public interface IQuestioinService {
 
 	String ajaxQueryByUid(int currentPage, int uid) throws Exception ;
 
+	Question findQuestioinById(int id) throws Exception;
+
 }

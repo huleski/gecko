@@ -54,4 +54,14 @@
     <servlet-name>QuestionServlet</servlet-name>
     <url-pattern>/questionServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AnswerServlet</display-name>
+    <servlet-name>AnswerServlet</servlet-name>
+    <servlet-class>com.myself.gecko.web.servlet.AnswerServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AnswerServlet</servlet-name>
+    <url-pattern>/answerServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

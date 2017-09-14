@@ -505,7 +505,7 @@
 											$(result).each(function(i, obj) {
 												$("#question").append(
 													"<div class='question-div'>"+
-													"<div><a class='question-title' href='#'>" + obj.title + "</a></div>" +
+													"<div><a class='question-title' href='${pageContext.request.contextPath}/questionServlet?method=findById&id=${obj.id}'>" + obj.title + "</a></div>" +
 													"<div class='question-state'>"+
 													"<span>" + new Date(obj.date.time).format("yyyy-MM-dd") +"</span>"+
 													"<span>" + obj.answerList.length + " 个回答</span>"+
@@ -610,10 +610,10 @@
 								</span>
 							</a>
 						</div>
-						<c:if test="${user.id == person.id}">						
-							<button type="button" class="btn btn-default" id="editpersonal" onclick="window.location.href='${pageContext.request.contextPath}/userServlet?method=editUserUI&id=${user.id }'">编辑个人资料</button>
+						<c:if test="${user.id == person.id}">					
+							<button type="button" class="btn btn-default" id="editpersonal" onclick="window.location.href='${pageContext.request.contextPath}/userServlet?method=editUserUI'">编辑个人资料</button>
 						</c:if>
-						<c:if test="${user.id != person.id}">						
+						<c:if test="${user.id != person.id}">
 							<button type="button" class="btn btn-default" id="editpersonal" onclick="window.location.href='#'">关注他</button>
 						</c:if>
 					</div>
@@ -1221,9 +1221,6 @@
 				<button class="glyphicon glyphicon-arrow-up btn" style="font-size: 20px;padding: 5px 10px;"></button>
 			</a>
 		
-			<!--提问模态框-->
- 			<%@ include file="/jsp/askmodal.jsp" %>
-
 			<!--反馈Modal-->
 			<%@ include file="/jsp/feedback.jsp" %>
 		</div>

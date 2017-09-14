@@ -22,11 +22,13 @@ public class UserServlet extends BaseServlet {
 	private static IUserService userService = UserServiceImpl.getUserService();
 
 	public String editUser(HttpServletRequest request, HttpServletResponse response) {
-		String idStr = request.getParameter("id");
+		User user = (User) request.getSession().getAttribute("user");
+		if(user == null) {
+			request.setAttribute("msg", "请先登录");
+			return "/error.jsp";
+		}
+		
 		try {
-			int id = Integer.parseInt(idStr);
-			//根据id获取用户信息,并填充修改好的信息保存
-			User user = userService.findById(id);
 			Map<String, String[]> map = request.getParameterMap();
 			BeanUtils.populate(user, map);
 			//保存用户修改资料
@@ -41,6 +43,11 @@ public class UserServlet extends BaseServlet {
 	}
 
 	public String editUserUI(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+		if(user == null) {
+			request.setAttribute("msg", "请先登录");
+			return "/error.jsp";
+		}
 		return "/jsp/edituser.jsp";
 	}
 

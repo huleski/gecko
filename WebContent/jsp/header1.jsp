@@ -8,28 +8,26 @@
 <title>首页.主页导航栏</title>
 </head>
 <body>
+	<!-- 提问模态框(包含登录模态框) -->
+	<%@ include file="/jsp/askmodal.jsp" %>
+
 	<!--导航栏-->
 	<div id="topbar">
 		<span style="position: relative;margin: auto;width: 1000px;">
-			<span style="font-size: 15px;position: relative;">
+			<span style="font-size: 15px;">
 				<a href="${pageContext.request.contextPath}/jsp/index.jsp" style="font-size: 32px; color: deepskyblue;font-family: '黑体';">逼乎</a>
 				<span style="position: relative;top: -5px;">
 					<a class="topmenu" href="${pageContext.request.contextPath}/jsp/index.jsp" style="margin-left: 30px;">首页</a>
 					<a class="topmenu" href="${pageContext.request.contextPath}/jsp/topic.jsp" style="margin-left: 30px;">话题</a>
 					<a class="topmenu" href="${pageContext.request.contextPath}/jsp/find.jsp" style="margin-left: 30px;">发现</a>
-					<form action="${pageContext.request.contextPath}/" method="post" style="position: relative;display: inline;width:360px;">
-						<!-- <input type="text" placeholder="搜索你感兴趣的内容..." style="width: 315px;height: 35px;border-top-left-radius: 3px;border-bottom-left-radius: 3px;border: 0;
-							position: relative;left: 30px;top: 2px;padding-left: 10px;background-color: #F7F8FA;" required=""/>
-						<button type="submit" class="btn btn-default" style="background-color: #F7F8FA;height: 35px;width:40px;border: 0;position: absolute;top: -7px;right: -25px;">
-	  						<span class="glyphicon glyphicon-search" style="color: lightgray;font-size: 18px;"></span>
-						</button> -->
+					<form action="${pageContext.request.contextPath}/questionServlet" method="post" style="position: relative;display: inline;width:360px;">
 						<div class="input-group" style="width:350px;position: absolute;top:-8px;left: 20px;">
-					      <input type="text" class="form-control" placeholder="搜索你感兴趣的内容...">
-					      <span class="input-group-btn">
-					        <button class="btn btn-default" type="button" style="height:34px;color:lightgray">
-								<i class="fa fa-search  fa-lg"></i>
-							</button>
-					      </span>
+					    	<input type="text" class="form-control" placeholder="搜索你感兴趣的内容...">
+					    	<span class="input-group-btn">
+						        <button class="btn btn-default" type="button" style="height:34px;color:lightgray">
+									<i class="fa fa-search  fa-lg"></i>
+								</button>
+					      	</span>
 					    </div>
 					</form>
 					<button type="button" class="btn btn-info" onclick="writeQuestioin()" style="width:60px;font-size: 14px;margin-left: 390px;position:relative;top:-2px">提问</button>

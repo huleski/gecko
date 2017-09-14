@@ -5,7 +5,11 @@ package com.myself.gecko.constant;
  */
 public interface Constant {
 	/**
-	 * ajax自动加载数
+	 * ajax自动加载问题数
 	 */
-	public static final int AJAX_LOAD_COUNT = 15;
+	public static final int QUESTION_AJAX_LOAD_COUNT = 15;
+	/**
+	 * ajax自动加载回答数
+	 */
+	public static final int ANSWER_AJAX_LOAD_COUNT = 15;
 }

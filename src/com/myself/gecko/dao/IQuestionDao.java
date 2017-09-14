@@ -11,4 +11,6 @@ public interface IQuestionDao extends IBaseDao<Question> {
 	
 	List<Question> ajaxQueryByUid(int currentPage, int pageSize, int uid) throws SQLException;
 
+	Question findQuestioinById(int id) throws SQLException, Exception;
+
 }

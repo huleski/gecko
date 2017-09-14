@@ -942,9 +942,6 @@
 				<button class="glyphicon glyphicon-arrow-up btn" style="font-size: 20px;padding: 5px 10px;"></button>
 			</a>
 			
-			<!-- 提问模态框 -->
-			<%@ include file="/jsp/askmodal.jsp" %>
-			
 			<!-- 反馈模态框 -->
 			<%@ include file="/jsp/feedback.jsp" %>
 		</div>
