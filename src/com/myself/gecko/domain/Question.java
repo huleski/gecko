@@ -10,40 +10,22 @@ public class Question {
 	private Topic topic;
 	private Integer anonymous;
 	private String title;
-	
+
 	private String pureContent;
 	private String content;
 	private Date date;
 	private Integer lookCount;
-	private Integer commentCount;
-	
-	private Integer watchCount;
+
 	private List<Answer> answerList = new ArrayList<>();
 	private List<QuestionWatch> watchList = new ArrayList<>();
-	
+	private List<Comment> commentList = new ArrayList<>();
 
-	public List<Answer> getAnswerList() {
-		return answerList;
-	}
-
-	public void setAnswerList(List<Answer> answerList) {
-		this.answerList = answerList;
-	}
-
-	public Integer getWatchCount() {
-		return watchCount;
-	}
-
-	public void setWatchCount(Integer watchCount) {
-		this.watchCount = watchCount;
-	}
-
-	public List<QuestionWatch> getWatchList() {
-		return watchList;
-	}
-
-	public void setWatchList(List<QuestionWatch> watchList) {
-		this.watchList = watchList;
+	@Override
+	public String toString() {
+		return "Question [id=" + id + ", user=" + user + ", topic=" + topic + ", anonymous=" + anonymous + ", title="
+				+ title + ", pureContent=" + pureContent + ", content=" + content + ", date=" + date + ", lookCount="
+				+ lookCount + ", answerList=" + answerList + ", watchList=" + watchList + ", commentList=" + commentList
+				+ "]";
 	}
 
 	public int getId() {
@@ -118,12 +100,28 @@ public class Question {
 		this.lookCount = lookCount;
 	}
 
-	public Integer getCommentCount() {
-		return commentCount;
+	public List<Answer> getAnswerList() {
+		return answerList;
 	}
 
-	public void setCommentCount(Integer commentCount) {
-		this.commentCount = commentCount;
+	public void setAnswerList(List<Answer> answerList) {
+		this.answerList = answerList;
+	}
+
+	public List<QuestionWatch> getWatchList() {
+		return watchList;
+	}
+
+	public void setWatchList(List<QuestionWatch> watchList) {
+		this.watchList = watchList;
+	}
+
+	public List<Comment> getCommentList() {
+		return commentList;
+	}
+
+	public void setCommentList(List<Comment> commentList) {
+		this.commentList = commentList;
 	}
 
 }

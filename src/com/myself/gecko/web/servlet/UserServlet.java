@@ -58,6 +58,7 @@ public class UserServlet extends BaseServlet {
 			User user = userService.findById(id);
 			if (user != null) {
 				request.setAttribute("person", user);
+				System.out.println(user);
 				return "/jsp/home.jsp";
 			}
 		} catch (Exception e) {

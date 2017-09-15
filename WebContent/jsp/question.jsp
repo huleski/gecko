@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
 	<head>
-		<title>如何看待ti7之后存在一些wings清流粉无脑吹wings并且贬低其他队伍的现象？</title>
+		<title>${question.title }</title>
 		<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/bi.ico" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -109,6 +110,8 @@
 			
 			.text-content {
 				font-size: 15px;
+				margin-bottom: 15px;
+				cursor: pointer;
 			}
 			
 			.opinion {
@@ -122,10 +125,12 @@
 			
 			.text-situation {
 				margin-left: 25px;
+				cursor: pointer;
 			}
 			
 			.answerblock .text-end {
 				padding-bottom: 20px;
+				position:relative;
 			}
 			
 			.answerblock .text-content .expand {
@@ -245,12 +250,6 @@
 				margin-right: 10px;
 			}
 			
-			.separator {
-				width: 99%;
-				height: 1px;
-				background-color: #F0F2F7;
-			}
-			
 			#topdiv {
 				margin-top: 50px;
 				background-color: white;
@@ -271,6 +270,66 @@
 			#titlelabelcolumn .titlelabel {
 				margin-right: 20px;
 			}
+			.takeback {
+				position: absolute;
+				top: 5px;
+				right: 5px;
+				display: none;
+			}
+			.text-all{
+				display:none;
+			}
+			.commentdiv {
+				border: 1px lightgray solid;
+				border-radius: 5px;
+				margin-top: 15px;
+				width: 670px;
+				display: none;
+			}
+			
+			.comment-title {
+				padding: 10px 20px;
+				font-size: 15px;
+				position: relative;
+			}
+			.separator {
+				width: 95%;
+				height: 1px;
+				background-color: lightgray;
+				margin: auto;
+			}
+			.user-comment {
+				width: 670px;
+				padding: 12px 20px;
+			}
+			.comment-user-photo {
+				width: 26px;
+				height: 26px;
+				border-radius: 3px;
+			}
+			.comment-time {
+				position: absolute;
+				right: 0;
+				color: darkgray;
+			}
+			.comment-situation a{
+				margin-right: 30px;
+				cursor: pointer;
+				color: gray;
+			}
+			.comment-input {
+				margin: 8px 0 15px 0;
+			}
+			
+			.commentAnswer {
+				width: 540px;
+				display: inline;
+				margin: 15px 30px 15px 20px;
+			}
+			.report{
+				font-size: 16px;
+				font-weight: bold;
+			}
 		</style>
 
 		<script type="text/javascript">
@@ -282,12 +341,6 @@
 						$(this).css("color", "darkgray");
 					});
 
-				$("#uploadphotobtn").hover(function() {
-					$("#uploadphotobtn").css("background-color", "#C1C1C1");
-				}, function() {
-					$("#uploadphotobtn").css("background-color", "darkgray");
-				});
-				var i = 0;
 				$(window).scroll( function() {
 					if($(this).scrollTop() > $("#topdiv").height() + 50) {
 						$("#navbar").slideUp();
@@ -308,6 +361,52 @@
 					 $('body,html').animate({scrollTop:0}, 500);
 				});
 				
+				
+				 $("#dynamic").on("mouseover", ".text-content", function() {
+					$(this).css("color", "gray");
+					});
+				$("#dynamic").on("mouseout", ".text-content", function() {
+					$(this).css("color", "black");
+					}); 
+
+				$("#dynamic").on("hover", ".answerblock", function() {
+					$(this).find(".closeblock").toggle();
+				});
+
+				$("#dynamic").on("click", ".text-content", function() {
+					$(this).hide();
+					var $answer = $(this).parent(".answerblock");
+					$answer.find(".text-all").show();
+					$answer.find(".takeback").show();
+				});
+				$("#dynamic").on("click", ".takeback", function() {
+					$(this).hide();
+					var $answerblock = $(this).parents(".answerblock");
+					$answerblock.find(".text-all").hide();
+					$answerblock.find(".text-content").show();
+				});
+				$("#dynamic").on("click",".closeblock", function() {
+					$(this).parents(".answerblock").hide();
+				});
+				
+				$(".report").popover();
+				
+				$("#dynamic").on("click", ".text-comment", function() {
+					$(this).parents(".answerblock").find(".commentdiv").toggle();
+					$(this).find(".comment-count").toggle();
+					$(this).find(".hidecomment").toggle();
+				});
+				
+				$("#dynamic").on("click", ".comment-replybtn", function() {
+					$(this).parent(".comment-situation").hide();
+					$(this).parent(".comment-situation").next(".comment-reply").show();
+				});
+				
+				$("#dynamic").on("click", ".comment-cancel", function() {
+					$(this).parents(".comment-reply").hide();
+					$(this).parents(".comment-reply").prev(".comment-situation").show();
+				});
+				
 			});
 			
 			//点击回答
@@ -320,10 +419,11 @@
 				}
 			}
 			
+			
 			// 滑动到页面底部实现自动加载
 			var totalheight = 0;
 			var answer_index = 0;
-			$(window).scroll(function() {
+			/* $(window).scroll(function() {
 				totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
 				if((totalheight >= $(document).height()) && answer_index >= 0) {
 					$.getJSON("${pageContext.request.contextPath}/answerServlet", 
@@ -349,7 +449,7 @@
 								}
 					});
 				}
-			});
+			}); */
 			
 			/*格式化日期*/
 			Date.prototype.format = function (fmt) { //author: meizz 
@@ -423,7 +523,7 @@
 				<!-- 导航问题栏 -->	
 				<div id="outline" style="position: relative;margin: auto;width: 1010px;display: none;">
 					<div style="position: absolute;top:10px;text-align: left;font-weight: bold;font-size: 22px;width: 700px;">
-						如何看待ti7之后存在一些wings清流粉无脑吹wings并且贬低其他队伍...
+						${fn:substring(question.title, 0, 30) }...
 					</div>
 					<span style="position: absolute;top:8px;right: 20px;">
 						<button type="button" class="btn btn-info" id="focusquestion" onclick="">关注问题</button>
@@ -441,20 +541,16 @@
 				<div style="width: 1000px;position: relative;margin:auto;">
 					<div style="width:700px;">
 						<div id="questionResume" style="margin-right: 50px;">
-							<a href="#">生活</a>
-							<a href="#">人生</a>
-							<a href="#">成长</a>
-							<a href="#">青春</a>
-							<a href="#">苦难</a>
+							<a href="${pageContext.request.contextPath }/topicServlet?method=findById&id=${question.topic.id}">${question.topic.name }</a>
 						</div>
-						<div id="questiontitle">如何看待ti7之后存在一些wings清流粉无脑吹wings并且贬低其他队伍的现象？</div>
+						<div id="questiontitle">${question.title }</div>
 						<div style="font-size: 15px;line-height:1.7;margin-top: 10px;">
-							搞不懂了，Ti7都打完了，Wings都快凉了，这时候一堆清流粉还在疯狂吹Wings的BP，把Wings拉出来一遍又一遍鞭尸yy，恨不得Ti7打得都是垃圾局，只有Ti6的Wings古往今来第一吊。题主也打了七年DotA了，作为一个Wings粉和液体粉，我始终认为一代版本一代神，每个Ti冠军都代表当前版本的最高水平，无法进行对比，尤其是Ti6后的7.0，都看到Wings糟糕的表现了吧，我的心里也很难受，却不得不承认Wings已经不适合这个版本了。现在看到这样的问题，真是疯狂给Wings招黑，题主感到悲哀，愤怒，不解。
+							${question.content }
 							<a href="#"></a></div>
 						<div id="titlelabelcolumn" style="margin: 15px 0;padding-bottom: 20px;">
 							<a href="#" class="titlelabel">
 								<span class="glyphicon glyphicon-comment"></span>
-								<span>105条评论</span>
+								<span>${fn:length(question.commentList)} 条评论</span>
 							</a>
 							<a href="#" class="titlelabel">
 								<span class="glyphicon glyphicon-share-alt"></span>
@@ -476,11 +572,11 @@
 					<div style="position: absolute;top:0;right: 0;width: 220px;margin-left: 70px;">
 						<div style="float: left;width: 100px;text-align: center;">
 							<div style="color: darkgray;">关注者</div>
-							<div style="font-size: 18px;">487</div>
+							<div style="font-size: 18px;">${fn:length(question.watchList)}</div>
 						</div>
 						<div style="float: left;width: 100px;text-align: center;">
 							<div style="color: darkgray;">被浏览</div>
-							<div style="font-size: 18px;">749375</div>
+							<div style="font-size: 18px;">${question.lookCount}</div>
 						</div>
 					</div>
 					<div style="position: absolute;bottom: 15px;right: 20px;">
@@ -493,24 +589,162 @@
 				</div>
 			</div>
 
+
 		<div style="width: 1020px;margin: auto;margin-top: 10px;">
 			<!--回答总div-->
 			<div id="mainDiv">
 				<div id="dynamic">
 					<div style="padding: 12px 0 15px 20px;position: relative;">
-						<span style="font-weight: bold;font-size: 15px;">285 个回答</span>
+						<span style="font-weight: bold;font-size: 15px;">${fn:length(question.answerList)} 个回答</span>
 						<span style="position: absolute;right: 20px;">默认排序</span>
 					</div>
 					
 					<!--用户个人回答板块-->
+					
+					
+					<script type="text/javascript">
+						var question_index = 0;
+						$.getJSON("${pageContext.request.contextPath}/answerServlet", {"method":"ajaxLoad", "qid":"${question.id}", "currentPage": ++question_index},
+								function(result) {
+									$(result).each(function(i, obj) {
+										var s = '<div class="answerblock">';
+											s += '<div class="separator"></div>';
+											s += '<div class="text-author">';
+											s += '	<a href="${pageContext.request.contextPath}/userServlet?method=findById&id='+obj.user.id+'">';
+											s += '<img class="photo" src="${pageContext.request.contextPath}/img/default.jpg" />';
+											s += '</a>';
+											s += '<span class="personalmsg">';
+											s += '<a href="${pageContext.request.contextPath}/userServlet?method=findById&id='+obj.user.id+'" style="color: black;">';
+											s += '<div class="name">';
+											s += obj.user.name;
+											s += '</div>';
+											s += '</a>';
+											s += '<div class="signal">';
+											s += obj.user.sentence;
+											s += '</div>';
+											s += '</span>';
+											s += '</div>';
+											s += '<div class="text-status">'+obj.agreeCount+'人也赞同了该回答</div>';
+											s += '<div class="text-content">';
+											s += obj.pureContent.substring(0, 300);
+											s += '<a class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>';
+											s += '</div>';
+											s += '<div class="text-all">';
+											s += obj.pureContent;
+											s += '<div class="edit-time">编辑于<span>'+ new Date(obj.date.time).format("yyyy-MM-dd") +'</span></div>';
+											s += '</div>';
+											s += '<div class="text-end">';
+											s += '<button class="btn btn-default">';
+											s += '<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">'+obj.agreeCount+'</span></span>';
+											s += '</button>';
+											s += '<button class="btn btn-default">';
+											s += '<span class="glyphicon glyphicon-chevron-down opinion"></span>';
+											s += '</button>';
+											s += '<span>';
+											s += '<a class="text-situation text-comment">';
+											s += '<span class="glyphicon glyphicon-comment"></span>';
+											s += '<span class="comment-count">'+obj.commentCount+'条评论</span>';
+											s += '<span class="hidecomment" style="display: none;">收起评论</span>';
+											s += '</a>';
+											s += '<a href="#" class="text-situation">';
+											s += '<span class="glyphicon glyphicon-share-alt"></span>';
+											s += '<span>分享</span>';
+											s += '</a>';
+											s += '<a href="#" class="text-situation">';
+											s += '<span class="glyphicon glyphicon-star"></span>';
+											s += '<span>收藏</span>';
+											s += '</a>';
+											s += '<a href="#" class="text-situation">';
+											s += '<span class="glyphicon glyphicon-heart"></span>';
+											s += '<span>感谢</span>';
+											s += '</a>';
+											s += '<a class="text-situation report" data-placement="bottom" data-html="true" data-content="<ul class=nav nav-pills nav-stacked><li><a href=#>没有帮助</a></li><li><a href=#>举报</a></li></ul>">';
+											s += '···';
+											s += '</a>';
+											s += '</span>';
+											s += '<button class="takeback btn btn-info btn-xs">收起</button>';
+											s += '</div>';
+																		
+											/* 评论div */
+											s += '<div class="commentdiv">';
+											s += '<div class="comment-title">';
+											s += '<span style="font-weight: bold;">'+obj.commentCount+'条评论</span>';								
+											s += '<a style="cursor: pointer;position: absolute;right: 20px;">切换为时间顺序</a>';
+											s += '</div>';
+											s += '<div class="separator" style="width: 100%;"></div>';
+										
+											/*  用户评论 */ 
+											s += '<div class="user-commentblock">';
+											
+											s += '</div>';
+											s += '<div class="separator"></div>';
+												
+												
+											/* 评论回答 */
+											s += '<div>';
+											s += '<form action="${pageContext.request.contextPath}/" method="post">';
+											s += '<input class="form-control commentAnswer" type="input" placeholder="写下你的评论"/>';
+											s += '<button class="btn btn-info" type="submit">评论</button>';
+											s += '</form>';
+											s += '</div>';
+											s += '</div>';
+											s += '</div>';
+										
+										$("#dynamic").append(s);
+										$(".report").popover();
+									});
+								});
+					</script>
+					<template>
+						<%-- s += '<div class="user-comment">';
+						s += '<div style="position:relative">';
+						s += '<a href="#">';
+						s += '<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />';
+						s += '<span style="margin-left: 10px;color: black;">saber</span>';
+						s += '</a>';
+						s += '<span class="comment-time">2年前</span>';
+						s += '</div>';
+						s += '<div style="margin: 10px 0;">';
+							阿法冯老师
+						s += '</div>';
+						s += '<div class="comment-situation">';
+						s += '<a>';
+						s += '<span class="glyphicon glyphicon-thumbs-up"></span>';
+						s += '<span>1973</span>';
+						s += '</a>';
+						s += '<a class="comment-replybtn">';
+						s += '<span class="glyphicon glyphicon-edit"></span>';
+						s += '<span>回复</span>';
+						s += '</a>';
+						s += '<a>';
+						s += '<span class="glyphicon glyphicon-thumbs-down"></span>';
+						s += '<span>踩</span>';
+						s += '</a>';
+						s += '<a>';
+						s += '<span class="glyphicon glyphicon-flag"></span>';
+						s += '<span>举报</span>';
+						s += '</a>';
+						s += '</div>';
+						s += '<div class="comment-reply" style="display: none;">';
+						s += '<form action="${pageContext.request.contextPath}/" method="post">';
+						s += '<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>';
+						s += '<div style="text-align: right;">';
+						s += '<button type="button" class="btn btn-default comment-cancel">取消</button>';
+						s += '<button type="submit" class="btn btn-info comment-ok">评论</button>';
+						s += '</div>';
+						s += '</form>';
+						s += '</div>';
+						s += '</div>'; --%>
+					</template>
+					
 					<div class="answerblock">
 						<div class="separator"></div>
 						<div class="text-author">
-							<a href="#">
+							<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=12">
 								<img class="photo" src="${pageContext.request.contextPath}/img/default.jpg" />
 							</a>
 							<span class="personalmsg">
-								<a href="#" style="color: black;">
+								<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=12" style="color: black;">
 									<div class="name">
 										郭哲彪
 									</div>
@@ -522,8 +756,13 @@
 						</div>
 						<div class="text-status">793 人也赞同了该回答</div>
 						<div class="text-content">
+							TI7的评论席上，国土说WINGS是一个前无古人的战队，刷新了职业战队对于BP的理念。即使那些所谓的灵性外国队，例如液体也只是在后期弄出个先知体系的大招。但wings 的感觉是场场都有大招。
+							也许大家都记得wings打MVP放对面PA的大招，用了2套阵容打爆MVP，杀人诛心。但其实第二局的阵容选了 蝙蝠 虚空 JUGG，原本人们都以为会是虚空 1号位 jugg 2号位 蝙蝠三号位（他们当时常用的英雄）。结果是  JUGG 1号位 虚空3 号位 蝙蝠2号位。不能说这个分路的效果有多大，今年TI7 哪个战队敢这么换着玩.
+							<a class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>
+						</div>
+						<div class="text-all">
 							<p>TI7的评论席上，国土说WINGS是一个前无古人的战队，刷新了职业战队对于BP的理念。即使那些所谓的灵性外国队，例如液体也只是在后期弄出个先知体系的大招。但wings 的感觉是场场都有大招。</p>
-							<p>也许大家都记得wings打MVP放对面PA的大招，用了2套阵容打爆MVP，杀人诛心。但其实第二局的阵容选了 蝙蝠 虚空 JUGG，原本人们都以为会是虚空 1号位 jugg 2号位 蝙蝠三号位（他们当时常用的英雄）。结果是  JUGG 1号位 虚空3 号位 蝙蝠2号位。不能说这个分路的效果有多大，今年TI7 哪个战队敢这么换着玩
+							<p>也许大家都记得wings打MVP放对面PA的大招，用了2套阵容打爆MVP，杀人诛心。但其实第二局的阵容选了 蝙蝠 虚空 JUGG，原本人们都以为会是虚空 1号位 jugg 2号位 蝙蝠三号位（他们当时常用的英雄）。结果是  JUGG 1号位 虚空3 号位 蝙蝠2号位。不能说这个分路的效果有多大，今年TI7 哪个战队敢这么换着玩</p>
 							<p>还有WINGS锤爆 EG的两场，1手拉比克 后面连点 抄袭 和谜团。第二局自己ban了戴泽 拿神灵（所有人都以为他们要拿小黑）。领先一分的时候选个TF炸弹的花活，落后一分的时候保持自己的阵容 SK 大鱼 虚空（这场对面选了小娜迦），所有人都在担心小娜迦是大哥，要是TI7 lgd 和NB 的尿性 选完虚空 肯定要补 克制娜迦的 阵容。 </p>
 							<p>所有人都看不懂WINGS的阵容，但他们总是能赢 而且还赢的漂亮。TI6 版本英雄 POM GA.  总决赛pom我放你3场， GA体系， 在我这就没赢过。国外队得ban我的小精灵，我也能玩小精灵。有蝙蝠 以后 最后一手敢补斧王的 队伍，敢让斧王打一号位的队伍。 </p>
 							<p>总决赛1-0落后的 卡尔被单杀， 虚空开大被 娜迦破解的时候，经济差8K 了。按照 lgd 和NB 的尿性 1号位和3号位 就要开始怂了，应该不知道 怎么接技能了，3号位 要发呆了。我当时躺着床上 手抓着床单 心跳120.结果WINGS 一波 打回来了，上高了， 对面GG 了，。 </p>
@@ -536,8 +775,8 @@
 							<p>GTMD ACE</p>
 							<p></p><p></p><p></p>
 							<p></p>
+							<div class="edit-time">编辑于<span> 2016-03-28</span></div>
 						</div>
-						<div class="edit-time">编辑于<span> 2016-03-28</span></div>
 						<div class="text-end">
 							<button class="btn btn-default">
 								<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">793</span></span>
@@ -546,28 +785,404 @@
 								<span class="glyphicon glyphicon-chevron-down opinion"></span>
 							</button>
 							<span>
-							<a href="#" class="text-situation">
-								<span class="glyphicon glyphicon-comment"></span>
-							<span>450条评论</span>
-							</a>
-							<a href="#" class="text-situation">
-								<span class="glyphicon glyphicon-share-alt"></span>
-								<span>分享</span>
-							</a>
-							<a href="#" class="text-situation">
-								<span class="glyphicon glyphicon-star"></span>
-								<span>收藏</span>
-							</a>
-							<a href="#" class="text-situation">
-								<span class="glyphicon glyphicon-heart"></span>
-								<span>感谢</span>
-							</a>
-							<a href="#" class="text-situation" style="font-size: 16px;font-weight: bold;">
-								···
-							</a>
+								<a class="text-situation text-comment">
+									<span class="glyphicon glyphicon-comment"></span>
+									<span class="comment-count">900条评论</span>
+									<span class="hidecomment" style="display: none;">收起评论</span>
+								</a>
+								<a href="#" class="text-situation">
+									<span class="glyphicon glyphicon-share-alt"></span>
+									<span>分享</span>
+								</a>
+								<a href="#" class="text-situation">
+									<span class="glyphicon glyphicon-star"></span>
+									<span>收藏</span>
+								</a>
+								<a href="#" class="text-situation">
+									<span class="glyphicon glyphicon-heart"></span>
+									<span>感谢</span>
+								</a>
+								<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="#">没有帮助</a></li><li><a href="#">举报</a></li></ul>'>
+									···
+								</a>
 							</span>
+							<button class="takeback btn btn-info btn-xs">收起</button>
+						</div>
+						
+						<!-- 评论div -->
+						<div class="commentdiv">
+							<div class="comment-title">
+								<span style="font-weight: bold;">11条评论</span>								
+								<a style="cursor: pointer;position: absolute;right: 20px;">切换为时间顺序</a>
+							</div>
+							<div class="separator" style="width: 100%;"></div>
+							
+							<!-- 用户评论 -->
+							<div class="user-commentblock">
+								<div class="user-comment">
+									<div style="position:relative">
+										<a href="#">
+											<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
+											<span style="margin-left: 10px;color: black;">saber</span>
+										</a>
+										<span class="comment-time">2年前</span>
+									</div>
+									<div style="margin: 10px 0;">
+										阿法冯老师
+									</div>
+									<div class="comment-situation">
+										<a>
+											<span class="glyphicon glyphicon-thumbs-up"></span>
+											<span>1973</span>
+										</a>
+										<a class="comment-replybtn">
+											<span class="glyphicon glyphicon-edit"></span>
+											<span>回复</span>
+										</a>
+										<a>
+											<span class="glyphicon glyphicon-thumbs-down"></span>
+											<span>踩</span>
+										</a>
+										<a>
+											<span class="glyphicon glyphicon-flag"></span>
+											<span>举报</span>
+										</a>
+									</div>
+									<div class="comment-reply" style="display: none;">
+										<form action="${pageContext.request.contextPath}/" method="post">
+											<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
+											<div style="text-align: right;">
+												<button type="button" class="btn btn-default comment-cancel">取消</button>
+												<button type="submit" class="btn btn-info comment-ok">评论</button>
+											</div>
+										</form>
+									</div>
+								</div>
+								<div class="separator"></div>
+							
+								<div class="user-comment">
+									<div style="position:relative">
+										<a href="#">
+											<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
+											<span style="margin-left: 10px;color: black;">archer</span>
+										</a>
+										<span class="comment-time">2年前</span>
+									</div>
+									<div style="margin: 10px 0;">
+										幸运E
+									</div>
+									<div class="comment-situation">
+										<a>
+											<span class="glyphicon glyphicon-thumbs-up"></span>
+											<span>1973</span>
+										</a>
+										<a class="comment-replybtn">
+											<span class="glyphicon glyphicon-edit"></span>
+											<span>回复</span>
+										</a>
+										<a>
+											<span class="glyphicon glyphicon-thumbs-down"></span>
+											<span>踩</span>
+										</a>
+										<a>
+											<span class="glyphicon glyphicon-flag"></span>
+											<span>举报</span>
+										</a>
+									</div>
+									<div class="comment-reply" style="display: none;">
+										<form action="${pageContext.request.contextPath}/" method="post">
+											<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
+											<div style="text-align: right;">
+												<button type="button" class="btn btn-default comment-cancel">取消</button>
+												<button type="submit" class="btn btn-info comment-ok">评论</button>
+											</div>
+										</form>
+									</div>
+								</div>
+								<div class="separator"></div>
+							
+								<div class="user-comment">
+									<div style="position:relative">
+										<a href="#">
+											<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
+											<span style="margin-left: 10px;color: black;">caster</span>
+										</a>
+										<span class="comment-time">2年前</span>
+									</div>
+									<div style="margin: 10px 0;">
+										西呢西呢,统统西呢
+									</div>
+									<div class="comment-situation">
+										<a>
+											<span class="glyphicon glyphicon-thumbs-up"></span>
+											<span>1973</span>
+										</a>
+										<a class="comment-replybtn">
+											<span class="glyphicon glyphicon-edit"></span>
+											<span>回复</span>
+										</a>
+										<a>
+											<span class="glyphicon glyphicon-thumbs-down"></span>
+											<span>踩</span>
+										</a>
+										<a>
+											<span class="glyphicon glyphicon-flag"></span>
+											<span>举报</span>
+										</a>
+									</div>
+									<div class="comment-reply" style="display: none;">
+										<form action="${pageContext.request.contextPath}/" method="post">
+											<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
+											<div style="text-align: right;">
+												<button type="button" class="btn btn-default comment-cancel">取消</button>
+												<button type="submit" class="btn btn-info comment-ok">评论</button>
+											</div>
+										</form>
+									</div>
+								</div>
+								<div class="separator"></div>
+								
+											<!-- 翻页 -->
+								<div style="padding:10px 0;text-align: center;">
+									<ul class="pagination" style="margin:auto">
+									  <li class="disabled"><a href="#">&laquo;</a></li>
+									  <li class="active"><a href="#">1</a></li>
+									  <li><a href="#">2</a></li>
+									  <li><a href="#">3</a></li>
+									  <li><a href="#">4</a></li>
+									  <li><a href="#">...</a></li>
+									  <li><a href="#">5</a></li>
+									  <li><a href="#">&raquo;</a></li>
+									</ul>		
+								</div>
+							</div>
+							
+							<div class="separator"></div>						
+							<!--评论回答-->
+							<div>
+								<form action="${pageContext.request.contextPath}/" method="post">
+									<input class="form-control commentAnswer" type="input" placeholder="写下你的评论"/>
+									<button class="btn btn-info" type="submit">评论</button>
+								</form>
+							</div>
 						</div>
 					</div>
+					
+					
+					<div class="answerblock">
+						<div class="separator"></div>
+						<div class="text-author">
+							<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=12">
+								<img class="photo" src="${pageContext.request.contextPath}/img/default.jpg" />
+							</a>
+							<span class="personalmsg">
+								<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=12" style="color: black;">
+									<div class="name">
+										郭哲彪
+									</div>
+								</a>
+									<div class="signal">
+										逗比的泪窦久泽可乐喝了
+									</div>
+								</span>
+						</div>
+						<div class="text-status">793 人也赞同了该回答</div>
+						<div class="text-content">
+							TI7的评论席上，国土说WINGS是一个前无古人的战队，刷新了职业战队对于BP的理念。即使那些所谓的灵性外国队，例如液体也只是在后期弄出个先知体系的大招。但wings 的感觉是场场都有大招。
+							也许大家都记得wings打MVP放对面PA的大招，用了2套阵容打爆MVP，杀人诛心。但其实第二局的阵容选了 蝙蝠 虚空 JUGG，原本人们都以为会是虚空 1号位 jugg 2号位 蝙蝠三号位（他们当时常用的英雄）。结果是  JUGG 1号位 虚空3 号位 蝙蝠2号位。不能说这个分路的效果有多大，今年TI7 哪个战队敢这么换着玩.
+							<a class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>
+						</div>
+						<div class="text-all">
+							<p>TI7的评论席上，国土说WINGS是一个前无古人的战队，刷新了职业战队对于BP的理念。即使那些所谓的灵性外国队，例如液体也只是在后期弄出个先知体系的大招。但wings 的感觉是场场都有大招。</p>
+							<p>也许大家都记得wings打MVP放对面PA的大招，用了2套阵容打爆MVP，杀人诛心。但其实第二局的阵容选了 蝙蝠 虚空 JUGG，原本人们都以为会是虚空 1号位 jugg 2号位 蝙蝠三号位（他们当时常用的英雄）。结果是  JUGG 1号位 虚空3 号位 蝙蝠2号位。不能说这个分路的效果有多大，今年TI7 哪个战队敢这么换着玩</p>
+							<p>还有WINGS锤爆 EG的两场，1手拉比克 后面连点 抄袭 和谜团。第二局自己ban了戴泽 拿神灵（所有人都以为他们要拿小黑）。领先一分的时候选个TF炸弹的花活，落后一分的时候保持自己的阵容 SK 大鱼 虚空（这场对面选了小娜迦），所有人都在担心小娜迦是大哥，要是TI7 lgd 和NB 的尿性 选完虚空 肯定要补 克制娜迦的 阵容。 </p>
+							<p>所有人都看不懂WINGS的阵容，但他们总是能赢 而且还赢的漂亮。TI6 版本英雄 POM GA.  总决赛pom我放你3场， GA体系， 在我这就没赢过。国外队得ban我的小精灵，我也能玩小精灵。有蝙蝠 以后 最后一手敢补斧王的 队伍，敢让斧王打一号位的队伍。 </p>
+							<p>总决赛1-0落后的 卡尔被单杀， 虚空开大被 娜迦破解的时候，经济差8K 了。按照 lgd 和NB 的尿性 1号位和3号位 就要开始怂了，应该不知道 怎么接技能了，3号位 要发呆了。我当时躺着床上 手抓着床单 心跳120.结果WINGS 一波 打回来了，上高了， 对面GG 了，。 </p>
+							<p>第4局 对面四核 都肥，小鱼  伐木机  POM  夜魔，2塔没破 小鱼 都到 高低杀人了。按照TI7 lgd 和NB 的尿性  应该是开着 BKB 懵逼 或者 OB 人家拆高 然后跳上去送一波  GG。但wings 是 听说 你有夜魔 听说夜魔有A仗 听说是晚上 听说我落后 15k的经济 ，听说 OB那群burden 说让我晚上怂 白天凶。不好意思 0换3 带盾 扫你外塔。</p>
+							<p>听说你PA  不到20分钟 暗灭  带盾 还有双倍。 按照按照TI7 lgd 和NB 的尿性 应该是怂在高低，大哥去刷安全的线，酱油挨个送。不好意思 0换6.</p>
+							<p>wings 是那个所有人都在感叹 还能这么玩啊的队，是那个在任何劣势都有可能翻盘的队，是那个敢在TI上选炸弹 TF的队 。 他就像是围棋届的 阿尔法狗一样打破了我们原有对于BP 所有陈旧的认识。</p>
+							<p>我和我的老伙伴们多想在 这个夏天的末尾再次 听到 龙弟弟说 ：“ig/NB/LFY/lgd你们准备好了嘛？！”</p>
+							<p>再次 听到 胖头鱼说 有深意的说道：奇数年？！ 奶子D激情的 呐喊 ： 炸了 炸了 。生日宝说：这不尊重一下？ DC 呵斥单车：你干什么呀？ 还没破路呢。</p>
+							<p>MLGB </p>
+							<p>GTMD ACE</p>
+							<p></p><p></p><p></p>
+							<p></p>
+							<div class="edit-time">编辑于<span> 2016-03-28</span></div>
+						</div>
+						<div class="text-end">
+							<button class="btn btn-default">
+								<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">793</span></span>
+							</button>
+							<button class="btn btn-default">
+								<span class="glyphicon glyphicon-chevron-down opinion"></span>
+							</button>
+							<span>
+								<a class="text-situation text-comment">
+									<span class="glyphicon glyphicon-comment"></span>
+									<span class="comment-count">900条评论</span>
+									<span class="hidecomment" style="display: none;">收起评论</span>
+								</a>
+								<a href="#" class="text-situation">
+									<span class="glyphicon glyphicon-share-alt"></span>
+									<span>分享</span>
+								</a>
+								<a href="#" class="text-situation">
+									<span class="glyphicon glyphicon-star"></span>
+									<span>收藏</span>
+								</a>
+								<a href="#" class="text-situation">
+									<span class="glyphicon glyphicon-heart"></span>
+									<span>感谢</span>
+								</a>
+								<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="#">没有帮助</a></li><li><a href="#">举报</a></li></ul>'>
+									···
+								</a>
+							</span>
+							<button class="takeback btn btn-info btn-xs">收起</button>
+						</div>
+						
+						<!-- 评论div -->
+						<div class="commentdiv">
+							<div class="comment-title">
+								<span style="font-weight: bold;">11条评论</span>								
+								<a style="cursor: pointer;position: absolute;right: 20px;">切换为时间顺序</a>
+							</div>
+							<div class="separator" style="width: 100%;"></div>
+							
+							<!-- 用户评论 -->
+							<div class="user-comment">
+								<div style="position:relative">
+									<a href="#">
+										<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
+										<span style="margin-left: 10px;color: black;">saber</span>
+									</a>
+									<span class="comment-time">2年前</span>
+								</div>
+								<div style="margin: 10px 0;">
+									阿法冯老师
+								</div>
+								<div class="comment-situation">
+									<a>
+										<span class="glyphicon glyphicon-thumbs-up"></span>
+										<span>1973</span>
+									</a>
+									<a class="comment-replybtn">
+										<span class="glyphicon glyphicon-edit"></span>
+										<span>回复</span>
+									</a>
+									<a>
+										<span class="glyphicon glyphicon-thumbs-down"></span>
+										<span>踩</span>
+									</a>
+									<a>
+										<span class="glyphicon glyphicon-flag"></span>
+										<span>举报</span>
+									</a>
+								</div>
+								<div class="comment-reply" style="display: none;">
+									<form action="${pageContext.request.contextPath}/" method="post">
+										<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
+										<div style="text-align: right;">
+											<button type="button" class="btn btn-default comment-cancel">取消</button>
+											<button type="submit" class="btn btn-info comment-ok">评论</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="separator"></div>
+						
+							<div class="user-comment">
+								<div style="position:relative">
+									<a href="#">
+										<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
+										<span style="margin-left: 10px;color: black;">archer</span>
+									</a>
+									<span class="comment-time">2年前</span>
+								</div>
+								<div style="margin: 10px 0;">
+									幸运E
+								</div>
+								<div class="comment-situation">
+									<a>
+										<span class="glyphicon glyphicon-thumbs-up"></span>
+										<span>1973</span>
+									</a>
+									<a class="comment-replybtn">
+										<span class="glyphicon glyphicon-edit"></span>
+										<span>回复</span>
+									</a>
+									<a>
+										<span class="glyphicon glyphicon-thumbs-down"></span>
+										<span>踩</span>
+									</a>
+									<a>
+										<span class="glyphicon glyphicon-flag"></span>
+										<span>举报</span>
+									</a>
+								</div>
+								<div class="comment-reply" style="display: none;">
+									<form action="${pageContext.request.contextPath}/" method="post">
+										<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
+										<div style="text-align: right;">
+											<button type="button" class="btn btn-default comment-cancel">取消</button>
+											<button type="submit" class="btn btn-info comment-ok">评论</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="separator"></div>
+						
+							<div class="user-comment">
+								<div style="position:relative">
+									<a href="#">
+										<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
+										<span style="margin-left: 10px;color: black;">caster</span>
+									</a>
+									<span class="comment-time">2年前</span>
+								</div>
+								<div style="margin: 10px 0;">
+									西呢西呢,统统西呢
+								</div>
+								<div class="comment-situation">
+									<a>
+										<span class="glyphicon glyphicon-thumbs-up"></span>
+										<span>1973</span>
+									</a>
+									<a class="comment-replybtn">
+										<span class="glyphicon glyphicon-edit"></span>
+										<span>回复</span>
+									</a>
+									<a>
+										<span class="glyphicon glyphicon-thumbs-down"></span>
+										<span>踩</span>
+									</a>
+									<a>
+										<span class="glyphicon glyphicon-flag"></span>
+										<span>举报</span>
+									</a>
+								</div>
+								<div class="comment-reply" style="display: none;">
+									<form action="${pageContext.request.contextPath}/" method="post">
+										<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
+										<div style="text-align: right;">
+											<button type="button" class="btn btn-default comment-cancel">取消</button>
+											<button type="submit" class="btn btn-info comment-ok">评论</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="separator"></div>
+						
+							<!--评论答案-->
+							<div>
+								<form action="${pageContext.request.contextPath}/" method="post">
+									<input class="form-control commentAnswer" type="input" placeholder="写下你的评论"/>
+									<button class="btn btn-info" type="submit">评论</button>
+								</form>
+							</div>
+						</div>
+					</div>
+					
 					
 					<div class="answerblock">
 						<div class="separator"></div>

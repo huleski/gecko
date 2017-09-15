@@ -1,7 +1,7 @@
 package com.myself.gecko.constant;
 
 /**
- *	常量类
+ * 常量类
  */
 public interface Constant {
 	/**
@@ -11,5 +11,25 @@ public interface Constant {
 	/**
 	 * ajax自动加载回答数
 	 */
-	public static final int ANSWER_AJAX_LOAD_COUNT = 15;
+	public static final int ANSWER_AJAX_LOAD_COUNT = 2;
+
+	/**
+	 * 评论类型:回答
+	 */
+	public static final int COMMENT_TYPE_ANSWER = 1;
+
+	/**
+	 * 评论类型:文章
+	 */
+	public static final int COMMENT_TYPE_ARTICLE = 2;
+
+	/**
+	 * 评论类型:评论
+	 */
+	public static final int COMMENT_TYPE_COMMENT = 3;
+
+	/**
+	 * 评论类型:问题
+	 */
+	public static final int COMMENT_TYPE_QUESTION = 4;
 }

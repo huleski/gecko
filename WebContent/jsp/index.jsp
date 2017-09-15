@@ -321,6 +321,7 @@
 					$("#pay").css("color", "#337AB7");
 				});
 
+				
 				$(".text-content").hover(function() {
 					$(this).css("color", "darkgray");
 				}, function() {
@@ -360,8 +361,6 @@
 				$(".comment-replybtn").click(function() {
 					$(this).parent(".comment-situation").hide();
 					$(this).parent(".comment-situation").next(".comment-reply").show();
-//					var $userComment = $(this).parents(".user-comment");
-//					$userComment.find(".comment-reply").show();
 				});
 				
 				$(".comment-cancel").click(function() {
@@ -545,6 +544,8 @@
 							</span>
 							<button class="takeback btn btn-info btn-xs">收起</button>
 						</div>
+						
+						<!-- 评论div -->
 						<div class="commentdiv">
 							<div class="comment-title">
 								<span style="font-weight: bold;">11条评论</span>								
@@ -676,14 +677,13 @@
 							</div>
 							<div class="separator"></div>
 							
-							<!--回复评论-->
+							<!--评论答案-->
 							<div>
 								<form action="${pageContext.request.contextPath}/" method="post">
 									<input class="form-control commentAnswer" type="input" placeholder="写下你的评论"/>
 									<button class="btn btn-info" type="submit">评论</button>
 								</form>
 							</div>
-							
 						</div>
 					</div>
 

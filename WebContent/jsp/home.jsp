@@ -505,7 +505,7 @@
 											$(result).each(function(i, obj) {
 												$("#question").append(
 													"<div class='question-div'>"+
-													"<div><a class='question-title' href='${pageContext.request.contextPath}/questionServlet?method=findById&id=${obj.id}'>" + obj.title + "</a></div>" +
+													"<div><a class='question-title' href='${pageContext.request.contextPath}/questionServlet?method=findById&id="+obj.id+"'>" + obj.title + "</a></div>" +
 													"<div class='question-state'>"+
 													"<span>" + new Date(obj.date.time).format("yyyy-MM-dd") +"</span>"+
 													"<span>" + obj.answerList.length + " 个回答</span>"+

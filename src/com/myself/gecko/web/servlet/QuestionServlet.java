@@ -11,12 +11,14 @@ import org.apache.commons.beanutils.BeanUtils;
 import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
+import com.myself.gecko.service.IAnswerService;
 import com.myself.gecko.service.IQuestioinService;
 import com.myself.gecko.service.impl.QuetionServiceImpl;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 
+@SuppressWarnings("all")
 public class QuestionServlet extends BaseServlet {
 	private static IQuestioinService questionService = new QuetionServiceImpl();
+	
 	
 	public String findById(HttpServletRequest request, HttpServletResponse response) {
 		String idStr = request.getParameter("id");

@@ -35,7 +35,7 @@
 						<button type="button" class="btn btn-info" style="width:60px;font-size: 14px;margin-left: 140px;" onclick="location.href='${pageContext.request.contextPath}/jsp/login.jsp'">登录</button>
 						<button type="button" class="btn btn-default" style="font-size: 14px;margin-left: 20px;color:deepskyblue;border:1px deepskyblue solid;" onclick="location.href='${pageContext.request.contextPath}/jsp/login.jsp?register=1'">加入逼乎</button>
 					</c:if>
-					<c:if test="${not empty user}">	
+					<c:if test="${not empty user}">
 						<span style="margin-left: 130px;position:relative;top:5px">
 							<a href="#">
 								<span class="glyphicon glyphicon-bell topmenu" style="font-size: 22px;color: lightgray;"></span>
