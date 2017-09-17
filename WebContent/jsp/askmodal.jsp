@@ -64,8 +64,7 @@
 	
 								<!--问题描述(使用editor)-->
 								<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
-								<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js">
-								</script>
+								<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js"></script>
 								<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
 								<div id="editordiv" style="margin-bottom: 15px;">
 									<script id="editor" name="content" type="text/plain" style="width:568px;height:150px;">写下你的问题</script>

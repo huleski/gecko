@@ -5,17 +5,26 @@ import java.util.Date;
 public class Comment {
 	private int id;
 	private User user;
-	private Comment comment;
+	private Comment parent;
 	private Integer type;
 	private Integer targetId;
 	private String content;
 	private Date date;
-	
-	
+	private Integer agreeCount;
+
+
 	@Override
 	public String toString() {
-		return "Comment [id=" + id + ", user=" + user + ", comment=" + comment + ", type=" + type + ", targetId="
-				+ targetId + ", content=" + content + ", date=" + date + "]";
+		return "Comment [id=" + id + ", user=" + user + ", parent=" + parent + ", type=" + type + ", targetId="
+				+ targetId + ", content=" + content + ", date=" + date + ", agreeCount=" + agreeCount + "]";
+	}
+
+	public Integer getAgreeCount() {
+		return agreeCount;
+	}
+
+	public void setAgreeCount(Integer agreeCount) {
+		this.agreeCount = agreeCount;
 	}
 
 	public int getId() {
@@ -34,12 +43,12 @@ public class Comment {
 		this.user = user;
 	}
 
-	public Comment getComment() {
-		return comment;
+	public Comment getParent() {
+		return parent;
 	}
 
-	public void setComment(Comment comment) {
-		this.comment = comment;
+	public void setParent(Comment parent) {
+		this.parent = parent;
 	}
 
 	public Integer getType() {

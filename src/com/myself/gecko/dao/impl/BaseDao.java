@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.myself.gecko.dao.IBaseDao;
 import com.myself.gecko.util.C3P0Utils;
@@ -77,7 +78,8 @@ public class BaseDao<E> implements IBaseDao<E> {
 	public int selectCount() throws SQLException {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "select count(*) from " + tableName;
-		return (int) queryRunner.query(sql, new BeanHandler<>(clazz));
+		Long count = (Long) queryRunner.query(sql, new ScalarHandler());
+		return count.intValue();
 	}
 
 	/**

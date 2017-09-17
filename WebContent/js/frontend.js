@@ -13,6 +13,10 @@ function snapscreen() {
 	});
 }
 
+function readyLoadanswer() {
+	
+}
+
 /*function showApp() {
 	if($registerOut[0] != undefined) {
 		$registerOut.hide();
