@@ -515,7 +515,7 @@
 												);
 											});
 										} else {
-											$("#question").append("<h4 style='margin:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
+											$("#question").append("<div style='height:30px; background-color:#F3F3F3;'/><h4 style='margin:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
 											question_index = -1;
 										}
 							});

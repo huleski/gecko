@@ -1,4 +1,4 @@
-package com.myself.gecko.web.servlet;
+package com.myself.gecko.service.impl;
 
 import java.util.List;
 
@@ -16,6 +16,11 @@ public class AnswerServiceImpl implements IAnswerService {
 	public String ajaxLoad(int currentPage, int qid) throws Exception {
 		List<Answer> list = answerDao.ajaxLoad(currentPage, qid);
 		return JsonUtil.list2json(list);
+	}
+
+	@Override
+	public void save(Answer answer) throws Exception {
+		answerDao.save(answer);
 	}
 
 }

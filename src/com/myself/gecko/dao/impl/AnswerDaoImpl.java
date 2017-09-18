@@ -39,5 +39,13 @@ public class AnswerDaoImpl extends BaseDao<Answer> implements IAnswerDao {
 		return list;
 	}
 
+	@Override
+	public void save(Answer answer) throws Exception {
+		String sql = "insert into answer values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		Object[] params = {null, answer.getUser().getId(), answer.getQuestion().getId(), answer.getAnonymous(), answer.getPureContent(),
+				answer.getContent(), answer.getDate(), answer.getCommentCount(), answer.getAgreeCount()};
+		CU(sql, params);
+	}
+
 	
 }

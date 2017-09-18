@@ -44,10 +44,24 @@
 							<a href="#" style="margin-left: 30px;">
 								<span class="glyphicon glyphicon-comment topmenu" style="font-size: 22px;color: lightgray;"></span>
 							</a>
-							<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=${user.id}" style="position: relative;top: -5px;margin-left: 30px;">
-								<c:if test="${empty user.photo }"><img src="${pageContext.request.contextPath}/img/default.jpg" height="30px" width="30px"/></c:if>
-								<c:if test="${not empty user.photo }"><img src="${pageContext.request.contextPath}/${user.photo}" height="30px" width="30px"/></c:if>						
-							</a>
+							<span class="btn-group">
+								<a href="javascript:void(0)" data-toggle="dropdown" style="position: relative;top: -5px;margin-left: 30px;">
+									<c:if test="${empty user.photo }"><img src="${pageContext.request.contextPath}/img/default.jpg" height="30px" width="30px"/></c:if>
+									<c:if test="${not empty user.photo }"><img src="${pageContext.request.contextPath}/${user.photo}" height="30px" width="30px"/></c:if>						
+								</a>
+								<ul class="dropdown-menu nav" role="menu">
+								    <li>
+								    	<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=${user.id}">
+								    		<i class="fa fa-user fa-fw"></i> 个人主页
+								    	</a>
+								    </li>
+								    <li>
+								    	<a href="${pageContext.request.contextPath}/userServlet?method=logout">
+								    		<i class="fa fa-power-off fa-fw"></i> 退出
+								    	</a>
+								    </li>
+								</ul>
+							</span>
 						</span>
 					</c:if>
 				</span>

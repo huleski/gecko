@@ -11,4 +11,6 @@ public interface ICommentDao extends IBaseDao<Comment> {
 
 	int selectCommentCount(int type, int targetId) throws Exception;
 
+	void save(Comment comment) throws Exception;
+
 }

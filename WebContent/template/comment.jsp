@@ -40,13 +40,11 @@
 						</a>
 					</div>
 					<div class="comment-reply" style="display: none;">
-						<form action="${pageContext.request.contextPath}/commentServlet" method="post">
-							<input type="text" class="form-control comment-input" placeholder="回复  ${vo.name}"/>
-							<div style="text-align: right;">
-								<button type="button" class="btn btn-default comment-cancel">取消</button>
-								<button type="submit" class="btn btn-info comment-ok">评论</button>
-							</div>
-						</form>
+						<input type="text" class="form-control comment-input" placeholder="回复  ${vo.name}"/>
+						<div style="text-align: right;" class="comment-reply-opr">
+							<button type="button" class="btn btn-default comment-cancel">取消</button>
+							<button type="button" class="btn btn-info comment-ok" disabled="" onclick="submitCommentReply(this, ${vo.id}, ${targetId})">评论</button>
+						</div>
 					</div>
 				</div>
 				<div class="separator"></div>

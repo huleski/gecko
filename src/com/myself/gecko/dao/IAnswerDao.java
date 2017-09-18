@@ -8,4 +8,6 @@ public interface IAnswerDao extends IBaseDao<Answer> {
 	List<Answer> findListByQid(int qid) throws Exception;
 
 	List<Answer> ajaxLoad(int currentPage, int qid) throws Exception;
+
+	void save(Answer answer) throws Exception;
 }

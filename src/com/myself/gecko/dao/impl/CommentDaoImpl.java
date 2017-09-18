@@ -1,4 +1,4 @@
-package com.myself.gecko.service.impl;
+package com.myself.gecko.dao.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -42,5 +42,13 @@ public class CommentDaoImpl extends BaseDao<Comment> implements ICommentDao {
 		String sql = "select count(*) from comment where type = ? and targetId = ?";
 		Long count = (Long) queryRunner.query(sql, new ScalarHandler(), type, targetId);
 		return count.intValue();
+	}
+
+	@Override
+	public void save(Comment comment) throws Exception {
+		String sql = "insert into comment values(?, ?, ?, ?, ?, ?, ?, ?)";
+		Object[] params = {null, comment.getParent().getId(), comment.getUser().getId(), comment.getType(), 
+				comment.getTargetId(), comment.getContent(), comment.getDate(), comment.getAgreeCount()};
+		CU(sql, params);
 	}
 }

@@ -142,6 +142,7 @@
 			}
 			.answerblock .edit-time {
 				color: darkgray;
+				font-size: 14px;
 				margin: 10px 0;
 			}
 		</style>
@@ -278,6 +279,7 @@
 			}
 			.text-all{
 				display:none;
+				font-size: 15px;
 			}
 			.commentdiv {
 				border: 1px lightgray solid;
@@ -321,7 +323,7 @@
 				margin: 8px 0 15px 0;
 			}
 			
-			.commentAnswer {
+			.commentInput {
 				width: 540px;
 				display: inline;
 				margin: 15px 30px 15px 20px;
@@ -389,7 +391,6 @@
 					$(this).parents(".answerblock").hide();
 				});
 				
-				$(".report").popover();
 				
 				$("#dynamic").on("click", ".text-comment", function() {
 					$(this).parents(".answerblock").find(".commentdiv").toggle();
@@ -397,17 +398,40 @@
 					$(this).find(".hidecomment").toggle();
 				});
 				
-				
-				
 				$("#dynamic").on("click", ".comment-replybtn", function() {
-					$(this).parent(".comment-situation").hide();
-					$(this).parent(".comment-situation").next(".comment-reply").show();
+					if("${user}" == "") {
+						$('#loginModal').modal();
+					} else {
+						$(this).parent(".comment-situation").hide();
+						$(this).parent(".comment-situation").next(".comment-reply").show();
+					}
 				});
 				
 				$("#dynamic").on("click", ".comment-cancel", function() {
 					$(this).parents(".comment-reply").hide();
 					$(this).parents(".comment-reply").prev(".comment-situation").show();
 				});
+				
+				//检测答案评论输入框是否有值,有才能提交评论
+				$("#dynamic").on("keyup", ".commentInput", function() {
+					if (this.value != "") {
+						$(this).next(".commentSubmitBtn").attr("disabled", false);
+					} else {
+						$(this).next(".commentSubmitBtn").attr("disabled", true);
+					}
+				});
+				
+				//检测评论回复输入框是否有值,有才能提交评论
+				$("#dynamic").on("keyup", ".comment-input", function() {
+					if (this.value != "") {
+						$(this).next(".comment-reply-opr").find(".comment-ok").attr("disabled", false);
+					} else {
+						$(this).next(".comment-reply-opr").find(".comment-ok").attr("disabled", true);
+					}
+				});
+				
+				//举报弹出框
+				$(".report").popover();
 				
 			});
 			
@@ -417,7 +441,7 @@
 					$('#loginModal').modal();
 				} else {
 					$("#answereditordiv").show();
-					 $('body,html').animate({scrollTop:$(document).height() - $(window).height()/2}, 200);
+					$('body,html').animate({scrollTop:$(window).height() * 2 + $(document).height() }, 200); 
 				}
 			}
 			
@@ -430,112 +454,153 @@
 				
 			}
 			
+			//ajax提交答案评论
+			function submitAnswerComment(obj, pid, targetId) {
+				if("${user}" == "") {
+					$('#loginModal').modal();
+				} else {
+					var content = $(obj).prev(".commentInput").val();			
+					$.post("${pageContext.request.contextPath}/commentServlet", {"method":"add", "pid":pid, "type":1, "targetId": targetId, "content":content},
+						function(result) {	
+						$(obj).prev(".commentInput").val("");
+						$(obj).attr("disabled", true);
+						showComment(targetId, 1, obj);
+					});
+				}
+			}
+			
+			//ajax提交评论回复
+			function submitCommentReply(obj, pid, targetId) {
+				if("${user}" == "") {
+					$('#loginModal').modal();
+				} else {
+					var content = $(obj).parent(".comment-reply-opr").prev(".comment-input").val();			
+					$.post("${pageContext.request.contextPath}/commentServlet", {"method":"add", "pid":pid, "type":1, "targetId": targetId, "content":content},
+						function(result) {	
+						showComment(targetId, 1, obj)
+					});
+				}
+			}
+			
+			function showAnswer(result) {
+				$(result).each(function(i, obj) {
+					var s = '<div class="answerblock">';
+						s += '<div class="separator"></div>';
+						s += '<div class="text-author">';
+						s += '	<a href="${pageContext.request.contextPath}/userServlet?method=findById&id='+obj.user.id+'">';
+						s += '<img class="photo" src="${pageContext.request.contextPath}/img/default.jpg" />';
+						s += '</a>';
+						s += '<span class="personalmsg">';
+						s += '<a href="${pageContext.request.contextPath}/userServlet?method=findById&id='+obj.user.id+'" style="color: black;">';
+						s += '<div class="name">';
+						s += obj.user.name;
+						s += '</div>';
+						s += '</a>';
+						s += '<div class="signal">';
+						s += obj.user.sentence;
+						s += '</div>';
+						s += '</span>';
+						s += '</div>';
+						s += '<div class="text-status">'+obj.agreeCount+'人也赞同了该回答</div>';
+						s += '<div class="text-content">';
+						s += obj.pureContent.substring(0, 300);
+						s += '<a class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>';
+						s += '</div>';
+						s += '<div class="text-all">';
+						s += obj.content;
+						s += '<div class="edit-time">编辑于 <span>'+ new Date(obj.date.time).format("yyyy-MM-dd") +'</span></div>';
+						s += '</div>';
+						s += '<div class="text-end">';
+						s += '<button class="btn btn-default">';
+						s += '<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">'+obj.agreeCount+'</span></span>';
+						s += '</button>';
+						s += '<button class="btn btn-default">';
+						s += '<span class="glyphicon glyphicon-chevron-down opinion"></span>';
+						s += '</button>';
+						s += '<span>';
+						s += '<a class="text-situation text-comment">';
+						s += '<span onclick="showComment('+obj.id+', 1, this)">';
+						s += '<span class="comment-count"><span class="glyphicon glyphicon-comment"></span> '+obj.commentCount+'条评论</span></span>';
+						s += '<span class="hidecomment" style="display: none;"><span class="glyphicon glyphicon-comment"></span> 收起评论</span>';
+						s += '</a>';
+						s += '<a href="#" class="text-situation">';
+						s += '<span class="glyphicon glyphicon-share-alt"></span>';
+						s += '<span>分享</span>';
+						s += '</a>';
+						s += '<a href="#" class="text-situation">';
+						s += '<span class="glyphicon glyphicon-star"></span>';
+						s += '<span>收藏</span>';
+						s += '</a>';
+						s += '<a href="#" class="text-situation">';
+						s += '<span class="glyphicon glyphicon-heart"></span>';
+						s += '<span>感谢</span>';
+						s += '</a>';
+						s += '<a class="text-situation report" data-placement="bottom" data-html="true" data-content="<ul class=nav nav-pills nav-stacked><li><a href=#>没有帮助</a></li><li><a href=#>举报</a></li></ul>">';
+						s += '···';
+						s += '</a>';
+						s += '</span>';
+						s += '<button class="takeback btn btn-info btn-xs">收起</button>';
+						s += '</div>';
+													
+						/* 评论div */
+						s += '<div class="commentdiv">';
+						s += '<div class="comment-title">';
+						s += '<span style="font-weight: bold;">'+obj.commentCount+'条评论</span>';								
+						s += '<a style="cursor: pointer;position: absolute;right: 20px;">切换为时间顺序</a>';
+						s += '</div>';
+						s += '<div class="separator" style="width: 100%;"></div>';
+					
+						/*  用户评论 */ 
+						s += '<div class="user-commentblock">';
+						
+						s += '</div>';
+						s += '<div class="separator"></div>';
+						
+							
+						/* 评论回答 */
+						s += '<div>';
+						s += '<input type="text" class="form-control commentInput" placeholder="写下你的评论"/>';
+						s += '<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ' + obj.id + ')">评论</button>';
+						s += '</div>';
+						s += '</div>';
+						s += '</div>';
+					
+					$("#dynamic").append(s);
+					$(".report").popover();
+				});
+			}
+			
 			// 滑动到页面底部实现自动加载
 			var totalheight = 0;
 			var answer_index = 0;
 			 $(window).scroll(function() {
 				totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
-				if((totalheight >= $(document).height()) && answer_index >= 0) {
+				if((totalheight >= $(document).height()) && answer_index >= 0 && answer_index < 3) {
+					ajaxLoadAnswer();
+				}
+			}); 
+			
+			
+			function ajaxLoadAnswer() {
+				if(answer_index >= 0) {
 					$.getJSON("${pageContext.request.contextPath}/answerServlet", {"method":"ajaxLoad", "qid":"${question.id}", "currentPage": ++answer_index},
 							function(result) {
 								if(result != "") {
-									$(result).each(function(i, obj) {
-										var s = '<div class="answerblock">';
-											s += '<div class="separator"></div>';
-											s += '<div class="text-author">';
-											s += '	<a href="${pageContext.request.contextPath}/userServlet?method=findById&id='+obj.user.id+'">';
-											s += '<img class="photo" src="${pageContext.request.contextPath}/img/default.jpg" />';
-											s += '</a>';
-											s += '<span class="personalmsg">';
-											s += '<a href="${pageContext.request.contextPath}/userServlet?method=findById&id='+obj.user.id+'" style="color: black;">';
-											s += '<div class="name">';
-											s += obj.user.name;
-											s += '</div>';
-											s += '</a>';
-											s += '<div class="signal">';
-											s += obj.user.sentence;
-											s += '</div>';
-											s += '</span>';
-											s += '</div>';
-											s += '<div class="text-status">'+obj.agreeCount+'人也赞同了该回答</div>';
-											s += '<div class="text-content">';
-											s += obj.pureContent.substring(0, 300);
-											s += '<a class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>';
-											s += '</div>';
-											s += '<div class="text-all">';
-											s += obj.pureContent;
-											s += '<div class="edit-time">编辑于<span>'+ new Date(obj.date.time).format("yyyy-MM-dd") +'</span></div>';
-											s += '</div>';
-											s += '<div class="text-end">';
-											s += '<button class="btn btn-default">';
-											s += '<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">'+obj.agreeCount+'</span></span>';
-											s += '</button>';
-											s += '<button class="btn btn-default">';
-											s += '<span class="glyphicon glyphicon-chevron-down opinion"></span>';
-											s += '</button>';
-											s += '<span>';
-											s += '<a class="text-situation text-comment">';
-											s += '<span onclick="showComment('+obj.id+', 1, this)">';
-											s += '<span class="comment-count"><span class="glyphicon glyphicon-comment"></span> '+obj.commentCount+'条评论</span></span>';
-											s += '<span class="hidecomment" style="display: none;"><span class="glyphicon glyphicon-comment"></span> 收起评论</span>';
-											s += '</a>';
-											s += '<a href="#" class="text-situation">';
-											s += '<span class="glyphicon glyphicon-share-alt"></span>';
-											s += '<span>分享</span>';
-											s += '</a>';
-											s += '<a href="#" class="text-situation">';
-											s += '<span class="glyphicon glyphicon-star"></span>';
-											s += '<span>收藏</span>';
-											s += '</a>';
-											s += '<a href="#" class="text-situation">';
-											s += '<span class="glyphicon glyphicon-heart"></span>';
-											s += '<span>感谢</span>';
-											s += '</a>';
-											s += '<a class="text-situation report" data-placement="bottom" data-html="true" data-content="<ul class=nav nav-pills nav-stacked><li><a href=#>没有帮助</a></li><li><a href=#>举报</a></li></ul>">';
-											s += '···';
-											s += '</a>';
-											s += '</span>';
-											s += '<button class="takeback btn btn-info btn-xs">收起</button>';
-											s += '</div>';
-																		
-											/* 评论div */
-											s += '<div class="commentdiv">';
-											s += '<div class="comment-title">';
-											s += '<span style="font-weight: bold;">'+obj.commentCount+'条评论</span>';								
-											s += '<a style="cursor: pointer;position: absolute;right: 20px;">切换为时间顺序</a>';
-											s += '</div>';
-											s += '<div class="separator" style="width: 100%;"></div>';
-										
-											/*  用户评论 */ 
-											s += '<div class="user-commentblock">';
-											
-											s += '</div>';
-											s += '<div class="separator"></div>';
-												
-												
-											/* 评论回答 */
-											s += '<div>';
-											s += '<form action="${pageContext.request.contextPath}/" method="post">';
-											s += '<input class="form-control commentAnswer" type="input" placeholder="写下你的评论"/>';
-											s += '<button class="btn btn-info" type="submit">评论</button>';
-											s += '</form>';
-											s += '</div>';
-											s += '</div>';
-											s += '</div>';
-										
-										$("#dynamic").append(s);
-										$(".report").popover();
-									});
+									$("#noAnswer").hide();
+									showAnswer(result);
+									
+								} else if (answer_index == 1) {
+									answer_index = -1;
+									$("#showMoreAnswer").hide();
 								} else {
-									$("#dynamic").append("<hr/>");
+									$("#showMoreAnswer").hide();
+									$("#dynamic").append("<div style='height:30px; background-color:#F3F3F3;'/>");
 									$("#dynamic").append("<h4 style='padding:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
 									answer_index = -1;
 								}
-								
 							});
-					
 				}
-			}); 
+			}
 			
 			/*格式化日期*/
 			Date.prototype.format = function (fmt) { //author: meizz 
@@ -593,10 +658,24 @@
 									<a href="#" style="margin-left: 30px;">
 										<span class="glyphicon glyphicon-comment topmenu" style="font-size: 22px;color: lightgray;"></span>
 									</a>
-									<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=${user.id}" style="position: relative;top: -5px;margin-left: 30px;">
-										<c:if test="${empty user.photo }"><img src="${pageContext.request.contextPath}/img/default.jpg" height="30px" width="30px"/></c:if>
-										<c:if test="${not empty user.photo }"><img src="${pageContext.request.contextPath}/${user.photo}" height="30px" width="30px"/></c:if>						
-									</a>
+									<span class="btn-group">
+										<a href="javascript:void(0)" data-toggle="dropdown" style="position: relative;top: -5px;margin-left: 30px;">
+											<c:if test="${empty user.photo }"><img src="${pageContext.request.contextPath}/img/default.jpg" height="30px" width="30px"/></c:if>
+											<c:if test="${not empty user.photo }"><img src="${pageContext.request.contextPath}/${user.photo}" height="30px" width="30px"/></c:if>						
+										</a>
+										<ul class="dropdown-menu nav" role="menu">
+										    <li>
+										    	<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=${user.id}">
+										    		<i class="fa fa-user fa-fw"></i> 个人主页
+										    	</a>
+										    </li>
+										    <li>
+										    	<a href="${pageContext.request.contextPath}/userServlet?method=logout">
+										    		<i class="fa fa-power-off fa-fw"></i> 退出
+										    	</a>
+										    </li>
+										</ul>
+									</span>
 								</span>
 							</c:if>
 						</span>
@@ -680,6 +759,8 @@
 							<span style="font-weight: bold;font-size: 15px;">${fn:length(question.answerList)} 个回答</span>
 							<span style="position: absolute;right: 20px;">默认排序</span>
 						</div>
+						
+						<!-- 没有回答 -->
 						<div id="noAnswer" style="height: 280px;padding-top: 80px;">
 							<div align="center">
 								<img src="${pageContext.request.contextPath}/img/noanswer.png" />
@@ -693,102 +774,7 @@
 							
 						<!--用户个人回答板块-->
 						<script type="text/javascript">
-							$.getJSON("${pageContext.request.contextPath}/answerServlet", {"method":"ajaxLoad", "qid":"${question.id}", "currentPage": ++answer_index},
-									function(result) {
-										if(result != "") {
-											$("#noAnswer").css("display", "none");
-											$(result).each(function(i, obj) {
-												var s = '<div class="answerblock">';
-													s += '<div class="separator"></div>';
-													s += '<div class="text-author">';
-													s += '	<a href="${pageContext.request.contextPath}/userServlet?method=findById&id='+obj.user.id+'">';
-													s += '<img class="photo" src="${pageContext.request.contextPath}/img/default.jpg" />';
-													s += '</a>';
-													s += '<span class="personalmsg">';
-													s += '<a href="${pageContext.request.contextPath}/userServlet?method=findById&id='+obj.user.id+'" style="color: black;">';
-													s += '<div class="name">';
-													s += obj.user.name;
-													s += '</div>';
-													s += '</a>';
-													s += '<div class="signal">';
-													s += obj.user.sentence;
-													s += '</div>';
-													s += '</span>';
-													s += '</div>';
-													s += '<div class="text-status">'+obj.agreeCount+'人也赞同了该回答</div>';
-													s += '<div class="text-content">';
-													s += obj.pureContent.substring(0, 300);
-													s += '<a class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>';
-													s += '</div>';
-													s += '<div class="text-all">';
-													s += obj.pureContent;
-													s += '<div class="edit-time">编辑于<span>'+ new Date(obj.date.time).format("yyyy-MM-dd") +'</span></div>';
-													s += '</div>';
-													s += '<div class="text-end">';
-													s += '<button class="btn btn-default">';
-													s += '<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">'+obj.agreeCount+'</span></span>';
-													s += '</button>';
-													s += '<button class="btn btn-default">';
-													s += '<span class="glyphicon glyphicon-chevron-down opinion"></span>';
-													s += '</button>';
-													s += '<span>';
-													s += '<a class="text-situation text-comment">';
-													s += '<span onclick="showComment('+obj.id+', 1, this)">';
-													s += '<span class="comment-count"><span class="glyphicon glyphicon-comment"></span> '+obj.commentCount+'条评论</span></span>';
-													s += '<span class="hidecomment" style="display: none;"><span class="glyphicon glyphicon-comment"></span> 收起评论</span>';
-													s += '</a>';
-													s += '<a href="#" class="text-situation">';
-													s += '<span class="glyphicon glyphicon-share-alt"></span>';
-													s += '<span>分享</span>';
-													s += '</a>';
-													s += '<a href="#" class="text-situation">';
-													s += '<span class="glyphicon glyphicon-star"></span>';
-													s += '<span>收藏</span>';
-													s += '</a>';
-													s += '<a href="#" class="text-situation">';
-													s += '<span class="glyphicon glyphicon-heart"></span>';
-													s += '<span>感谢</span>';
-													s += '</a>';
-													s += '<a class="text-situation report" data-placement="bottom" data-html="true" data-content="<ul class=nav nav-pills nav-stacked><li><a href=#>没有帮助</a></li><li><a href=#>举报</a></li></ul>">';
-													s += '···';
-													s += '</a>';
-													s += '</span>';
-													s += '<button class="takeback btn btn-info btn-xs">收起</button>';
-													s += '</div>';
-																				
-													/* 评论div */
-													s += '<div class="commentdiv">';
-													s += '<div class="comment-title">';
-													s += '<span style="font-weight: bold;">'+obj.commentCount+'条评论</span>';								
-													s += '<a style="cursor: pointer;position: absolute;right: 20px;">切换为时间顺序</a>';
-													s += '</div>';
-													s += '<div class="separator" style="width: 100%;"></div>';
-												
-													/*  用户评论 */ 
-													s += '<div class="user-commentblock">';
-													
-													s += '</div>';
-													s += '<div class="separator"></div>';
-														
-														
-													/* 评论回答 */
-													s += '<div>';
-													s += '<form action="${pageContext.request.contextPath}/" method="post">';
-													s += '<input class="form-control commentAnswer" type="input" placeholder="写下你的评论"/>';
-													s += '<button class="btn btn-info" type="submit">评论</button>';
-													s += '</form>';
-													s += '</div>';
-													s += '</div>';
-													s += '</div>';
-												
-												$("#dynamic").append(s);
-												$(".report").popover();
-											});
-										} else {
-											answer_index = -1;
-										}
-										
-									});
+							ajaxLoadAnswer();
 						</script>
 						
 						<div class="answerblock">
@@ -829,7 +815,7 @@
 								<p>GTMD ACE</p>
 								<p></p><p></p><p></p>
 								<p></p>
-								<div class="edit-time">编辑于<span> 2016-03-28</span></div>
+								<div class="edit-time">编辑于 <span> 2016-03-28</span></div>
 							</div>
 							<div class="text-end">
 								<button class="btn btn-default">
@@ -867,171 +853,41 @@
 							<!-- 评论div -->
 							<div class="commentdiv">
 								<div class="comment-title">
-									<span style="font-weight: bold;">11条评论</span>								
+									<span style="font-weight: bold;">1001条评论</span>								
 									<a style="cursor: pointer;position: absolute;right: 20px;">切换为时间顺序</a>
 								</div>
 								<div class="separator" style="width: 100%;"></div>
 								
 								<!-- 用户评论 -->
 								<div class="user-commentblock">
-									<div class="user-comment">
-										<div style="position:relative">
-											<a href="#">
-												<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
-												<span style="margin-left: 10px;color: black;">saber</span>
-											</a>
-											<span class="comment-time">2年前</span>
-										</div>
-										<div style="margin: 10px 0;">
-											阿法冯老师
-										</div>
-										<div class="comment-situation">
-											<a>
-												<span class="glyphicon glyphicon-thumbs-up"></span>
-												<span>1973</span>
-											</a>
-											<a class="comment-replybtn">
-												<span class="glyphicon glyphicon-edit"></span>
-												<span>回复</span>
-											</a>
-											<a>
-												<span class="glyphicon glyphicon-thumbs-down"></span>
-												<span>踩</span>
-											</a>
-											<a>
-												<span class="glyphicon glyphicon-flag"></span>
-												<span>举报</span>
-											</a>
-										</div>
-										<div class="comment-reply" style="display: none;">
-											<form action="${pageContext.request.contextPath}/" method="post">
-												<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
-												<div style="text-align: right;">
-													<button type="button" class="btn btn-default comment-cancel">取消</button>
-													<button type="submit" class="btn btn-info comment-ok">评论</button>
-												</div>
-											</form>
-										</div>
-									</div>
-									<div class="separator"></div>
-								
-									<div class="user-comment">
-										<div style="position:relative">
-											<a href="#">
-												<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
-												<span style="margin-left: 10px;color: black;">archer</span>
-											</a>
-											<span class="comment-time">2年前</span>
-										</div>
-										<div style="margin: 10px 0;">
-											幸运E
-										</div>
-										<div class="comment-situation">
-											<a>
-												<span class="glyphicon glyphicon-thumbs-up"></span>
-												<span>1973</span>
-											</a>
-											<a class="comment-replybtn">
-												<span class="glyphicon glyphicon-edit"></span>
-												<span>回复</span>
-											</a>
-											<a>
-												<span class="glyphicon glyphicon-thumbs-down"></span>
-												<span>踩</span>
-											</a>
-											<a>
-												<span class="glyphicon glyphicon-flag"></span>
-												<span>举报</span>
-											</a>
-										</div>
-										<div class="comment-reply" style="display: none;">
-											<form action="${pageContext.request.contextPath}/" method="post">
-												<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
-												<div style="text-align: right;">
-													<button type="button" class="btn btn-default comment-cancel">取消</button>
-													<button type="submit" class="btn btn-info comment-ok">评论</button>
-												</div>
-											</form>
-										</div>
-									</div>
-									<div class="separator"></div>
-								
-									<div class="user-comment">
-										<div style="position:relative">
-											<a href="#">
-												<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
-												<span style="margin-left: 10px;color: black;">caster</span>
-											</a>
-											<span class="comment-time">2年前</span>
-										</div>
-										<div style="margin: 10px 0;">
-											西呢西呢,统统西呢
-										</div>
-										<div class="comment-situation">
-											<a>
-												<span class="glyphicon glyphicon-thumbs-up"></span>
-												<span>1973</span>
-											</a>
-											<a class="comment-replybtn">
-												<span class="glyphicon glyphicon-edit"></span>
-												<span>回复</span>
-											</a>
-											<a>
-												<span class="glyphicon glyphicon-thumbs-down"></span>
-												<span>踩</span>
-											</a>
-											<a>
-												<span class="glyphicon glyphicon-flag"></span>
-												<span>举报</span>
-											</a>
-										</div>
-										<div class="comment-reply" style="display: none;">
-											<form action="${pageContext.request.contextPath}/" method="post">
-												<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
-												<div style="text-align: right;">
-													<button type="button" class="btn btn-default comment-cancel">取消</button>
-													<button type="submit" class="btn btn-info comment-ok">评论</button>
-												</div>
-											</form>
-										</div>
-									</div>
-									<div class="separator"></div>
-									
-									<!-- 翻页 -->
-									<div style="padding:10px 0;text-align: center;">
-										<ul class="pagination" style="margin:auto">
-										  <li class="disabled"><a href="#">&laquo;</a></li>
-										  <li class="active"><a href="#">1</a></li>
-										  <li><a href="#">2</a></li>
-										  <li><a href="#">3</a></li>
-										  <li><a href="#">4</a></li>
-										  <li><a href="#">...</a></li>
-										  <li><a href="#">5</a></li>
-										  <li><a href="#">&raquo;</a></li>
-										</ul>		
-									</div>
 								</div>
 								
 								<div class="separator"></div>						
 								<!--评论回答-->
 								<div>
-									<form action="${pageContext.request.contextPath}/" method="post">
-										<input class="form-control commentAnswer" type="input" placeholder="写下你的评论"/>
-										<button class="btn btn-info" type="submit">评论</button>
-									</form>
+									<input type="text" class="form-control commentInput" placeholder="写下你的评论"/>
+									<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, 1)">评论</button>
 								</div>
 							</div>
 						</div>
+					
 					</div>
-				
+					
+					<!-- 查看更多回答 -->
+					<button id="showMoreAnswer" class="btn btn-default btn-block btn-lg" style="margin-bottom:100px;" onclick="ajaxLoadAnswer()">查看更多回答</button>
 				
 					<!--写答案-->
-					<div id="answereditordiv" style="margin-bottom: 300px;position:relative;display:none">
-						<script id="editorId" type="text/plain" style="width:700px;height:200px;">写回答...</script>
-						<div style="margin-top:10px">
-							<label class="checkbox-inline"><input type="checkbox" name="anonymous" value="1">匿名提交</label>
-							<button class="btn btn-info" style="position:absolute;right:0;">提交回答</button>
-						</div>
+					<div id="answereditordiv" style="margin-bottom:100px;position:relative;display:none">
+						<form id="answerForm" action="${pageContext.request.contextPath}/answerServlet" method="post">
+							<input type="hidden" name="method" value="add"/>
+							<input type="hidden" name="qid" value="${question.id}"/>
+							<input id="hidePureContent" type="hidden" name="pureContent" />
+							<script id="editorId" name="content" type="text/plain" style="width:700px;height:200px;">写回答...</script>
+							<div style="margin-top:10px">
+								<label class="checkbox-inline"><input type="checkbox" name="anonymous" value="1">匿名提交</label>
+								<button class="btn btn-info" style="position:absolute;right:0;" type="button" onclick="submitAnswer()">提交回答</button>
+							</div>
+						</form>
 					</div>
 					<script type="text/javascript" >
 						var answerUE = UE.getEditor('editorId', {
@@ -1044,6 +900,11 @@
 							           	'link','removeformat', '|','simpleupload', 'insertimage', 'insertvideo', 'music', 'fullscreen' ]
 							       	  ]
 					    });
+						
+						function submitAnswer() {
+							$("#hidePureContent").val(answerUE.getContentTxt());
+							$("#answerForm").submit();
+						}
 					</script>
 				</div>
 				

@@ -1,5 +1,6 @@
 package com.myself.gecko.web.servlet;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Map;
 
@@ -21,6 +22,22 @@ public class UserServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 	private static IUserService userService = UserServiceImpl.getUserService();
 
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		request.getSession().removeAttribute("user");
+		Cookie cookie1 = new Cookie("name", "");
+		Cookie cookie2 = new Cookie("password", "");
+		
+		try {
+			response.addCookie(cookie1);
+			response.addCookie(cookie2);
+			response.sendRedirect(request.getContextPath());
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "/error.jsp";
+		}
+	}
+	
 	public String editUser(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 		if(user == null) {
@@ -58,7 +75,6 @@ public class UserServlet extends BaseServlet {
 			User user = userService.findById(id);
 			if (user != null) {
 				request.setAttribute("person", user);
-				System.out.println(user);
 				return "/jsp/home.jsp";
 			}
 		} catch (Exception e) {

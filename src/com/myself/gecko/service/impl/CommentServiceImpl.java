@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.ICommentDao;
+import com.myself.gecko.dao.impl.CommentDaoImpl;
+import com.myself.gecko.domain.Comment;
 import com.myself.gecko.domain.CommentVO;
 import com.myself.gecko.domain.PageBean;
 import com.myself.gecko.service.ICommentService;
@@ -28,6 +30,11 @@ public class CommentServiceImpl implements ICommentService {
 			totalPage = count / pageSize + 1;
 		}
 		return new PageBean<>(list, currentPage, pageSize, totalPage, count);
+	}
+
+	@Override
+	public void save(Comment comment) throws Exception {
+		commentDao.save(comment);
 	}
 
 }
