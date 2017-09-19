@@ -23,9 +23,9 @@ public class QuestioinDaoImpl extends BaseDao<Question> implements IQuestionDao 
 
 	@Override
 	public void save(Question question) throws Exception {
-		String sql = "insert into question values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "insert into question values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Object[] params = {null, question.getUser().getId(), question.getTopic().getId(), question.getAnonymous(),
-				question.getTitle(), question.getPureContent(), question.getContent(), question.getDate(), null, null};
+				question.getTitle(), question.getPureContent(), question.getContent(), question.getDate(), null};
 		CU(sql, params);
 	}
 

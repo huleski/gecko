@@ -288,7 +288,7 @@
 				});
 				/*回到顶部*/
 				$("#gotobtn").click(function() {
-					 $('body,html').animate({scrollTop:0}, 500);
+					 $('body,html').animate({scrollTop:0}, 200);
 				});
 
 			});
