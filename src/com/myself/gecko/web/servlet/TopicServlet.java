@@ -25,7 +25,7 @@ public class TopicServlet extends BaseServlet {
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "/jsp/error.jsp";
+			return "/500.jsp";
 		}
 	}
 }

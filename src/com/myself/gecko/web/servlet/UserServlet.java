@@ -34,7 +34,7 @@ public class UserServlet extends BaseServlet {
 			return null;
 		} catch (IOException e) {
 			e.printStackTrace();
-			return "/error.jsp";
+			return "/500.jsp";
 		}
 	}
 	
@@ -42,7 +42,7 @@ public class UserServlet extends BaseServlet {
 		User user = (User) request.getSession().getAttribute("user");
 		if(user == null) {
 			request.setAttribute("msg", "请先登录");
-			return "/error.jsp";
+			return "/500.jsp";
 		}
 		
 		try {
@@ -55,7 +55,7 @@ public class UserServlet extends BaseServlet {
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "/error.jsp";
+			return "/500.jsp";
 		}
 	}
 
@@ -63,7 +63,7 @@ public class UserServlet extends BaseServlet {
 		User user = (User) request.getSession().getAttribute("user");
 		if(user == null) {
 			request.setAttribute("msg", "请先登录");
-			return "/error.jsp";
+			return "/500.jsp";
 		}
 		return "/jsp/edituser.jsp";
 	}
@@ -80,7 +80,7 @@ public class UserServlet extends BaseServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "/error.jsp";
+		return "/500.jsp";
 	}
 
 	public String login(HttpServletRequest request, HttpServletResponse response) {
@@ -118,7 +118,7 @@ public class UserServlet extends BaseServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "/error.jsp";
+			return "/500.jsp";
 		}
 	}
 
@@ -138,7 +138,7 @@ public class UserServlet extends BaseServlet {
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "/error.jsp";
+			return "/500.jsp";
 		}
 	}
 }

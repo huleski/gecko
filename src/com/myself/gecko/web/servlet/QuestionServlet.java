@@ -29,7 +29,7 @@ public class QuestionServlet extends BaseServlet {
 			return "/jsp/question.jsp";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "/error.jsp";
+			return "/500.jsp";
 		}
 	}
 	public String ajaxLoad(HttpServletRequest request, HttpServletResponse response) {
@@ -45,7 +45,7 @@ public class QuestionServlet extends BaseServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "/error.jsp";
+		return "/500.jsp";
 	}
 	public String addQuestion(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
@@ -72,7 +72,7 @@ public class QuestionServlet extends BaseServlet {
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "/error.jsp";
+			return "/500.jsp";
 		}
 	}
 }

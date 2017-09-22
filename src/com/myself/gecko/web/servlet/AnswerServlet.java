@@ -17,7 +17,7 @@ public class AnswerServlet extends BaseServlet {
 	public String add(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 		if(user == null) {
-			return "error.jsp";
+			return "/500.jsp";
 		}
 		
 		String content = request.getParameter("content");
@@ -41,15 +41,13 @@ public class AnswerServlet extends BaseServlet {
 				int anonymous = Integer.parseInt(anonymousStr);
 				answer.setAnonymous(anonymous);
 			}
-System.out.println(content);
-System.out.println(pureContent);
 			answerService.save(answer);
 			response.sendRedirect(request.getContextPath() + "/questionServlet?method=findById&id=" + qid);
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "/500.jsp";
 		}
-		return null;
 	}
 	
 	public String ajaxLoad(HttpServletRequest request, HttpServletResponse response) {
@@ -64,7 +62,7 @@ System.out.println(pureContent);
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "/error.jsp";
+			return "/500.jsp";
 		}
 	}
 }

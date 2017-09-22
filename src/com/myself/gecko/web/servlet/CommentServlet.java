@@ -19,7 +19,7 @@ public class CommentServlet extends BaseServlet {
 	public String add(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 		if(user == null) {
-			return "/error.jsp";
+			return "/500.jsp";
 		}
 		
 		String typeStr = request.getParameter("type");
@@ -47,7 +47,7 @@ public class CommentServlet extends BaseServlet {
 			 return null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "/error.jsp";
+			return "/500.jsp";
 		}
 	}
 	
@@ -67,7 +67,7 @@ public class CommentServlet extends BaseServlet {
 			return "/template/comment.jsp";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "/error.jsp";
+			return "/500.jsp";
 		}
 	}
 }
