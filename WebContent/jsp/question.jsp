@@ -491,7 +491,6 @@
 				}
 			}); 
 			
-			
 			function ajaxLoadAnswer() {
 				if(answer_index >= 0) {
 					$.post("${pageContext.request.contextPath}/answerServlet", {"method":"ajaxLoad", "qid":"${question.id}", "currentPage": ++answer_index},
