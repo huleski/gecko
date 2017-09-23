@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>服务器出错了</title>
+<title>系统维护中</title>
 </head>
 <body>
 	<center>

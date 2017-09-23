@@ -1,6 +1,7 @@
 package com.myself.gecko.web.servlet;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,31 +14,31 @@ import com.myself.gecko.service.impl.AnswerServiceImpl;
 
 public class AnswerServlet extends BaseServlet {
 	private static IAnswerService answerService = new AnswerServiceImpl();
-	
+
 	public String add(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
-		if(user == null) {
+		if (user == null) {
 			return "/500.jsp";
 		}
-		
+
 		String content = request.getParameter("content");
 		String pureContent = request.getParameter("pureContent");
 		String qidStr = request.getParameter("qid");
 		String anonymousStr = request.getParameter("anonymous");
-		
+
 		try {
 			Answer answer = new Answer();
-			
+
 			int qid = Integer.parseInt(qidStr);
 			Question question = new Question();
 			question.setId(qid);
 			answer.setQuestion(question);
-			
+
 			answer.setUser(user);
 			answer.setContent(content);
 			answer.setDate(new Date());
 			answer.setPureContent(pureContent);
-			if(anonymousStr != null) {
+			if (anonymousStr != null) {
 				int anonymous = Integer.parseInt(anonymousStr);
 				answer.setAnonymous(anonymous);
 			}
@@ -49,17 +50,33 @@ public class AnswerServlet extends BaseServlet {
 			return "/500.jsp";
 		}
 	}
-	
+
+	/*
+	 * public String ajaxLoad(HttpServletRequest request, HttpServletResponse
+	 * response) { String pageStr = request.getParameter("currentPage"); String
+	 * qidStr = request.getParameter("qid"); try { int currentPage =
+	 * Integer.parseInt(pageStr); int qid = Integer.parseInt(qidStr);
+	 * 
+	 * String data = answerService.ajaxLoad(currentPage, qid);
+	 * response.getWriter().print(data); return null; } catch (Exception e) {
+	 * e.printStackTrace(); return "/500.jsp"; } }
+	 */
+
 	public String ajaxLoad(HttpServletRequest request, HttpServletResponse response) {
 		String pageStr = request.getParameter("currentPage");
 		String qidStr = request.getParameter("qid");
 		try {
 			int currentPage = Integer.parseInt(pageStr);
 			int qid = Integer.parseInt(qidStr);
-			
-			String data = answerService.ajaxLoad(currentPage, qid);
-			response.getWriter().print(data);
-			return null;
+
+			List<Answer> list = answerService.ajaxLoad(currentPage, qid);
+			if (list.isEmpty()) {
+				response.getWriter().print(0);
+				return null;
+			} else {
+				request.setAttribute("list", list);
+				return "/template/answer.jsp";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "/500.jsp";

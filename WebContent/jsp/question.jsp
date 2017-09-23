@@ -481,94 +481,6 @@
 				}
 			}
 			
-			function showAnswer(result) {
-				$(result).each(function(i, obj) {
-					var s = '<div class="answerblock">';
-						s += '<div class="separator"></div>';
-						s += '<div class="text-author">';
-						s += '	<a href="${pageContext.request.contextPath}/userServlet?method=findById&id='+obj.user.id+'">';
-						s += '<img class="photo" src="${pageContext.request.contextPath}/img/default.jpg" />';
-						s += '</a>';
-						s += '<span class="personalmsg">';
-						s += '<a href="${pageContext.request.contextPath}/userServlet?method=findById&id='+obj.user.id+'" style="color: black;">';
-						s += '<div class="name">';
-						s += obj.user.name;
-						s += '</div>';
-						s += '</a>';
-						s += '<div class="signal">';
-						s += obj.user.sentence;
-						s += '</div>';
-						s += '</span>';
-						s += '</div>';
-						s += '<div class="text-status">'+obj.agreeCount+'人也赞同了该回答</div>';
-						s += '<div class="text-content">';
-						s += obj.pureContent.substring(0, 300);
-						s += '<a class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>';
-						s += '</div>';
-						s += '<div class="text-all">';
-						s += obj.content;
-						s += '<div class="edit-time">编辑于 <span>'+ new Date(obj.date.time).format("yyyy-MM-dd") +'</span></div>';
-						s += '</div>';
-						s += '<div class="text-end">';
-						s += '<button class="btn btn-default">';
-						s += '<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">'+obj.agreeCount+'</span></span>';
-						s += '</button>';
-						s += '<button class="btn btn-default">';
-						s += '<span class="glyphicon glyphicon-chevron-down opinion"></span>';
-						s += '</button>';
-						s += '<span>';
-						s += '<a class="text-situation text-comment">';
-						s += '<span onclick="showComment('+obj.id+', 1, this)">';
-						s += '<span class="comment-count"><span class="glyphicon glyphicon-comment"></span> '+obj.commentCount+'条评论</span></span>';
-						s += '<span class="hidecomment" style="display: none;"><span class="glyphicon glyphicon-comment"></span> 收起评论</span>';
-						s += '</a>';
-						s += '<a href="#" class="text-situation">';
-						s += '<span class="glyphicon glyphicon-share-alt"></span>';
-						s += '<span>分享</span>';
-						s += '</a>';
-						s += '<a href="#" class="text-situation">';
-						s += '<span class="glyphicon glyphicon-star"></span>';
-						s += '<span>收藏</span>';
-						s += '</a>';
-						s += '<a href="#" class="text-situation">';
-						s += '<span class="glyphicon glyphicon-heart"></span>';
-						s += '<span>感谢</span>';
-						s += '</a>';
-						s += '<a class="text-situation report" data-placement="bottom" data-html="true" data-content="<ul class=nav nav-pills nav-stacked><li><a href=#>没有帮助</a></li><li><a href=#>举报</a></li></ul>">';
-						s += '···';
-						s += '</a>';
-						s += '</span>';
-						s += '<button class="takeback btn btn-info btn-xs">收起</button>';
-						s += '</div>';
-													
-						/* 评论div */
-						s += '<div class="commentdiv">';
-						s += '<div class="comment-title">';
-						s += '<span style="font-weight: bold;">'+obj.commentCount+'条评论</span>';								
-						s += '<a style="cursor: pointer;position: absolute;right: 20px;">切换为时间顺序</a>';
-						s += '</div>';
-						s += '<div class="separator" style="width: 100%;"></div>';
-					
-						/*  用户评论 */ 
-						s += '<div class="user-commentblock">';
-						
-						s += '</div>';
-						s += '<div class="separator"></div>';
-						
-							
-						/* 评论回答 */
-						s += '<div>';
-						s += '<input type="text" class="form-control commentInput" placeholder="写下你的评论"/>';
-						s += '<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ' + obj.id + ')">评论</button>';
-						s += '</div>';
-						s += '</div>';
-						s += '</div>';
-					
-					$("#dynamic").append(s);
-					$(".report").popover();
-				});
-			}
-			
 			// 滑动到页面底部实现自动加载
 			var totalheight = 0;
 			var answer_index = 0;
@@ -582,22 +494,25 @@
 			
 			function ajaxLoadAnswer() {
 				if(answer_index >= 0) {
-					$.getJSON("${pageContext.request.contextPath}/answerServlet", {"method":"ajaxLoad", "qid":"${question.id}", "currentPage": ++answer_index},
+					$.post("${pageContext.request.contextPath}/answerServlet", {"method":"ajaxLoad", "qid":"${question.id}", "currentPage": ++answer_index},
 							function(result) {
-								if(result != "") {
+								if(result != "0") {
 									$("#noAnswer").hide();
-									showAnswer(result);
+									$("#dynamic").append(result);
+									$(".report").popover();
 									
+									if(answer_index == 3) {
+										$("#showMoreAnswer").show();
+									}
 								} else if (answer_index == 1) {
 									answer_index = -1;
-									$("#showMoreAnswer").hide();
 								} else {
 									$("#showMoreAnswer").hide();
 									$("#dynamic").append("<div style='height:30px; background-color:#F3F3F3;'/>");
 									$("#dynamic").append("<h4 style='padding:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
 									answer_index = -1;
 								}
-							});
+							}, "text");
 				}
 			}
 			
@@ -680,7 +595,7 @@
 						</span>
 					</span>
 				</div>
-				<!-- 导航问题栏 -->	
+				<!--问题标题 导航栏 -->	
 				<div id="outline" style="position: relative;margin: auto;width: 1010px;height:50px;display: none;">
 					<div style="position: absolute;top:10px;text-align: left;font-weight: bold;font-size: 22px;width: 700px;">
 						${fn:substring(question.title, 0, 30) }...
@@ -778,7 +693,7 @@
 					</div>
 					
 					<!-- 查看更多回答 -->
-					<button id="showMoreAnswer" class="btn btn-default btn-block btn-lg" style="margin-bottom:100px;" onclick="ajaxLoadAnswer()">查看更多回答</button>
+					<button id="showMoreAnswer" class="btn btn-default btn-block btn-lg" style="margin-bottom:100px;display:none" onclick="ajaxLoadAnswer()">查看更多回答</button>
 				
 					<!--写答案-->
 					<div id="answereditordiv" style="margin-bottom:100px;position:relative;display:none">
