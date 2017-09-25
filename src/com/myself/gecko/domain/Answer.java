@@ -3,7 +3,7 @@ package com.myself.gecko.domain;
 import java.util.Date;
 
 public class Answer {
-	private int id;
+	private Integer id;
 	private User user;
 	private Question question;
 	private Integer anonymous;
@@ -11,8 +11,29 @@ public class Answer {
 	
 	private String content;
 	private Date date;
-	private int commentCount;
-	private int agreeCount;
+	private Integer commentCount;
+	private Integer agreeCount;
+	private Integer agree;
+
+	public Integer getAgree() {
+		return agree;
+	}
+
+	public void setAgree(Integer agree) {
+		this.agree = agree;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setCommentCount(Integer commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	public void setAgreeCount(Integer agreeCount) {
+		this.agreeCount = agreeCount;
+	}
 
 	public int getId() {
 		return id;

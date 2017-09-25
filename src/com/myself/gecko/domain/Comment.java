@@ -3,20 +3,29 @@ package com.myself.gecko.domain;
 import java.util.Date;
 
 public class Comment {
-	private int id;
+	private Integer id;
 	private User user;
 	private Comment parent;
 	private Integer type;
 	private Integer targetId;
+	
 	private String content;
 	private Date date;
 	private Integer agreeCount;
-
+	private Integer agree;
 
 	@Override
 	public String toString() {
 		return "Comment [id=" + id + ", user=" + user + ", parent=" + parent + ", type=" + type + ", targetId="
 				+ targetId + ", content=" + content + ", date=" + date + ", agreeCount=" + agreeCount + "]";
+	}
+
+	public Integer getAgree() {
+		return agree;
+	}
+
+	public void setAgree(Integer agree) {
+		this.agree = agree;
 	}
 
 	public Integer getAgreeCount() {

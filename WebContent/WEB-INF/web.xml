@@ -31,7 +31,6 @@
 	</filter-mapping>
 
 	<servlet>
-		<description></description>
 		<servlet-name>UserServlet</servlet-name>
 		<servlet-class>com.myself.gecko.web.servlet.UserServlet</servlet-class>
 	</servlet>
@@ -40,7 +39,6 @@
 		<url-pattern>/userServlet</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<description></description>
 		<servlet-name>TopicServlet</servlet-name>
 		<servlet-class>com.myself.gecko.web.servlet.TopicServlet</servlet-class>
 	</servlet>
@@ -49,7 +47,6 @@
 		<url-pattern>/topicServlet</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<description></description>
 		<servlet-name>QuestionServlet</servlet-name>
 		<servlet-class>com.myself.gecko.web.servlet.QuestionServlet</servlet-class>
 	</servlet>
@@ -58,7 +55,6 @@
 		<url-pattern>/questionServlet</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<description></description>
 		<servlet-name>AnswerServlet</servlet-name>
 		<servlet-class>com.myself.gecko.web.servlet.AnswerServlet</servlet-class>
 	</servlet>
@@ -67,13 +63,20 @@
 		<url-pattern>/answerServlet</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<description></description>
 		<servlet-name>CommentServlet</servlet-name>
 		<servlet-class>com.myself.gecko.web.servlet.CommentServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>CommentServlet</servlet-name>
 		<url-pattern>/commentServlet</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>IndexServlet</servlet-name>
+		<servlet-class>com.myself.gecko.web.servlet.IndexServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>IndexServlet</servlet-name>
+		<url-pattern>/indexServlet</url-pattern>
 	</servlet-mapping>
 
 	<!-- 全局的统一错误页面 -->

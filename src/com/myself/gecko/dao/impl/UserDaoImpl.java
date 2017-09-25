@@ -1,6 +1,7 @@
 package com.myself.gecko.dao.impl;
 
 import java.sql.SQLException;
+import java.util.Date;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -57,5 +58,12 @@ public class UserDaoImpl extends BaseDao<User> implements IUserDao {
 		CU(sql, params);
 	}
 
+	@Override
+	public void recordLogin(User user) throws SQLException {
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "insert into user_login values(?, ?, ?)";
+		Object[] params = { null, user.getId(), new Date() };
+		queryRunner.update(sql, params);
+	}
 
 }
