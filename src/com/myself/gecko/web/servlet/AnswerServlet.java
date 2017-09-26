@@ -15,6 +15,38 @@ import com.myself.gecko.service.impl.AnswerServiceImpl;
 public class AnswerServlet extends BaseServlet {
 	private static IAnswerService answerService = new AnswerServiceImpl();
 
+	public String agree(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+		if(user == null) {
+			return null;
+		}
+		
+		String aidStr = request.getParameter("aid");
+		try {
+			int aid = Integer.parseInt(aidStr);
+			answerService.agree(user, aid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String disagree(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+		if(user == null) {
+			return null;
+		}
+		
+		String aidStr = request.getParameter("aid");
+		try {
+			int aid = Integer.parseInt(aidStr);
+			answerService.disagree(user, aid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public String add(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 		if (user == null) {

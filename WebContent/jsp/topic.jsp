@@ -315,7 +315,7 @@
 
 					<div class="text-block">
 						<div class="question">
-							<a href="${pageContext.request.contextPath}/jsp/answer1.jsp">如何看待ti7之后存在一些wings清流粉无脑吹wings并且贬低其他队伍的现象？</a>
+							<a href="${pageContext.request.contextPath}/questionServlet?method=findById&id=22">如何看待ti7之后存在一些wings清流粉无脑吹wings并且贬低其他队伍的现象？</a>
 						</div>
 						<div style="position: relative;">
 							<button class="thinking">839</button>

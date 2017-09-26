@@ -42,7 +42,9 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public User findUserByNameAndPwd(String name, String password) throws SQLException {
 		User user = userDao.findUserByNameAndPwd(name, password);
-		userDao.recordLogin(user);
+		if(user != null) {
+			userDao.recordLogin(user);
+		}
 		return user;
 	}
 

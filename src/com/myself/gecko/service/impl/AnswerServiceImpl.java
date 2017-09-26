@@ -5,6 +5,7 @@ import java.util.List;
 import com.myself.gecko.dao.IAnswerDao;
 import com.myself.gecko.dao.impl.AnswerDaoImpl;
 import com.myself.gecko.domain.Answer;
+import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IAnswerService;
 import com.myself.gecko.util.JsonUtil;
 
@@ -20,6 +21,16 @@ public class AnswerServiceImpl implements IAnswerService {
 	@Override
 	public void save(Answer answer) throws Exception {
 		answerDao.save(answer);
+	}
+
+	@Override
+	public void agree(User user, int aid) throws Exception {
+		answerDao.agree(user, aid);
+	}
+
+	@Override
+	public void disagree(User user, int aid) throws Exception {
+		answerDao.disagree(user, aid);
 	}
 
 }

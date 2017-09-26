@@ -114,9 +114,15 @@
 				cursor: pointer;
 			}
 			
-			.opinion {
+			.disagreebtn {
 				color: deepskyblue;
 				font-size: 14px;
+				border: deepskyblue 1px solid;
+			}
+			.agreebtn {
+				color: deepskyblue;
+				font-size: 14px;
+				border: deepskyblue 1px solid;
 			}
 			
 			.answerblock .text-status {
@@ -317,7 +323,7 @@
 			.comment-situation a{
 				margin-right: 30px;
 				cursor: pointer;
-				color: gray;
+				/* color: gray; */
 			}
 			.comment-input {
 				margin: 8px 0 15px 0;
@@ -435,6 +441,54 @@
 				
 			});
 			
+			//赞同
+			function agree(aid, obj) {
+				if("${user}" == "") {	//若用户未登录,不能点赞
+					$('#loginModal').modal();
+					return;
+				}
+				
+				$(obj).toggleClass("btn-default"); 
+				$(obj).toggleClass("btn-info");
+				$(obj).toggleClass("active");
+				var $disagreebtn = $(obj).next(".disagreebtn");
+				var cls = $disagreebtn.attr("class");
+				if(cls.indexOf("active") != -1) {
+					$disagreebtn.toggleClass("btn-default"); 
+					$disagreebtn.toggleClass("btn-info");
+					$disagreebtn.toggleClass("active");
+				}
+				
+				if(($(obj).attr("class").indexOf("active")) != -1) {	//点赞,发送ajax请求
+					$.post("${pageContext.request.contextPath}/answerServlet", {"method":"agree", "aid":aid});
+					console.log("agree");
+				} else {	//取消点赞,发送ajax请求
+					$.post("${pageContext.request.contextPath}/answerServlet", {"method":"disagree", "aid":aid});
+					console.log("disagree");
+				}
+			}
+			
+			//反对(取消赞同)
+			function disagree(aid, obj) {
+				if("${user}" == "") {	//若用户未登录,不能点赞
+					$('#loginModal').modal();
+					return;
+				}
+				
+				$(obj).toggleClass("btn-default"); 
+				$(obj).toggleClass("btn-info");
+				$(obj).toggleClass("active");
+				var $agreebtn = $(obj).prev(".agreebtn");
+				var cls = $agreebtn.attr("class");
+				if(cls.indexOf("active") != -1) {
+					$agreebtn.toggleClass("btn-default"); 
+					$agreebtn.toggleClass("btn-info");
+					$agreebtn.toggleClass("active");
+					console.log("disagree");
+					$.post("${pageContext.request.contextPath}/answerServlet", {"method":"disagree", "aid":aid});
+				} 
+			}
+			
 			//点击回答
 			function writeAnswer(){
 				if("${user}" == "") {
@@ -531,6 +585,7 @@
 			    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
 			    return fmt;
 			}
+			
 		</script>
 	</head>
 	<body>

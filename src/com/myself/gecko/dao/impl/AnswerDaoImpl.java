@@ -7,6 +7,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IAnswerDao;
@@ -45,6 +46,26 @@ public class AnswerDaoImpl extends BaseDao<Answer> implements IAnswerDao {
 		Object[] params = {null, answer.getUser().getId(), answer.getQuestion().getId(), answer.getAnonymous(), answer.getPureContent(),
 				answer.getContent(), answer.getDate(), answer.getCommentCount(), answer.getAgreeCount()};
 		CU(sql, params);
+	}
+
+	@Override
+	public void agree(User user, int aid) throws Exception {
+		int uid = user.getId();
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "select count(*) from answer_agree where aid = ? and uid = ?";
+		Long count = (Long) queryRunner.query(sql, new ScalarHandler(), aid, uid);
+		if(count.intValue() == 0) {
+			sql = "insert into answer_agree values(null, ?, ?)";
+			queryRunner.update(sql, aid, uid);
+		}
+	}
+
+	@Override
+	public void disagree(User user, int aid) throws Exception {
+		int uid = user.getId();
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "delete from answer_agree where aid = ? and uid = ?";
+		queryRunner.update(sql, aid, uid);
 	}
 
 	

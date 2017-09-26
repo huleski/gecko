@@ -22,8 +22,9 @@
 						${vo.content }
 					</div>
 					<div class="comment-situation">
-						<a>
-							<span class="glyphicon glyphicon-thumbs-up"></span>
+						<a href="#">
+							<i class="fa fa-thumbs-o-up"></i>
+							<i class="fa fa-thumbs-up"></i>
 							<span>${vo.agreeCount }</span>
 						</a>
 						<a class="comment-replybtn">
@@ -31,7 +32,7 @@
 							<span>回复</span>
 						</a>
 						<a>
-							<span class="glyphicon glyphicon-thumbs-down"></span>
+							<i class="fa fa-thumbs-o-down"></i>
 							<span>踩</span>
 						</a>
 						<a>

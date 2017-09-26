@@ -36,18 +36,18 @@
 				<div class="edit-time">编辑于 <span> <fmt:formatDate value="${a.date}" pattern="yyyy-MM-dd" /></span></div>
 			</div>
 			<div class="text-end">
-				<button class="btn btn-default">
-					<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">${a.agreeCount}</span></span>
+				<button class="btn btn-default agreebtn" onclick="agree(${a.id}, this)">
+					<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${a.agreeCount}</span></span>
 				</button>
-				<button class="btn btn-default">
-					<span class="glyphicon glyphicon-chevron-down opinion"></span>
+				<button class="btn btn-default disagreebtn" onclick="disagree(${a.id}, this)">
+					<span class="glyphicon glyphicon-chevron-down"></span>
 				</button>
 				<span>
 					<a class="text-situation text-comment">
 						<span onclick="showComment(${a.id}, 1, this)">
-							<span class="comment-count"><span class="glyphicon glyphicon-comment"></span>${a.commentCount} 条评论</span>
+							<span class="comment-count"><span class="glyphicon glyphicon-comment"></span> ${a.commentCount} 条评论</span>
 						</span>
-						<span class="hidecomment" style="display: none;"><span class="glyphicon glyphicon-comment"></span>收起评论</span>
+						<span class="hidecomment" style="display: none;"><span class="glyphicon glyphicon-comment"></span> 收起评论</span>
 					</a>
 					<a href="#" class="text-situation">
 						<span class="glyphicon glyphicon-share-alt"></span>
