@@ -16,6 +16,38 @@ import com.myself.gecko.service.impl.CommentServiceImpl;
 public class CommentServlet extends BaseServlet {
 	private static ICommentService commentService = new CommentServiceImpl();
 	
+	public String agree(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+		if(user == null) {
+			return null;
+		}
+		
+		String cidStr = request.getParameter("cid");
+		try {
+			int cid = Integer.parseInt(cidStr);
+			commentService.agree(user, cid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String disagree(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+		if(user == null) {
+			return null;
+		}
+		
+		String cidStr = request.getParameter("cid");
+		try {
+			int cid = Integer.parseInt(cidStr);
+			commentService.disagree(user, cid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public String add(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 		if(user == null) {
@@ -60,7 +92,6 @@ public class CommentServlet extends BaseServlet {
 			int targetId = Integer.parseInt(targetIdStr);
 			int currentPage = Integer.parseInt(currentPageStr);
 			int type = Integer.parseInt(typeStr);
-			//List<CommentVO> list = commentService.ajaxLoad(currentPage, aid);
 			PageBean<CommentVO> pageBean = commentService.pageQuery(currentPage, type, targetId);
 			request.setAttribute("pageBean", pageBean);
 			request.setAttribute("targetId", targetId);

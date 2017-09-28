@@ -441,7 +441,7 @@
 				
 			});
 			
-			//赞同
+			//赞同回答
 			function agree(aid, obj) {
 				if("${user}" == "") {	//若用户未登录,不能点赞
 					$('#loginModal').modal();
@@ -467,8 +467,7 @@
 					console.log("disagree");
 				}
 			}
-			
-			//反对(取消赞同)
+			//反对回答(取消赞同)
 			function disagree(aid, obj) {
 				if("${user}" == "") {	//若用户未登录,不能点赞
 					$('#loginModal').modal();
@@ -487,6 +486,26 @@
 					console.log("disagree");
 					$.post("${pageContext.request.contextPath}/answerServlet", {"method":"disagree", "aid":aid});
 				} 
+			}
+			
+			//赞同评论
+			function agreeComment(cid, obj) {
+				if("${user}" == "") {
+					$('#loginModal').modal();
+				} else {
+					var count = parseInt($(obj).find("span").text());
+					$(obj).find("i").toggle();
+					
+					var $agree = $(obj).find(".fa-thumbs-up");
+					console.log($agree.css("display"))
+					if($agree.css("display") != "none") {
+						$(obj).find("span").text(count + 1);
+						$.post("${pageContext.request.contextPath}/commentServlet", {"method":"agree", "cid":cid});
+					} else {
+						$(obj).find("span").text(count - 1);
+						$.post("${pageContext.request.contextPath}/commentServlet", {"method":"disagree", "cid":cid});
+					}
+				}
 			}
 			
 			//点击回答

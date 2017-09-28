@@ -231,6 +231,72 @@
 				$("#saveinfo").click(function() {
 					$("#editForm").submit();
 				});
+				
+				
+				//弹出背景图上传选择框
+				$("#uploadphotobtn").click(function() {
+					$("#backphoto").click();
+				});
+				$("#backphoto").change(function(){
+					var formData = new FormData();
+					var file = this.files[0];
+					formData.append("backphoto", file);
+					if(!/\.(gif|jpg|jpeg|png|GIF|JPG|JPEG|PNG)$/.test(this.value)) {
+						alert("请选择gif,jpg,jpeg,png等格式的图片文件");
+						return;
+					}
+					if(file.size/1024 > 500) {
+						alert("图片大小不超过500K");
+						return;
+					}
+					$.ajax({
+						url:"${pageContext.request.contextPath}/uploadServlet",
+						type:"post",
+						data: formData,
+						processData:false,
+						contentType:false,
+						success:function(result) {
+							$("#topdiv").css("background", "url(/gecko/" + result +")");
+						},
+						error: function(errMsg) {
+							console.log(errMsg);
+						}
+					});
+				});				
+				
+				//弹出头像上传选择框
+				$("#photoback").click(function() {
+					$("#photo").click();
+				});
+				
+				//上传头像
+				$("#photo").change(function(){
+					var formData = new FormData();
+					var file = this.files[0];
+					formData.append("photo", file);
+					if(!/\.(gif|jpg|jpeg|png|GIF|JPG|JPEG|PNG)$/.test(this.value)) {
+						alert("请选择gif,jpg,jpeg,png等格式的图片文件");
+						return;
+					}
+					if(file.size/1024 > 500) {
+						alert("图片大小不超过500K");
+						return;
+					}
+					
+					$.ajax({
+						url:"${pageContext.request.contextPath}/uploadServlet",
+						type:"post",
+						data: formData,
+						processData:false,
+						contentType:false,
+						success:function(result) {
+							$("#photoback").find("img").attr("src", "/gecko/" + result);
+						},
+						error: function(errMsg) {
+							console.log(errMsg);
+						}
+					});
+				});
 			});
 		</script>
 	</head>
@@ -242,12 +308,24 @@
 
 			<!--个人展示div-->
 			<div id="personalshow">
+				<c:if test="${empty user.backphoto }">
 				<div id="topdiv">
 					<button class="btn" id="uploadphotobtn">
 						<span class="glyphicon glyphicon-camera" ></span>
 						上传封面图片
 					</button>
 				</div>
+				</c:if>
+				
+				<c:if test="${not empty user.backphoto }">
+				<div id="topdiv" style="background:url(${pageContext.request.contextPath}/${user.backphoto})">
+					<button class="btn" id="uploadphotobtn">
+						<span class="glyphicon glyphicon-camera" ></span>
+						上传封面图片
+					</button>
+				</div>
+				</c:if>
+				<input id="backphoto" type="file" style="display:none"/>
 				
 				<div id="bottomdiv">
 					<!--
@@ -266,6 +344,7 @@
 						<div class="glyphicon glyphicon-camera" style="font-size: 30px;position: absolute;left: 70px;top: 60px;color: white;"></div>
 						<label style="font-size: 15px;position: absolute;top: 100px;left: 40px;color: white;">修改我的头像</label>
 					</div>
+					<input id="photo" type="file" style="display:none"/>
 
 					<a id="returnpersonal" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${user.id}">
 						返回我的主页

@@ -683,7 +683,7 @@
 								<a href="#" class="text-title-a">你有哪些一鸣惊人的操作？</a>
 							</div>
 							<div class="text-author">
-								<a href="#"><img class="photo" src="${pageContext.request.contextPath}/img/dynamic01.jpg" /></a>
+								<a href="#"><img class="photo" src="${pageContext.request.contextPath}/img/default.jpg" /></a>
 								<span class="personalmsg">
 									<div class="name">
 										<a href="#" style="color: black;">Seasee Youl</a>
@@ -891,7 +891,7 @@
 							</div>
 							<div class="text-title">华为做了哪些恶？</div>
 							<div class="text-author">
-								<img class="photo" src="${pageContext.request.contextPath}/img/dynamic02.png" />
+								<img class="photo" src="${pageContext.request.contextPath}/img/default.jpg" />
 								<span class="personalmsg">
 								<div class="name">
 									阿噗
@@ -945,7 +945,7 @@
 							</div>
 							<div class="text-title">你最庆幸自己当初做了什么事？</div>
 							<div class="text-author">
-								<img class="photo" src="${pageContext.request.contextPath}/img/dynamic01.jpg" />
+								<img class="photo" src="${pageContext.request.contextPath}/img/default.jpg" />
 								<span class="personalmsg">
 								<div class="name">
 							Seasee Youl
@@ -1012,7 +1012,7 @@
 							</div>
 							<div class="text-status">5234人也赞同了该回答</div>
 							<div class="text-content">
-								<img src="${pageContext.request.contextPath}/img/wudi.png" width="190" height="105" /> 凭这个
+								 凭这个
 								<a href="#" class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>
 							</div>
 							<div class="text-end">

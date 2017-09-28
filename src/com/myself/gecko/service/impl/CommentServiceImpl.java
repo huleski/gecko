@@ -8,6 +8,7 @@ import com.myself.gecko.dao.impl.CommentDaoImpl;
 import com.myself.gecko.domain.Comment;
 import com.myself.gecko.domain.CommentVO;
 import com.myself.gecko.domain.PageBean;
+import com.myself.gecko.domain.User;
 import com.myself.gecko.service.ICommentService;
 
 public class CommentServiceImpl implements ICommentService {
@@ -35,6 +36,16 @@ public class CommentServiceImpl implements ICommentService {
 	@Override
 	public void save(Comment comment) throws Exception {
 		commentDao.save(comment);
+	}
+
+	@Override
+	public void agree(User user, int cid) throws Exception {
+		commentDao.agree(user, cid);
+	}
+
+	@Override
+	public void disagree(User user, int cid) throws Exception {
+		commentDao.disagree(user, cid);
 	}
 
 }

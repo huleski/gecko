@@ -13,9 +13,63 @@
 		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 			$(function() {
-				$("#addpicdiv").hover(function() {
+				$("#titlepic").hover(function() {
 					$("#addpic").slideToggle(50);
 				});
+				
+				//发表文章
+				$("#publish").click(function(){
+					//判断输入是否为空, 非空才能上传
+					$("#hidePureContent").val(articleUE.getContentTxt());
+					var content = articleUE.getContentTxt();
+					var titlevalue = $("#titleInput").val();
+					var topicId = $("#topicselect").val();
+					if(content != "" && titlevalue != "" && topicId != 0) {
+						$("#articleForm").submit();
+					}
+					
+				});
+				//打开文件上传选择框
+				$("#titlepic").click(function() {
+					$("#picture").click();
+				});
+				
+				//上传图片
+				$("#picture").change(function() {
+					var formData = new FormData();
+					var file = this.files[0];
+					formData.append("titlePicture", file);
+					if(!/\.(gif|jpg|jpeg|png|GIF|JPG|JPEG|PNG)$/.test(this.value)) {
+						alert("请选择gif,jpg,jpeg,png等格式的图片文件");
+						return;
+					}
+					if(file.size/1024 > 500) {
+						alert("图片大小不超过500K");
+						return;
+					}
+					$.ajax({
+						url:"${pageContext.request.contextPath}/uploadServlet",
+						type:"post",
+						data: formData,
+						processData:false,
+						contentType:false,
+						success:function(result) {
+							$("#titlepic").attr("src", "/gecko/" + result);
+							$("#hideTitlePictrue").val(result);
+						},
+						error: function(errMsg) {
+							console.log(errMsg);
+						}
+					});
+				});
+				
+				//话题选择框
+				$.getJSON("${pageContext.request.contextPath}/topicServlet", {"method": "findAll"}, function(result) {
+					$(result).each(function(index, object) {
+						$("#topicselect").append("<option value='" + object.id + "'>" + object.name + "</option>");
+					});
+				});	
+			
 			});
 		</script>
 	</head>
@@ -31,7 +85,7 @@
 		      <span class="icon-bar"></span>
 		      <span class="icon-bar"></span>
 		    </button>
-		    <a class="navbar-brand" href="index.html" style="font-size: 30px;">逼</a>
+		    <a class="navbar-brand" href="${pageContext.request.contextPath}/index.jsp" style="font-size: 30px;">逼</a>
 		  </div>
 		
 		  <!-- Collect the nav links, forms, and other content for toggling -->
@@ -42,7 +96,7 @@
 		      <li style="font-size: 16px;margin-left: 20px;">草稿自动保存</li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
-		      <li><button class="btn btn-default" href="#" style="margin-top: 8px;">发布</button></li>
+		      <li><button id="publish" class="btn btn-default" href="#" style="margin-top: 8px;">发布</button></li>
 		      <li class="dropdown">
 		        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> ○○○ </a>
 		        <ul class="dropdown-menu nav nav-pills nav-stacked">
@@ -55,24 +109,48 @@
 		  </div>
 		</nav>
 		
-		<div style="margin: auto;width: 660px;">
-			<!--点击上传图片-->
-			<div id="addpicdiv" style="background-color: #F2F2F2;height: 190px;font-size: 30px;color: darkgray;text-align: center;padding-top: 70px;cursor: pointer;" title="未选择任何文件">
-				<span class="glyphicon glyphicon-camera"></span>
-				<div id="addpic" style="text-align: center;font-size: 17px;display: none;">添加题图</div>
-			</div>
-			<div style="margin: 10px 0;">
-				<input class="form-control input-lg" type="text" placeholder="请输入标题">
-			</div>
-			
-			<!--写答案-->
-			<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
-			<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js"> </script>
-			<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
-			<div id="editordiv" style="margin-bottom: 90px;">
-				<script id="editor" type="text/plain" style="width:660px;height:200px;"></script>
-			</div>
-			<script src="${pageContext.request.contextPath}/js/editorInstance.js" type="text/javascript"></script>
+		<div style="margin: auto;width: 660px;position:relative">
+			<form id="articleForm" action="${pageContext.request.contextPath}/articleServlet" method="post">
+				<input type="hidden" name="method" value="add"/>
+				<input id="hidePureContent" type="hidden" name="pureContent"/>
+				<input id="hideTitlePictrue" type="hidden" name="titlePicture"/>
+				<!--点击上传图片-->
+				<input id="picture" type="file" style="display:none"/>
+				<img id="titlepic" style="background: #F2F2F2;width: 660px;height: 190px;cursor: pointer;"/>
+				<span class="glyphicon glyphicon-camera" style="font-size:30px;position:absolute;top:60px;left:315px;"></span><br/>
+				<span id="addpic" style="font-size: 17px;display: none;position:absolute;top:100px;left:295px;">添加题图</span>
+				
+				<div class="row" style="margin: 15px 0;">
+					<div class="col-lg-9">				
+						<input class="form-control input-lg" id="titleInput" name="title" type="text" placeholder="请输入标题">
+					</div>
+					<div class="col-lg-3">	
+						<select id="topicselect" name="tid" class="form-control input-lg">
+							<option value="0">选择话题</option>
+						</select>
+					</div>
+				</div>
+				
+				<!--写答案-->
+				<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
+				<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js"> </script>
+				<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
+				<div id="editordiv" style="margin-bottom: 90px;">
+					<script id="editorArticle" name="content" type="text/plain" style="width:660px;height:200px;"></script>
+				</div>
+			</form>
+			<script type="text/javascript" >
+				var articleUE = UE.getEditor('editorArticle', {
+			        autoClearinitialContent:true, //focus时自动清空初始化时的内容
+			        wordCount:false, //关闭字数统计
+			        elementPathEnabled:false,//关闭elementPath
+			        saveInterval:30000,		//自动保存
+			        toolbars: [
+					           	['bold', 'italic','horizontal', 'paragraph', 'justifycenter', '|', 'blockquote','insertorderedlist','insertunorderedlist', 
+					           	'link','removeformat', '|','simpleupload', 'insertimage', 'insertvideo', 'music', 'fullscreen' ]
+					       	  ]
+			    });
+			</script>			
 		</div>
 		
 		

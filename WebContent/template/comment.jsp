@@ -22,9 +22,15 @@
 						${vo.content }
 					</div>
 					<div class="comment-situation">
-						<a href="#">
-							<i class="fa fa-thumbs-o-up"></i>
-							<i class="fa fa-thumbs-up"></i>
+						<a href="javascript:void(0)" onclick="agreeComment(${vo.id}, this)">
+							<c:if test="${empty vo.agree }">
+								<i class="fa fa-thumbs-o-up" ></i>
+								<i class="fa fa-thumbs-up" style="display:none"></i>
+							</c:if>
+							<c:if test="${not empty vo.agree }">
+								<i class="fa fa-thumbs-o-up" style="display:none"></i>
+								<i class="fa fa-thumbs-up"></i>
+							</c:if>
 							<span>${vo.agreeCount }</span>
 						</a>
 						<a class="comment-replybtn">

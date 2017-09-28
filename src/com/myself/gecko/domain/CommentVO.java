@@ -4,16 +4,27 @@ import java.util.Date;
 
 public class CommentVO {
 
-	private int id;
+	private Integer id;
 	private Integer pid;
 	private String content;
 	private Integer agreeCount;
 	private Date date;
-	private int uid;
+	
+	private Integer uid;
 	private String name;
 	private String photo;
 	private Integer parentUid;
 	private String parentName;
+	
+	private Integer agree;
+	
+	public Integer getAgree() {
+		return agree;
+	}
+
+	public void setAgree(Integer agree) {
+		this.agree = agree;
+	}
 
 	@Override
 	public String toString() {
@@ -30,19 +41,19 @@ public class CommentVO {
 		this.pid = pid;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public int getUid() {
+	public Integer getUid() {
 		return uid;
 	}
 
-	public void setUid(int uid) {
+	public void setUid(Integer uid) {
 		this.uid = uid;
 	}
 

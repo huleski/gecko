@@ -53,8 +53,9 @@ public class UserDaoImpl extends BaseDao<User> implements IUserDao {
 
 	@Override
 	public void update(User user) throws SQLException {
-		String sql = "update user set sex=?, sentence=?, address=?, industry=?, profession=?, education=?, description=? where id = ?";
-		Object[] params = {user.getSex(), user.getSentence(), user.getAddress(), user.getIndustry(), user.getProfession(), user.getEducation(), user.getDescription(), user.getId()};
+		String sql = "update user set sex=?, sentence=?, address=?, industry=?, profession=?, education=?, description=?, photo=?, backphoto=? where id = ?";
+		Object[] params = {user.getSex(), user.getSentence(), user.getAddress(), user.getIndustry(), user.getProfession(), user.getEducation(), 
+				user.getDescription(), user.getPhoto(), user.getBackphoto(), user.getId()};
 		CU(sql, params);
 	}
 

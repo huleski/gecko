@@ -6,21 +6,6 @@ package com.myself.gecko.constant;
 public interface Constant {
 	
 	/**
-	 * 赞同回答的类型
-	 */
-	public static final int AGREE_TYPE_ANSWER = 1;
-	
-	/**
-	 * 赞同文章的类型 
-	 */
-	public static final int AGREE_TYPE_ARTICLE = 2;
-	
-	/**
-	 * 赞同评论的类型
-	 */
-	public static final int AGREE_TYPE_COMMENT = 3;
-	
-	/**
 	 * ajax自动加载问题数
 	 */
 	public static final int QUESTION_AJAX_LOAD_COUNT = 15;

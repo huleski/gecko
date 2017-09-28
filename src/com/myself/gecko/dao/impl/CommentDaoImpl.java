@@ -15,6 +15,7 @@ import com.myself.gecko.dao.ICommentDao;
 import com.myself.gecko.dao.impl.BaseDao;
 import com.myself.gecko.domain.Comment;
 import com.myself.gecko.domain.CommentVO;
+import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
 
 public class CommentDaoImpl extends BaseDao<Comment> implements ICommentDao {
@@ -50,5 +51,25 @@ public class CommentDaoImpl extends BaseDao<Comment> implements ICommentDao {
 		Object[] params = {null, comment.getParent().getId(), comment.getUser().getId(), comment.getType(), 
 				comment.getTargetId(), comment.getContent(), comment.getDate(), comment.getAgreeCount()};
 		CU(sql, params);
+	}
+
+	@Override
+	public void agree(User user, int cid) throws Exception {
+		int uid = user.getId();
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "select count(*) from comment_agree where cid = ? and uid = ?";
+		Long count = (Long) queryRunner.query(sql, new ScalarHandler(), cid, uid);
+		if(count.intValue() == 0) {
+			sql = "insert into comment_agree values(null, ?, ?)";
+			queryRunner.update(sql, cid, uid);
+		}
+	}
+
+	@Override
+	public void disagree(User user, int cid) throws Exception {
+		int uid = user.getId();
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "delete from comment_agree where cid = ? and uid = ?";
+		queryRunner.update(sql, cid, uid);
 	}
 }
