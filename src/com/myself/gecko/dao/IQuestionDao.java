@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.myself.gecko.domain.Question;
+import com.myself.gecko.domain.User;
 
 public interface IQuestionDao extends IBaseDao<Question> {
 
@@ -11,6 +12,6 @@ public interface IQuestionDao extends IBaseDao<Question> {
 	
 	List<Question> ajaxQueryByUid(int currentPage, int pageSize, int uid) throws SQLException;
 
-	Question findQuestioinById(int id) throws SQLException, Exception;
+	Question findQuestioinById(int id, User user) throws SQLException, Exception;
 
 }

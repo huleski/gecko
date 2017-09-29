@@ -15,6 +15,9 @@ import com.myself.gecko.service.impl.AnswerServiceImpl;
 public class AnswerServlet extends BaseServlet {
 	private static IAnswerService answerService = new AnswerServiceImpl();
 
+	/**
+	 * 点赞
+	 */
 	public String agree(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 		if(user == null) {
@@ -31,6 +34,9 @@ public class AnswerServlet extends BaseServlet {
 		return null;
 	}
 	
+	/**
+	 * 取消点赞
+	 */
 	public String disagree(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 		if(user == null) {
@@ -47,6 +53,9 @@ public class AnswerServlet extends BaseServlet {
 		return null;
 	}
 	
+	/**
+	 * 增加回答
+	 */
 	public String add(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 		if (user == null) {
@@ -97,11 +106,13 @@ public class AnswerServlet extends BaseServlet {
 	public String ajaxLoad(HttpServletRequest request, HttpServletResponse response) {
 		String pageStr = request.getParameter("currentPage");
 		String qidStr = request.getParameter("qid");
+		User user = (User) request.getSession().getAttribute("user");
+		
 		try {
 			int currentPage = Integer.parseInt(pageStr);
 			int qid = Integer.parseInt(qidStr);
 
-			List<Answer> list = answerService.ajaxLoad(currentPage, qid);
+			List<Answer> list = answerService.ajaxLoad(currentPage, qid, user);
 			if (list.isEmpty()) {
 				response.getWriter().print(0);
 				return null;

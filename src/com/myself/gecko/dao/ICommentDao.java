@@ -8,7 +8,7 @@ import com.myself.gecko.domain.User;
 
 public interface ICommentDao extends IBaseDao<Comment> {
 
-	List<CommentVO> ajaxLoad(int currentPage, int pageSize,int type, int targetId) throws Exception;
+	List<CommentVO> ajaxLoad(int currentPage, int pageSize,int type, int targetId, User user) throws Exception;
 
 	int selectCommentCount(int type, int targetId) throws Exception;
 

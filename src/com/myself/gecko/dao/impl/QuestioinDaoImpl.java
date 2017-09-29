@@ -9,14 +9,15 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IQuestionDao;
 import com.myself.gecko.domain.Answer;
 import com.myself.gecko.domain.Comment;
 import com.myself.gecko.domain.Question;
-import com.myself.gecko.domain.QuestionWatch;
 import com.myself.gecko.domain.Topic;
+import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
 
 public class QuestioinDaoImpl extends BaseDao<Question> implements IQuestionDao {
@@ -36,11 +37,18 @@ public class QuestioinDaoImpl extends BaseDao<Question> implements IQuestionDao 
 	}
 
 	@Override
-	public Question findQuestioinById(int id) throws Exception {
+	public Question findQuestioinById(int id, User user) throws Exception {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		//查询问题
 		String sql = "select * from question where question.id = ?";
 		Question question = queryRunner.query(sql, new BeanHandler<>(Question.class), id);
+		
+		if(user != null) {
+			int uid = user.getId();
+			sql = "select count(*) from question_watch where uid = ? and qid = ?";
+			Long count = (Long) queryRunner.query(sql, new ScalarHandler(), uid, id);
+			question.setWatched(count.intValue());
+		}
 		
 		//查询话题并封装
 		sql = "select topic.id, topic.name from topic join question on question.tid = topic.id where question.id = ?";
@@ -56,12 +64,10 @@ public class QuestioinDaoImpl extends BaseDao<Question> implements IQuestionDao 
 			question.getAnswerList().add(new Answer());
 		}
 		
-		//查询关注列表并封装
-		sql = "select id from question_watch where qid = ?";
-		List<Map<String, Object>> list2 = queryRunner.query(sql, new MapListHandler(), id);
-		for (Map<String, Object> map3 : list2) {
-			question.getWatchList().add(new QuestionWatch());
-		}
+		//查询关注数并封装
+		sql = "select count(*) from question_watch where qid = ?";
+		Long watchCount = (Long) queryRunner.query(sql, new ScalarHandler(), id);
+		question.setWatchCount(watchCount.intValue());
 		
 		//查询评论并封装
 		sql = "select id from comment where targetId = ? and type = ?";
@@ -69,7 +75,6 @@ public class QuestioinDaoImpl extends BaseDao<Question> implements IQuestionDao 
 		for (Map<String, Object> map4 : list3) {
 			question.getCommentList().add(new Comment());
 		}
-		
 		return question;
 	}
 

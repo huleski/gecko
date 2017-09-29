@@ -1,5 +1,6 @@
 package com.myself.gecko.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,17 +26,39 @@ public class AnswerDaoImpl extends BaseDao<Answer> implements IAnswerDao {
 	}
 
 	@Override
-	public List<Answer> ajaxLoad(int currentPage, int qid) throws Exception {
+	public List<Answer> ajaxLoad(int currentPage, int qid, User user) throws Exception {
+		int uid = 0;
+		if (user != null) {
+			uid = user.getId();
+		}
+
 		String whereClause = "where qid = " + qid;
-		List<Answer> list = selectLimitByWhere(currentPage, Constant.ANSWER_AJAX_LOAD_COUNT, whereClause );
+		List<Answer> list = selectLimitByWhere(currentPage, Constant.ANSWER_AJAX_LOAD_COUNT, whereClause);
 		String sql = null;
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		for (Answer answer : list) {
 			sql = "select user.id, user.name, user.sentence,user.photo from user join answer on answer.uid = user.id where answer.id = ?";
 			Map<String, Object> map = queryRunner.query(sql, new MapHandler(), answer.getId());
-			User user = new User();
-			BeanUtils.populate(user, map);
-			answer.setUser(user);
+			User author = new User();
+			BeanUtils.populate(author, map);
+			answer.setUser(author);
+
+			// 查询赞同数
+			sql = "select count(*) from answer_agree where aid = ?";
+			Long agreeCount = (Long) queryRunner.query(sql, new ScalarHandler(), answer.getId());
+			answer.setAgreeCount(agreeCount.intValue());
+			
+			// 查询评论数
+			sql = "select count(*) from comment where type = ? and targetId = ?";
+			Long commentCount = (Long) queryRunner.query(sql, new ScalarHandler(), Constant.COMMENT_TYPE_ANSWER, answer.getId());
+			answer.setCommentCount(commentCount.intValue());
+			
+			//查询我是否点过赞
+			if (uid != 0) {
+				sql = "select count(*) from answer_agree where aid = ? and uid = ?";
+				Long agree = (Long) queryRunner.query(sql, new ScalarHandler(), answer.getId(), uid);
+				answer.setAgree(agree.intValue());
+			}
 		}
 		return list;
 	}
@@ -43,8 +66,9 @@ public class AnswerDaoImpl extends BaseDao<Answer> implements IAnswerDao {
 	@Override
 	public void save(Answer answer) throws Exception {
 		String sql = "insert into answer values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		Object[] params = {null, answer.getUser().getId(), answer.getQuestion().getId(), answer.getAnonymous(), answer.getPureContent(),
-				answer.getContent(), answer.getDate(), answer.getCommentCount(), answer.getAgreeCount()};
+		Object[] params = { null, answer.getUser().getId(), answer.getQuestion().getId(), answer.getAnonymous(),
+				answer.getPureContent(), answer.getContent(), answer.getDate(), answer.getCommentCount(),
+				answer.getAgreeCount() };
 		CU(sql, params);
 	}
 
@@ -54,9 +78,9 @@ public class AnswerDaoImpl extends BaseDao<Answer> implements IAnswerDao {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "select count(*) from answer_agree where aid = ? and uid = ?";
 		Long count = (Long) queryRunner.query(sql, new ScalarHandler(), aid, uid);
-		if(count.intValue() == 0) {
-			sql = "insert into answer_agree values(null, ?, ?)";
-			queryRunner.update(sql, aid, uid);
+		if (count.intValue() == 0) {
+			sql = "insert into answer_agree values(null, ?, ?, ?)";
+			queryRunner.update(sql, aid, uid, new Date());
 		}
 	}
 
@@ -68,5 +92,4 @@ public class AnswerDaoImpl extends BaseDao<Answer> implements IAnswerDao {
 		queryRunner.update(sql, aid, uid);
 	}
 
-	
 }

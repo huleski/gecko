@@ -23,11 +23,11 @@
 					</div>
 					<div class="comment-situation">
 						<a href="javascript:void(0)" onclick="agreeComment(${vo.id}, this)">
-							<c:if test="${empty vo.agree }">
+							<c:if test="${vo.agree != 1}">
 								<i class="fa fa-thumbs-o-up" ></i>
 								<i class="fa fa-thumbs-up" style="display:none"></i>
 							</c:if>
-							<c:if test="${not empty vo.agree }">
+							<c:if test="${vo.agree == 1}">
 								<i class="fa fa-thumbs-o-up" style="display:none"></i>
 								<i class="fa fa-thumbs-up"></i>
 							</c:if>

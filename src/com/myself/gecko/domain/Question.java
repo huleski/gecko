@@ -15,17 +15,26 @@ public class Question {
 	private String content;
 	private Date date;
 	private Integer lookCount;
+	private Integer watchCount;
+	private Integer watched;
 
 	private List<Answer> answerList = new ArrayList<>();
-	private List<QuestionWatch> watchList = new ArrayList<>();
 	private List<Comment> commentList = new ArrayList<>();
+
 
 	@Override
 	public String toString() {
 		return "Question [id=" + id + ", user=" + user + ", topic=" + topic + ", anonymous=" + anonymous + ", title="
-				+ title + ", pureContent=" + pureContent + ", content=" + content + ", date=" + date + ", lookCount="
-				+ lookCount + ", answerList=" + answerList + ", watchList=" + watchList + ", commentList=" + commentList
-				+ "]";
+				+ title + ", date=" + date + ", lookCount=" + lookCount + ", watchCount=" + watchCount + ", watched="
+				+ watched + "]";
+	}
+
+	public Integer getWatched() {
+		return watched;
+	}
+
+	public void setWatched(Integer watched) {
+		this.watched = watched;
 	}
 
 	public int getId() {
@@ -100,20 +109,20 @@ public class Question {
 		this.lookCount = lookCount;
 	}
 
+	public Integer getWatchCount() {
+		return watchCount;
+	}
+
+	public void setWatchCount(Integer watchCount) {
+		this.watchCount = watchCount;
+	}
+
 	public List<Answer> getAnswerList() {
 		return answerList;
 	}
 
 	public void setAnswerList(List<Answer> answerList) {
 		this.answerList = answerList;
-	}
-
-	public List<QuestionWatch> getWatchList() {
-		return watchList;
-	}
-
-	public void setWatchList(List<QuestionWatch> watchList) {
-		this.watchList = watchList;
 	}
 
 	public List<Comment> getCommentList() {

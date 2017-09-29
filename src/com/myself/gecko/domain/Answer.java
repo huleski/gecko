@@ -8,38 +8,25 @@ public class Answer {
 	private Question question;
 	private Integer anonymous;
 	private String pureContent;
-	
+
 	private String content;
 	private Date date;
 	private Integer commentCount;
 	private Integer agreeCount;
 	private Integer agree;
 
-	public Integer getAgree() {
-		return agree;
+	@Override
+	public String toString() {
+		return "Answer [id=" + id + ", user=" + user + ", question=" + question + ", anonymous=" + anonymous
+			 + ", date=" + date + ", commentCount="
+				+ commentCount + ", agreeCount=" + agreeCount + ", agree=" + agree + "]";
 	}
 
-	public void setAgree(Integer agree) {
-		this.agree = agree;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public void setCommentCount(Integer commentCount) {
-		this.commentCount = commentCount;
-	}
-
-	public void setAgreeCount(Integer agreeCount) {
-		this.agreeCount = agreeCount;
-	}
-
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -91,20 +78,28 @@ public class Answer {
 		this.date = date;
 	}
 
-	public int getCommentCount() {
+	public Integer getCommentCount() {
 		return commentCount;
 	}
 
-	public void setCommentCount(int commentCount) {
+	public void setCommentCount(Integer commentCount) {
 		this.commentCount = commentCount;
 	}
 
-	public int getAgreeCount() {
+	public Integer getAgreeCount() {
 		return agreeCount;
 	}
 
-	public void setAgreeCount(int agreeCount) {
+	public void setAgreeCount(Integer agreeCount) {
 		this.agreeCount = agreeCount;
+	}
+
+	public Integer getAgree() {
+		return agree;
+	}
+
+	public void setAgree(Integer agree) {
+		this.agree = agree;
 	}
 
 }

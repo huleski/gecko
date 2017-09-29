@@ -18,19 +18,19 @@ public class CommentVO {
 	
 	private Integer agree;
 	
+	@Override
+	public String toString() {
+		return "CommentVO [id=" + id + ", pid=" + pid + ", content=" + content + ", agreeCount=" + agreeCount
+				+ ", date=" + date + ", uid=" + uid + ", name=" + name + ", photo=" + photo + ", parentUid=" + parentUid
+				+ ", parentName=" + parentName + ", agree=" + agree + "]";
+	}
+
 	public Integer getAgree() {
 		return agree;
 	}
 
 	public void setAgree(Integer agree) {
 		this.agree = agree;
-	}
-
-	@Override
-	public String toString() {
-		return "CommentVO [id=" + id + ", pid=" + pid + ", content=" + content + ", agreeCount=" + agreeCount
-				+ ", date=" + date + ", uid=" + uid + ", name=" + name + ", photo=" + photo + ", parentUid=" + parentUid
-				+ ", parentName=" + parentName + "]";
 	}
 
 	public Integer getPid() {

@@ -1,6 +1,7 @@
 package com.myself.gecko.service;
 
 import com.myself.gecko.domain.Question;
+import com.myself.gecko.domain.User;
 
 public interface IQuestioinService {
 
@@ -8,6 +9,6 @@ public interface IQuestioinService {
 
 	String ajaxQueryByUid(int currentPage, int uid) throws Exception ;
 
-	Question findQuestioinById(int id) throws Exception;
+	Question findQuestioinById(int id, User user) throws Exception;
 
 }

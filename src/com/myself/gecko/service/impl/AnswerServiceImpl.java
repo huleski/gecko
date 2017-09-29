@@ -14,8 +14,8 @@ public class AnswerServiceImpl implements IAnswerService {
 	private static IAnswerDao answerDao = new AnswerDaoImpl();
 	
 	@Override
-	public List<Answer> ajaxLoad(int currentPage, int qid) throws Exception {
-		return answerDao.ajaxLoad(currentPage, qid);
+	public List<Answer> ajaxLoad(int currentPage, int qid, User user) throws Exception {
+		return answerDao.ajaxLoad(currentPage, qid, user);
 	}
 
 	@Override

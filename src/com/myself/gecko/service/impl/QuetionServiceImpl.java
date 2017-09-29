@@ -9,6 +9,7 @@ import com.myself.gecko.dao.impl.AnswerDaoImpl;
 import com.myself.gecko.dao.impl.QuestioinDaoImpl;
 import com.myself.gecko.domain.Answer;
 import com.myself.gecko.domain.Question;
+import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IQuestioinService;
 import com.myself.gecko.util.JsonUtil;
 
@@ -32,8 +33,8 @@ public class QuetionServiceImpl implements IQuestioinService {
 	}
 
 	@Override
-	public Question findQuestioinById(int id) throws Exception {
-		return questionDao.findQuestioinById(id);
+	public Question findQuestioinById(int id, User user) throws Exception {
+		return questionDao.findQuestioinById(id, user);
 	}
 
 }

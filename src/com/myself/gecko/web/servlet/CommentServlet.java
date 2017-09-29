@@ -87,12 +87,13 @@ public class CommentServlet extends BaseServlet {
 		String targetIdStr = request.getParameter("targetId");
 		String currentPageStr = request.getParameter("currentPage");
 		String typeStr = request.getParameter("type");
+		User user = (User) request.getSession().getAttribute("user");
 		
 		try {
 			int targetId = Integer.parseInt(targetIdStr);
 			int currentPage = Integer.parseInt(currentPageStr);
 			int type = Integer.parseInt(typeStr);
-			PageBean<CommentVO> pageBean = commentService.pageQuery(currentPage, type, targetId);
+			PageBean<CommentVO> pageBean = commentService.pageQuery(currentPage, type, targetId, user);
 			request.setAttribute("pageBean", pageBean);
 			request.setAttribute("targetId", targetId);
 			return "/template/comment.jsp";

@@ -36,9 +36,16 @@
 				<div class="edit-time">编辑于 <span> <fmt:formatDate value="${a.date}" pattern="yyyy-MM-dd" /></span></div>
 			</div>
 			<div class="text-end">
-				<button class="btn btn-default agreebtn" onclick="agree(${a.id}, this)">
-					<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${a.agreeCount}</span></span>
-				</button>
+				<c:if test="${a.agree != 1 }">
+					<button class="btn btn-default agreebtn" onclick="agree(${a.id}, this)">
+						<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${a.agreeCount}</span></span>
+					</button>
+				</c:if>
+				<c:if test="${a.agree == 1 }">
+					<button class="btn btn-info active agreebtn" onclick="agree(${a.id}, this)">
+						<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${a.agreeCount}</span></span>
+					</button>
+				</c:if>
 				<button class="btn btn-default disagreebtn" onclick="disagree(${a.id}, this)">
 					<span class="glyphicon glyphicon-chevron-down"></span>
 				</button>

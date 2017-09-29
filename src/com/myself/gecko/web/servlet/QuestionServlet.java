@@ -19,12 +19,13 @@ import com.myself.gecko.service.impl.QuetionServiceImpl;
 public class QuestionServlet extends BaseServlet {
 	private static IQuestioinService questionService = new QuetionServiceImpl();
 	
-	
 	public String findById(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+		
 		String idStr = request.getParameter("id");
 		try {
 			int id = Integer.parseInt(idStr);
-			Question question = questionService.findQuestioinById(id);
+			Question question = questionService.findQuestioinById(id, user);
 			request.setAttribute("question", question);
 			return "/jsp/question.jsp";
 		} catch (Exception e) {

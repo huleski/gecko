@@ -453,18 +453,19 @@
 				$(obj).toggleClass("active");
 				var $disagreebtn = $(obj).next(".disagreebtn");
 				var cls = $disagreebtn.attr("class");
-				if(cls.indexOf("active") != -1) {
+				if(cls.indexOf("active") != -1) {	
 					$disagreebtn.toggleClass("btn-default"); 
 					$disagreebtn.toggleClass("btn-info");
 					$disagreebtn.toggleClass("active");
 				}
 				
+				var count =  parseInt($(obj).find(".keepgap").text());
 				if(($(obj).attr("class").indexOf("active")) != -1) {	//点赞,发送ajax请求
 					$.post("${pageContext.request.contextPath}/answerServlet", {"method":"agree", "aid":aid});
-					console.log("agree");
+					$(obj).find(".keepgap").text(count + 1);
 				} else {	//取消点赞,发送ajax请求
 					$.post("${pageContext.request.contextPath}/answerServlet", {"method":"disagree", "aid":aid});
-					console.log("disagree");
+					$(obj).find(".keepgap").text(count - 1);
 				}
 			}
 			//反对回答(取消赞同)
@@ -478,12 +479,13 @@
 				$(obj).toggleClass("btn-info");
 				$(obj).toggleClass("active");
 				var $agreebtn = $(obj).prev(".agreebtn");
+				var count =  parseInt($agreebtn.find(".keepgap").text());
 				var cls = $agreebtn.attr("class");
 				if(cls.indexOf("active") != -1) {
 					$agreebtn.toggleClass("btn-default"); 
 					$agreebtn.toggleClass("btn-info");
 					$agreebtn.toggleClass("active");
-					console.log("disagree");
+					$agreebtn.find(".keepgap").text(count - 1);
 					$.post("${pageContext.request.contextPath}/answerServlet", {"method":"disagree", "aid":aid});
 				} 
 			}
@@ -497,7 +499,6 @@
 					$(obj).find("i").toggle();
 					
 					var $agree = $(obj).find(".fa-thumbs-up");
-					console.log($agree.css("display"))
 					if($agree.css("display") != "none") {
 						$(obj).find("span").text(count + 1);
 						$.post("${pageContext.request.contextPath}/commentServlet", {"method":"agree", "cid":cid});
@@ -720,7 +721,7 @@
 					<div style="position: absolute;top:0;right: 0;width: 220px;margin-left: 70px;">
 						<div style="float: left;width: 100px;text-align: center;">
 							<div style="color: darkgray;">关注者</div>
-							<div style="font-size: 18px;">${fn:length(question.watchList)}</div>
+							<div style="font-size: 18px;">${question.watchCount}</div>
 						</div>
 						<div style="float: left;width: 100px;text-align: center;">
 							<div style="color: darkgray;">被浏览</div>
@@ -728,7 +729,8 @@
 						</div>
 					</div>
 					<div style="position: absolute;bottom: 15px;right: 20px;">
-						<button type="button" class="btn btn-info" id="focusquestion" onclick="">关注问题</button>
+						<c:if test="${question.watched != 1 }"><button type="button" class="btn btn-info" id="focusquestion" onclick="">关注问题</button></c:if>
+						<c:if test="${question.watched == 1 }"><button type="button" class="btn btn-info" id="focusquestion" onclick="">取消关注</button></c:if>
 						<button type="button" class="btn btn-default" id="writeanswer" onclick="writeAnswer()">
 							<span class="glyphicon glyphicon-pencil"></span>
 							写回答
