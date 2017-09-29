@@ -14,4 +14,8 @@ public interface IQuestionDao extends IBaseDao<Question> {
 
 	Question findQuestioinById(int id, User user) throws SQLException, Exception;
 
+	void addWatch(int qid, User user) throws SQLException, Exception;
+	
+	void cancleWatch(int qid, User user) throws SQLException, Exception;
+
 }

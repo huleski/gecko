@@ -19,6 +19,39 @@ import com.myself.gecko.service.impl.QuetionServiceImpl;
 public class QuestionServlet extends BaseServlet {
 	private static IQuestioinService questionService = new QuetionServiceImpl();
 	
+	public String addWatch(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+		if(user == null) {
+			return null;
+		}
+		
+		String qidStr = request.getParameter("qid");
+		try {
+			int qid = Integer.parseInt(qidStr);
+			questionService.addWatch(qid, user);
+			response.getWriter().print(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String cancleWatch(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+		if(user == null) {
+			return null;
+		}
+		
+		String qidStr = request.getParameter("qid");
+		try {
+			int qid = Integer.parseInt(qidStr);
+			questionService.cancleWatch(qid, user);
+			response.getWriter().print(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public String findById(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 		

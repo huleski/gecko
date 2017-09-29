@@ -37,4 +37,14 @@ public class QuetionServiceImpl implements IQuestioinService {
 		return questionDao.findQuestioinById(id, user);
 	}
 
+	@Override
+	public void addWatch(int qid, User user) throws Exception {
+		questionDao.addWatch(qid, user);
+	}
+
+	@Override
+	public void cancleWatch(int qid, User user) throws Exception {
+		questionDao.cancleWatch(qid, user);
+	}
+
 }

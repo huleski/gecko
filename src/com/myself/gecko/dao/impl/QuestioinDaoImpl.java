@@ -1,6 +1,7 @@
 package com.myself.gecko.dao.impl;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +44,7 @@ public class QuestioinDaoImpl extends BaseDao<Question> implements IQuestionDao 
 		String sql = "select * from question where question.id = ?";
 		Question question = queryRunner.query(sql, new BeanHandler<>(Question.class), id);
 		
+		//查询是否已经关注
 		if(user != null) {
 			int uid = user.getId();
 			sql = "select count(*) from question_watch where uid = ? and qid = ?";
@@ -76,6 +78,26 @@ public class QuestioinDaoImpl extends BaseDao<Question> implements IQuestionDao 
 			question.getCommentList().add(new Comment());
 		}
 		return question;
+	}
+
+	@Override
+	public void addWatch(int qid, User user) throws SQLException, Exception {
+		int uid = user.getId();
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "select count(*) from question_watch where qid = ? and uid = ?";
+		Long count = (Long) queryRunner.query(sql, new ScalarHandler(), qid, uid);
+		if (count.intValue() == 0) {
+			sql = "insert into question_watch values(null, ?, ?, ?)";
+			queryRunner.update(sql, uid, qid, new Date());
+		}
+	}
+
+	@Override
+	public void cancleWatch(int qid, User user) throws SQLException, Exception {
+		int uid = user.getId();
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "delete from question_watch where qid = ? and uid = ?";
+		queryRunner.update(sql, qid, uid);
 	}
 
 }

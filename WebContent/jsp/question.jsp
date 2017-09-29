@@ -436,10 +436,42 @@
 					}
 				});
 				
+				$(".cancleWatch").hover(function(){
+					$(this).text("取消关注");
+				}, function() {
+					$(this).text("已关注");
+				});
+				
 				//举报弹出框
 				$(".report").popover();
 				
 			});
+			
+			//关注问题
+			function addWatch(qid){
+				$(".cancleWatch").toggle();
+				$(".addWatch").toggle();
+				$.post("${pageContext.request.contextPath}/questionServlet", {"method":"addWatch", "qid":qid},
+					function(result) {
+						if(result == 1){
+							var count = parseInt($("#questionWatchCount").text());
+							$("#questionWatchCount").text(count + 1);
+						}
+				});
+			}
+			
+			//取消关注问题
+			function cancleWatch(qid){
+				$(".cancleWatch").toggle();
+				$(".addWatch").toggle();
+				$.post("${pageContext.request.contextPath}/questionServlet", {"method":"cancleWatch", "qid":qid},
+					function(result) {
+						if(result == 1){
+							var count = parseInt($("#questionWatchCount").text());
+							$("#questionWatchCount").text(count - 1);
+						}
+				});
+			}
 			
 			//赞同回答
 			function agree(aid, obj) {
@@ -675,7 +707,14 @@
 						${fn:substring(question.title, 0, 30) }...
 					</div>
 					<span style="position: absolute;top:8px;right: 20px;">
-						<button type="button" class="btn btn-info" id="focusquestion" onclick="">关注问题</button>
+						<c:if test="${question.watched != 1 }">
+							<button type="button" class="btn btn-info addWatch" onclick="addWatch(${question.id})">关注问题</button>
+							<button type="button" class="btn btn-info cancleWatch" style="display:none" onclick="cancleWatch(${question.id})">已关注</button>
+						</c:if>
+						<c:if test="${question.watched == 1 }">
+							<button type="button" class="btn btn-info addWatch" style="display:none" onclick="addWatch(${question.id})">关注问题</button>
+							<button type="button" class="btn btn-info cancleWatch" onclick="cancleWatch(${question.id})">已关注</button>
+						</c:if>
 						<button type="button" class="btn btn-default" id="writeanswer" onclick="writeAnswer()">
 							<span class="glyphicon glyphicon-pencil"></span>
 							写回答
@@ -721,7 +760,7 @@
 					<div style="position: absolute;top:0;right: 0;width: 220px;margin-left: 70px;">
 						<div style="float: left;width: 100px;text-align: center;">
 							<div style="color: darkgray;">关注者</div>
-							<div style="font-size: 18px;">${question.watchCount}</div>
+							<div style="font-size: 18px;" id="questionWatchCount">${question.watchCount}</div>
 						</div>
 						<div style="float: left;width: 100px;text-align: center;">
 							<div style="color: darkgray;">被浏览</div>
@@ -729,8 +768,14 @@
 						</div>
 					</div>
 					<div style="position: absolute;bottom: 15px;right: 20px;">
-						<c:if test="${question.watched != 1 }"><button type="button" class="btn btn-info" id="focusquestion" onclick="">关注问题</button></c:if>
-						<c:if test="${question.watched == 1 }"><button type="button" class="btn btn-info" id="focusquestion" onclick="">取消关注</button></c:if>
+						<c:if test="${question.watched != 1 }">
+							<button type="button" class="btn btn-info addWatch" onclick="addWatch(${question.id})">关注问题</button>
+							<button type="button" class="btn btn-info cancleWatch" style="display:none" onclick="cancleWatch(${question.id})">已关注</button>
+						</c:if>
+						<c:if test="${question.watched == 1 }">
+							<button type="button" class="btn btn-info addWatch" style="display:none" onclick="addWatch(${question.id})">关注问题</button>
+							<button type="button" class="btn btn-info cancleWatch" onclick="cancleWatch(${question.id})">已关注</button>
+						</c:if>
 						<button type="button" class="btn btn-default" id="writeanswer" onclick="writeAnswer()">
 							<span class="glyphicon glyphicon-pencil"></span>
 							写回答

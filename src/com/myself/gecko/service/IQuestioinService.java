@@ -11,4 +11,8 @@ public interface IQuestioinService {
 
 	Question findQuestioinById(int id, User user) throws Exception;
 
+	void addWatch(int qid, User user) throws Exception;
+	
+	void cancleWatch(int qid, User user) throws Exception;
+
 }
