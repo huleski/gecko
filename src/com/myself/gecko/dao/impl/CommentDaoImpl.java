@@ -29,7 +29,7 @@ public class CommentDaoImpl extends BaseDao<Comment> implements ICommentDao {
 		Object[] params = {type, targetId, (currentPage -1) * pageSize, pageSize};
 		List<CommentVO> list = queryRunner.query(sql, new BeanListHandler<>(CommentVO.class), params);
 		for (CommentVO vo : list) {
-			if(vo.getPid() != 0) {
+			if(vo.getPid() != null) {
 				sql = "select user.id, user.name from comment c1, comment c2, user where c1.uid = user.id and c1.id = c2.pid and  c2.id = " + vo.getId();
 				Map<String, Object> map = queryRunner.query(sql, new MapHandler());
 				vo.setParentUid((Integer) map.get("id"));
@@ -58,9 +58,9 @@ public class CommentDaoImpl extends BaseDao<Comment> implements ICommentDao {
 
 	@Override
 	public void save(Comment comment) throws Exception {
-		String sql = "insert into comment values(?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "insert into comment values(?, ?, ?, ?, ?, ?, ?)";
 		Object[] params = {null, comment.getParent().getId(), comment.getUser().getId(), comment.getType(), 
-				comment.getTargetId(), comment.getContent(), comment.getDate(), comment.getAgreeCount()};
+				comment.getTargetId(), comment.getContent(), comment.getDate()};
 		CU(sql, params);
 	}
 

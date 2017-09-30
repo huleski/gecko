@@ -558,7 +558,7 @@
 				</div>
 				<div id="bottomdiv">
 					<div id="photoback">
-						<img src="${pageContext.request.contextPath}/img/defaultbig.jpg" id="personalimg" />
+						<img src="${pageContext.request.contextPath}/img/default.jpg" id="personalimg" />
 					</div>
 					<div id="personalinfo">
 						<div id="simpleInfo">

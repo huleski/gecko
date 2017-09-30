@@ -46,8 +46,7 @@
 							</a>
 							<span class="btn-group">
 								<a href="javascript:void(0)" data-toggle="dropdown" style="position: relative;top: -5px;margin-left: 30px;">
-									<c:if test="${empty user.photo }"><img src="${pageContext.request.contextPath}/img/default.jpg" height="30px" width="30px"/></c:if>
-									<c:if test="${not empty user.photo }"><img src="${pageContext.request.contextPath}/${user.photo}" height="30px" width="30px"/></c:if>						
+									<img src="${pageContext.request.contextPath}/${user.photo}" height="30px" width="30px"/>						
 								</a>
 								<ul class="dropdown-menu nav" role="menu">
 								    <li>

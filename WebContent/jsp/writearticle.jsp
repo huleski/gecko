@@ -24,7 +24,8 @@
 					var content = articleUE.getContentTxt();
 					var titlevalue = $("#titleInput").val();
 					var topicId = $("#topicselect").val();
-					if(content != "" && titlevalue != "" && topicId != 0) {
+					var titlePic = $("#hideTitlePictrue").val();
+					if(content != "" && titlevalue != "" && topicId != 0 && titlePic != "") {
 						$("#articleForm").submit();
 					}
 					
