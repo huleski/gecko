@@ -30,7 +30,7 @@
 			</span>
 			<span style="position: relative;top: -5px;font-size: 15px;margin-left:400px">
 				<a class="topmenu" href="${pageContext.request.contextPath}/jsp/index.jsp" style="margin-left: 30px;">首页</a>
-				<a class="topmenu" href="${pageContext.request.contextPath}/jsp/topic.jsp" style="margin-left: 30px;">话题</a>
+				<a class="topmenu" href="${pageContext.request.contextPath}/jsp/watchtopic.jsp" style="margin-left: 30px;">话题</a>
 				<a class="topmenu" href="${pageContext.request.contextPath}/jsp/find.jsp" style="margin-left: 30px;">发现</a>
 				<button type="button" class="btn btn-info" style="width:60px;font-size: 14px;margin-left: 120px;" onclick="writeQuestioin()">提问</button>
 				
