@@ -4,7 +4,7 @@
 <html>
 
 	<head>
-		<title>话题</title>
+		<title>已关注话题</title>
 		<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/bi.ico" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
