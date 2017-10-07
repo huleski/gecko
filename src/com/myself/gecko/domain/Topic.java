@@ -3,17 +3,26 @@ package com.myself.gecko.domain;
 import java.util.Date;
 
 public class Topic {
-	private int id;
+	private Integer id;
 	private String name;
+	private String photo;
 	private String description;
 	private Date date;
 	private Integer watchCount;
 
-	public int getId() {
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -49,4 +58,9 @@ public class Topic {
 		this.watchCount = watchCount;
 	}
 
+	@Override
+	public String toString() {
+		return "Topic [id=" + id + ", name=" + name + ", photo=" + photo + ", description=" + description + ", date="
+				+ date + ", watchCount=" + watchCount + "]";
+	}
 }

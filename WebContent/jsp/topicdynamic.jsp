@@ -522,7 +522,7 @@
 						<a href="topicground.jsp"><button type="button" class="btn btn-info" style="margin-top:30px;">进入话题广场</button></a>
 					</div>
 					<div style="text-align: center;margin-top: 20px;">
-						<a href="topicground.html">
+						<a href="topicground.jsp">
 							来这里发现更多有趣话题
 						</a>
 					</div>

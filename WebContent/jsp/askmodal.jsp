@@ -15,6 +15,15 @@
 		}
 	}
 	
+	//打开话题动态
+	function openTopicDynamic(){
+		if("${user}" == "") {
+			$('#loginModal').modal();
+		} else {
+			location.href="${pageContext.request.contextPath}/jsp/topicdynamic.jsp";
+		}
+	}
+	
 	$(function() {
 		$("#topicselect").change(function() {
 			if(this.value != 0) {

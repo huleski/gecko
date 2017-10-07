@@ -9,6 +9,7 @@ public interface ITopicService {
 	public abstract void add(Topic topic) throws SQLException;
 	public abstract void delete(int id) throws SQLException;
 	public abstract void update(Topic topic) throws SQLException;
-	public abstract Topic findById(int id) throws SQLException;
+	public abstract Topic findTopicById(int id) throws SQLException;
 	public abstract List<Topic> findAll() throws SQLException;
+	public abstract String findOthers() throws SQLException;
 }

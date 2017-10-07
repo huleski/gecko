@@ -3,16 +3,11 @@ package com.myself.gecko.service.impl;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
-
 import com.myself.gecko.dao.ITopicDao;
-import com.myself.gecko.dao.IUserDao;
 import com.myself.gecko.dao.impl.TopicDaoImpl;
-import com.myself.gecko.dao.impl.UserDaoImpl;
 import com.myself.gecko.domain.Topic;
-import com.myself.gecko.domain.User;
 import com.myself.gecko.service.ITopicService;
-import com.myself.gecko.service.IUserService;
+import com.myself.gecko.util.JsonUtil;
 
 public class TopicServiceImpl implements ITopicService {
 	private static TopicServiceImpl topicService;
@@ -43,13 +38,20 @@ public class TopicServiceImpl implements ITopicService {
 	}
 
 	@Override
-	public Topic findById(int id) throws SQLException {
-		return null;
+	public Topic findTopicById(int id) throws SQLException {
+		return topicDao.findTopicById(id);
 	}
 
 	@Override
 	public List<Topic> findAll() throws SQLException {
 		return topicDao.findAll();
+	}
+
+	@Override
+	public String findOthers() throws SQLException {
+		List<Topic> list = topicDao.findOthers();
+System.out.println(list.size());
+		return JsonUtil.list2json(list);
 	}
 	
 }

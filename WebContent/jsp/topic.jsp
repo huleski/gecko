@@ -4,7 +4,7 @@
 <html>
 
 	<head>
-		<title>话题名称</title>
+		<title>${topic.name }</title>
 		<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/bi.ico" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -160,14 +160,6 @@
 				display: none;
 			}
 			
-			#topicground {
-				width: 270px;
-				height: 140px;
-				background-color: aliceblue;
-				border: 1px solid lightblue;
-				border-radius: 5px;
-			}
-			
 			.topicdiv {
 				margin-top: 15px;
 				position: relative;
@@ -192,6 +184,12 @@
 				position: absolute;
 				right: 0;
 				top: 9px
+			}
+			.topicnav{
+				margin-top:10px;
+			}
+			.topicnav a {
+				margin-left:30px;
 			}
 		</style>
 
@@ -262,10 +260,19 @@
 					}
 				});
 				
+				$("#cancleWatch").hover(function(){
+					this.innerText="取消关注";
+				},function(){
+					this.innerText="已关注";
+				});
+				
 				/*回到顶部*/
 				$("#gotobtn").click(function() {
 					 $('body,html').animate({scrollTop:0}, 500);
 				});
+				
+				//ajax查询其他话题
+				ajaxLoadOtherTopics();
 
 			});
 
@@ -278,7 +285,34 @@
 				}
 			}
 			
+			function watchTopic(tid) {
+				$("#watchTopic").toggle();
+				$("#cancleWatch").toggle();
+			}
+			function cancleWatch(tid) {
+				$("#watchTopic").toggle();
+				$("#cancleWatch").toggle();
+			}
 			
+			function ajaxLoadOtherTopics(){
+				$.getJSON("${pageContext.request.contextPath}/topicServlet", {"method":"findOthers"},
+					function(result){
+						var topics = "";
+						$(result).each(function(i, obj){
+							topics += '<div class="topicdiv">';
+							topics += '<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id='+obj.id+'"><img class="topicicon" src="${pageContext.request.contextPath}/'+obj.photo+'" /></a>';
+							topics += '<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id='+obj.id+'" class="topicfont">'+obj.name+'</a>';
+							topics += '<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id='+obj.id+'" class="topicfocus">关注</a>';
+							topics += '</div>';
+						});
+						$("#otherTopicsDiv").html(topics);
+				});
+				/* <div class="topicdiv">
+					<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/shengwu.jpg" /></a>
+					<a href="#" class="topicfont">生物学</a>
+					<a href="#" class="topicfocus">关注</a>
+				</div> */
+			}
 		</script>
 	</head>
 
@@ -290,27 +324,26 @@
 			<!--话题动态展示-->
 			<div style="width: 1000px;margin: auto;margin-top: 80px;">
 				<div style="width:650px;float: left;">
-					<div>
-						<span style="font-weight: bold;margin-left: 20px;">已关注的话题动态</span>
-						<a href="#" style="margin-left: 415px;">共关注8个话题</a>
+					<div style="margin-bottom:20px" class="row">
+						<div class="col-md-1">
+							<img width="50px" height="50px" src="${pageContext.request.contextPath}/${topic.photo }"/>
+						</div>
+						<div class="col-md-11" style="padding-left:20px">
+							<div style="font-size:18px;font-weight:bold;">${topic.name }</div>
+							<div class="topicnav">
+								<span style="font-weight:bold;">动态</span>
+								<a href="#">精华</a>
+								<a href="#">等待回答</a>
+							</div>
+						</div>
 					</div>
-					<div style="height: 1px;background-color: darkgray;margin-top: 10px;"></div>
-					<div style="padding: 15px 0;">
-						<a href="#"><button class="focusedtopic">互联网</button></a>
-						<a href="#"><button class="focusedtopic">英语</button></a>
-						<a href="#"><button class="focusedtopic">动漫</button></a>
-						<a href="#"><button class="focusedtopic">哔哩哔哩</button></a>
-						<a href="#"><button class="focusedtopic">电路设计</button></a>
-						<a href="#"><button class="focusedtopic">网易云音乐</button></a>
-						<a href="#"><button class="focusedtopic">电子工程师(EE)</button></a>
-						<a href="#"><button class="focusedtopic">表情图</button></a>
-					</div>
+					
+					
+					
 					<div style="height: 1px;background-color: lightgray;"></div>
-					<div style="margin-top: 15px;margin-bottom:40px;position: relative;">
-						<img src="${pageContext.request.contextPath}/img/internet.jpg" height="40px" style="border-radius: 4px;" />
-						<span style="font-weight: bold;margin-left: 20px;">互联网</span>
-						<span style="color: darkgray;margin-left: 410px;">热门排序 |</span>
-						<a href="#" style="">时间排序</a>
+					<div style="margin:10px 0 20px 0;text-align:right;">
+						<span style="color: darkgray;">热门排序 |</span>
+						<a href="#">时间排序</a>
 					</div>
 
 					<div class="text-block">
@@ -439,7 +472,6 @@
 							</span>
 						</div>
 						<div class="text">
-							<img class="graphics" src="${pageContext.request.contextPath}/img/buy.jpg" />
 							<span class="word">穷狗答题，大部分20-60区间~基本每家店都买过~日系小清新欧美重口暗黑古着晚晚风什么的都有~对原单有好感，仁者见仁智者见智啦~ PS：答主只是一个年龄还没到能打工的穷狗，积蓄烧在鞋子上了，虽然推荐的便宜，但都是我买过或者持续观望很久的店~ —————…</span>
 							<span class="showall">显示全部</span>
 						</div>
@@ -515,53 +547,29 @@
 
 				</div>
 			</div>
-
-			<div style="float:left;margin-left: 50px;">
-				<div id="topicground">
-					<div style="text-align: center;">
-						<a href="topicground.jsp"><button type="button" class="btn btn-info" style="margin-top:30px;">进入话题广场</button></a>
-					</div>
-					<div style="text-align: center;margin-top: 20px;">
-						<a href="topicground.html">
-							来这里发现更多有趣话题
-						</a>
-					</div>
+	
+			<!-- 右边板块 -->
+			<div style="float:left;margin-left: 50px;width: 270px;">
+				<div style="position:relative;">
+					<button id="watchTopic" onclick="watchTopic(${topic.id })" class="btn btn-default">关注</button>
+					<button id="cancleWatch" onclick="cancleWatch(${topic.id })" class="btn btn-info" style="display:none;">已关注</button>
+					<span style="position:absolute;right:0;top:6px;">${topic.watchCount } 人关注了该话题</span>
 				</div>
 				<div class="separator" style="margin: 25px 0;"></div>
-				<div style="position: relative;">
+				<div>
+					<div style="margin-bottom:15px;font-weight:bold;">描述</div>
 					<div>
+						${topic.description }
+					</div>
+				</div>
+				<div class="separator"></div>
+				<div>
+					<div style="position:relative">
 						<span style="font-weight: bold;">其他人关注的话题</span>
-						<a href="#" style="position: absolute;right: 0px;">换一换</a>
+						<a href="javascript:void(0)" onclick="ajaxLoadOtherTopics()" style="position: absolute;right: 0px;">换一换</a>
 					</div>
-					<div class="topicdiv">
-						<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/shengwu.jpg" /></a>
-						<a href="#" class="topicfont">生物学</a>
-						<a href="#" class="topicfocus">关注</a>
-					</div>
-					<div class="topicdiv">
-						<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/economic.jpg" /></a>
-						<a href="#" class="topicfont">区域经济学</a>
-						<a href="#" class="topicfocus">关注</a>
-					</div>
-					<div class="topicdiv">
-						<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/ziran.jpg" /></a>
-						<a href="#" class="topicfont">自然科学</a>
-						<a href="#" class="topicfocus">关注</a>
-					</div>
-					<div class="topicdiv">
-						<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/music.jpg" /></a>
-						<a href="#" class="topicfont">音乐</a>
-						<a href="#" class="topicfocus">关注</a>
-					</div>
-					<div class="topicdiv">
-						<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/xinli.jpg" /></a>
-						<a href="#" class="topicfont">心理学</a>
-						<a href="#" class="topicfocus">关注</a>
-					</div>
-					<div class="topicdiv">
-						<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/yundong.jpg" /></a>
-						<a href="#" class="topicfont">运动</a>
-						<a href="#" class="topicfocus">关注</a>
+					<!-- ajax加载其他的话题 -->
+					<div id="otherTopicsDiv">
 					</div>
 				</div>
 			</div>
@@ -573,9 +581,9 @@
 		</a>
 
 		<!--footer-->
-		<div id="footer" style="position: fixed;bottom: 10px;display: none;">
+		<div id="footer" style="position: fixed;bottom: 10px;">
 			<div style="width:75%;height: 1px;background-color: darkgray;margin: auto;"></div>
-			<div style="padding-top: 20px;margin: auto;width: 1000px;color: darkgray;">
+			<div style="padding-top: 20px;margin: auto;width: 1000px;color: darkgray;display:none;">
 				<span style="margin-left: 20px;">© 2017 逼乎 </span>
 				<span style="margin-left: 500px;">
 						<ul style="display: inline;">
@@ -596,7 +604,6 @@
 		<!--提问须知模态框-->
 		<%@ include file="/jsp/askrule.jsp" %>
 
-		</div>
 	</body>
 
 </html>

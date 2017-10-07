@@ -30,13 +30,13 @@
 			</span>
 			<span style="position: relative;top: -5px;font-size: 15px;margin-left:400px">
 				<a class="topmenu" href="${pageContext.request.contextPath}/jsp/index.jsp" style="margin-left: 30px;">首页</a>
-				<a class="topmenu" href="${pageContext.request.contextPath}/jsp/watchtopic.jsp" style="margin-left: 30px;">话题</a>
+				<a class="topmenu" onclick="openTopicDynamic()" href="javascript:void(0)" style="margin-left: 30px;">话题</a>
 				<a class="topmenu" href="${pageContext.request.contextPath}/jsp/find.jsp" style="margin-left: 30px;">发现</a>
 				<button type="button" class="btn btn-info" style="width:60px;font-size: 14px;margin-left: 120px;" onclick="writeQuestioin()">提问</button>
 				
 				<c:if test="${empty user}">	
-					<a class="topmenu" href="${pageContext.request.contextPath}/jsp/login.jsp?register=1" style="margin-right: 30px;">
-						<span class="glyphicon glyphicon-user" style="color: #F5F5F5;margin-left: 30px;"></span> 注册逼乎
+					<a class="topmenu" href="${pageContext.request.contextPath}/jsp/login.jsp?register=1" style="margin-right: 20px;">
+						<span class="glyphicon glyphicon-user" style="color: #F5F5F5;margin-left: 20px;"></span> 注册逼乎
 					</a>
 					<a class="topmenu" href="${pageContext.request.contextPath}/jsp/login.jsp">登录</a>
 				</c:if>
