@@ -449,6 +449,10 @@
 			
 			//关注问题
 			function addWatch(qid){
+				if("${user}" == "") {	//若用户未登录,不能关注
+					$('#loginModal').modal();
+					return;
+				}
 				$(".cancleWatch").toggle();
 				$(".addWatch").toggle();
 				$.post("${pageContext.request.contextPath}/questionServlet", {"method":"addWatch", "qid":qid},
@@ -462,6 +466,10 @@
 			
 			//取消关注问题
 			function cancleWatch(qid){
+				if("${user}" == "") {	//若用户未登录,不能取消关注
+					$('#loginModal').modal();
+					return;
+				}
 				$(".cancleWatch").toggle();
 				$(".addWatch").toggle();
 				$.post("${pageContext.request.contextPath}/questionServlet", {"method":"cancleWatch", "qid":qid},

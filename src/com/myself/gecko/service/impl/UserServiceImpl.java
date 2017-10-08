@@ -36,8 +36,8 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public User findById(int id) throws SQLException {
-		return userDao.findById(id);
+	public User findPersonById(int id, User user) throws SQLException {
+		return userDao.findPersonById(id, user);
 	}
 	@Override
 	public User findUserByNameAndPwd(String name, String password) throws SQLException {
@@ -51,6 +51,16 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public void register(User user) throws SQLException {
 		userDao.save(user);
+	}
+
+	@Override
+	public void cancleWatch(int uid, User user) throws SQLException {
+		userDao.cancleWatch(uid, user);
+	}
+
+	@Override
+	public void addWatch(int uid, User user) throws SQLException {
+		userDao.addWatch(uid, user);
 	}
 
 }

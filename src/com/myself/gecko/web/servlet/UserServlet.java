@@ -27,7 +27,7 @@ import com.myself.gecko.service.IUserService;
 import com.myself.gecko.service.impl.UserServiceImpl;
 
 /**
- * user模块 ,请求时需携带参数method 直接写方法即可
+ * user模块 ,请求时需携带参数method
  */
 public class UserServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
@@ -80,12 +80,13 @@ public class UserServlet extends BaseServlet {
 	}
 
 	public String findById(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
 		try {
 			String idStr = request.getParameter("id");
 			int id = Integer.parseInt(idStr);
-			User user = userService.findById(id);
-			if (user != null) {
-				request.setAttribute("person", user);
+			User person = userService.findPersonById(id, user);
+			if (person != null) {
+				request.setAttribute("person", person);
 				return "/jsp/home.jsp";
 			}
 		} catch (Exception e) {
@@ -153,5 +154,46 @@ public class UserServlet extends BaseServlet {
 			return "/500.jsp";
 		}
 	}
+	
+	/**
+	 * 添加关注
+	 */
+	public String addWatch(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+		if(user == null) {
+			return null;
+		}
+		
+		String uidStr = request.getParameter("uid");
+		try {
+			int uid = Integer.parseInt(uidStr);
+			userService.addWatch(uid, user);
+			response.getWriter().print(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * 取消关注
+	 */
+	public String cancleWatch(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+		if(user == null) {
+			return null;
+		}
+		
+		String uidStr = request.getParameter("uid");
+		try {
+			int uid = Integer.parseInt(uidStr);
+			userService.cancleWatch(uid, user);
+			response.getWriter().print(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	
 }

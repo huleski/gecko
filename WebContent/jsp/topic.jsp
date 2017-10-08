@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -285,13 +286,37 @@
 				}
 			}
 			
+			//关注话题
 			function watchTopic(tid) {
+				if("${user}" == "") {	//若用户未登录,不能关注
+					$('#loginModal').modal();
+					return;
+				}
 				$("#watchTopic").toggle();
 				$("#cancleWatch").toggle();
+				$.post("${pageContext.request.contextPath}/topicServlet", {"method":"addWatch", "tid":tid},
+						function(result) {
+							if(result == 1){
+								var count = parseInt($("#topicWatchCount").text());
+								$("#topicWatchCount").text(count + 1);
+							}
+					});
 			}
+			//取消话题关注
 			function cancleWatch(tid) {
+				if("${user}" == "") {	//若用户未登录,不能取消关注
+					$('#loginModal').modal();
+					return;
+				}
 				$("#watchTopic").toggle();
 				$("#cancleWatch").toggle();
+				$.post("${pageContext.request.contextPath}/topicServlet", {"method":"cancleWatch", "tid":tid},
+						function(result) {
+							if(result == 1){
+								var count = parseInt($("#topicWatchCount").text());
+								$("#topicWatchCount").text(count - 1);
+							}
+					});
 			}
 			
 			function ajaxLoadOtherTopics(){
@@ -307,11 +332,6 @@
 						});
 						$("#otherTopicsDiv").html(topics);
 				});
-				/* <div class="topicdiv">
-					<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/shengwu.jpg" /></a>
-					<a href="#" class="topicfont">生物学</a>
-					<a href="#" class="topicfocus">关注</a>
-				</div> */
 			}
 		</script>
 	</head>
@@ -550,13 +570,19 @@
 	
 			<!-- 右边板块 -->
 			<div style="float:left;margin-left: 50px;width: 270px;">
-				<div style="position:relative;">
-					<button id="watchTopic" onclick="watchTopic(${topic.id })" class="btn btn-default">关注</button>
-					<button id="cancleWatch" onclick="cancleWatch(${topic.id })" class="btn btn-info" style="display:none;">已关注</button>
-					<span style="position:absolute;right:0;top:6px;">${topic.watchCount } 人关注了该话题</span>
+				<div style="position:relative;padding:8px 0;">
+					<c:if test="${topic.watched != 1 }">
+						<button id="watchTopic" onclick="watchTopic(${topic.id })" class="btn btn-default">关注</button>
+						<button id="cancleWatch" onclick="cancleWatch(${topic.id })" class="btn btn-info" style="display:none;">已关注</button>
+					</c:if>
+					<c:if test="${topic.watched == 1 }">
+						<button id="watchTopic" onclick="watchTopic(${topic.id })" class="btn btn-default" style="display:none;">关注</button>
+						<button id="cancleWatch" onclick="cancleWatch(${topic.id })" class="btn btn-info">已关注</button>
+					</c:if>
+					<span style="position:absolute;right:0;top:12px;"><span id="topicWatchCount">${topic.watchCount }</span> 人关注了该话题</span>
 				</div>
 				<div class="separator" style="margin: 25px 0;"></div>
-				<div>
+				<div style="margin:15px;">
 					<div style="margin-bottom:15px;font-weight:bold;">描述</div>
 					<div>
 						${topic.description }

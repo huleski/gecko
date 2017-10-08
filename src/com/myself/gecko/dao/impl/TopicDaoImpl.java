@@ -1,6 +1,7 @@
 package com.myself.gecko.dao.impl;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
@@ -9,6 +10,7 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.myself.gecko.dao.ITopicDao;
 import com.myself.gecko.domain.Topic;
+import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
 
 public class TopicDaoImpl extends BaseDao<Topic> implements ITopicDao {
@@ -24,12 +26,21 @@ public class TopicDaoImpl extends BaseDao<Topic> implements ITopicDao {
 	}
 
 	@Override
-	public Topic findTopicById(int id) throws SQLException {
+	public Topic findTopicById(int id, User user) throws SQLException {
 		Topic topic = findById(id);
-		String sql = "select count(*) from topic_watcher where tid = ?";
+		
+		//查询关注数
+		String sql = "select count(*) from topic_watch where tid = ?";
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		Long count = (Long) queryRunner.query(sql, new ScalarHandler(), id);
 		topic.setWatchCount(count.intValue());
+		
+		//查询是否已关注
+		int uid = user.getId();
+		sql = "select count(*) from topic_watch where uid = ? and tid = ?";
+		count = (Long) queryRunner.query(sql, new ScalarHandler(), uid, id);
+		topic.setWatched(count.intValue());
+		
 		return topic;
 	}
 
@@ -38,6 +49,26 @@ public class TopicDaoImpl extends BaseDao<Topic> implements ITopicDao {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "select * from topic order by rand() limit 0, 6";
 		return queryRunner.query(sql, new BeanListHandler<>(Topic.class));
+	}
+
+	@Override
+	public void cancleWatch(int tid, User user) throws SQLException {
+		int uid = user.getId();
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "delete from topic_watch where tid = ? and uid = ?";
+		queryRunner.update(sql, tid, uid);
+	}
+
+	@Override
+	public void addWatch(int tid, User user) throws SQLException {
+		int uid = user.getId();
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "select count(*) from topic_watch where tid = ? and uid = ?";
+		Long count = (Long) queryRunner.query(sql, new ScalarHandler(), tid, uid);
+		if (count.intValue() == 0) {
+			sql = "insert into topic_watch values(null, ?, ?, ?)";
+			queryRunner.update(sql, uid, tid, new Date());
+		}
 	}
 
 

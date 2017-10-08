@@ -8,7 +8,9 @@ public interface IUserService {
 	public abstract void add(User user) throws SQLException;
 	public abstract void delete(int id) throws SQLException;
 	public abstract void update(User user) throws SQLException;
-	public abstract User findById(int id) throws SQLException;
+	public abstract User findPersonById(int id, User user) throws SQLException;
 	public abstract User findUserByNameAndPwd(String name, String password) throws SQLException;
 	public abstract void register(User user) throws SQLException;
+	public abstract void cancleWatch(int uid, User user) throws SQLException;
+	public abstract void addWatch(int uid, User user) throws SQLException;
 }

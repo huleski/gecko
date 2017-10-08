@@ -27,4 +27,7 @@ public interface IUserDao extends IBaseDao<User> {
 	public abstract void save(User user) throws SQLException;
 	public abstract void update(User user) throws SQLException;
 	public abstract void recordLogin(User user) throws SQLException;
+	public abstract void cancleWatch(int uid, User user) throws SQLException;
+	public abstract void addWatch(int uid, User user) throws SQLException;
+	public abstract User findPersonById(int id, User user) throws SQLException;
 }

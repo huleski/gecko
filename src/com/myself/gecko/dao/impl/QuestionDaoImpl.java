@@ -21,7 +21,7 @@ import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
 
-public class QuestioinDaoImpl extends BaseDao<Question> implements IQuestionDao {
+public class QuestionDaoImpl extends BaseDao<Question> implements IQuestionDao {
 
 	@Override
 	public void save(Question question) throws Exception {
@@ -38,7 +38,7 @@ public class QuestioinDaoImpl extends BaseDao<Question> implements IQuestionDao 
 	}
 
 	@Override
-	public Question findQuestioinById(int id, User user) throws Exception {
+	public Question findQuestionById(int id, User user) throws Exception {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		//查询问题
 		String sql = "select * from question where question.id = ?";

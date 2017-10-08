@@ -260,7 +260,11 @@
 					mouseout: function() {
 						$(this).css({ color: "deepskyblue", background: "white" });
 					}
+					
 				});
+				
+				//ajax查询其他话题
+				ajaxLoadOtherTopics();
 				
 				/*回到顶部*/
 				$("#gotobtn").click(function() {
@@ -278,7 +282,20 @@
 				}
 			}
 			
-			
+			function ajaxLoadOtherTopics(){
+				$.getJSON("${pageContext.request.contextPath}/topicServlet", {"method":"findOthers"},
+					function(result){
+						var topics = "";
+						$(result).each(function(i, obj){
+							topics += '<div class="topicdiv">';
+							topics += '<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id='+obj.id+'"><img class="topicicon" src="${pageContext.request.contextPath}/'+obj.photo+'" /></a>';
+							topics += '<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id='+obj.id+'" class="topicfont">'+obj.name+'</a>';
+							topics += '<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id='+obj.id+'" class="topicfocus">关注</a>';
+							topics += '</div>';
+						});
+						$("#otherTopicsDiv").html(topics);
+				});
+			}
 		</script>
 	</head>
 
@@ -439,7 +456,6 @@
 							</span>
 						</div>
 						<div class="text">
-							<img class="graphics" src="${pageContext.request.contextPath}/img/buy.jpg" />
 							<span class="word">穷狗答题，大部分20-60区间~基本每家店都买过~日系小清新欧美重口暗黑古着晚晚风什么的都有~对原单有好感，仁者见仁智者见智啦~ PS：答主只是一个年龄还没到能打工的穷狗，积蓄烧在鞋子上了，虽然推荐的便宜，但都是我买过或者持续观望很久的店~ —————…</span>
 							<span class="showall">显示全部</span>
 						</div>
@@ -528,40 +544,13 @@
 					</div>
 				</div>
 				<div class="separator" style="margin: 25px 0;"></div>
-				<div style="position: relative;">
-					<div>
+				<div>
+					<div style="position: relative;">
 						<span style="font-weight: bold;">其他人关注的话题</span>
-						<a href="#" style="position: absolute;right: 0px;">换一换</a>
+						<a href="javascript:void(0)" onclick="ajaxLoadOtherTopics()" style="position: absolute;right: 0px;">换一换</a>
 					</div>
-					<div class="topicdiv">
-						<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/shengwu.jpg" /></a>
-						<a href="#" class="topicfont">生物学</a>
-						<a href="#" class="topicfocus">关注</a>
-					</div>
-					<div class="topicdiv">
-						<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/economic.jpg" /></a>
-						<a href="#" class="topicfont">区域经济学</a>
-						<a href="#" class="topicfocus">关注</a>
-					</div>
-					<div class="topicdiv">
-						<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/ziran.jpg" /></a>
-						<a href="#" class="topicfont">自然科学</a>
-						<a href="#" class="topicfocus">关注</a>
-					</div>
-					<div class="topicdiv">
-						<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/music.jpg" /></a>
-						<a href="#" class="topicfont">音乐</a>
-						<a href="#" class="topicfocus">关注</a>
-					</div>
-					<div class="topicdiv">
-						<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/xinli.jpg" /></a>
-						<a href="#" class="topicfont">心理学</a>
-						<a href="#" class="topicfocus">关注</a>
-					</div>
-					<div class="topicdiv">
-						<a href="#"><img class="topicicon" src="${pageContext.request.contextPath}/img/yundong.jpg" /></a>
-						<a href="#" class="topicfont">运动</a>
-						<a href="#" class="topicfocus">关注</a>
+					<!-- ajax加载其他的话题 -->
+					<div id="otherTopicsDiv">
 					</div>
 				</div>
 			</div>

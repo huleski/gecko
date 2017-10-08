@@ -16,6 +16,7 @@ public class User {
 	private String description;
 	private String photo;
 	private String backphoto;
+	private Integer watched;
 	
 	@Override
 	public String toString() {
@@ -23,6 +24,14 @@ public class User {
 				+ ", sentence=" + sentence + ", address=" + address + ", industry=" + industry + ", profession="
 				+ profession + ", education=" + education + ", description=" + description + ", photo=" + photo
 				+ ", backphoto=" + backphoto + "]";
+	}
+	
+	public Integer getWatched() {
+		return watched;
+	}
+
+	public void setWatched(Integer watched) {
+		this.watched = watched;
 	}
 
 	public String getPhone() {

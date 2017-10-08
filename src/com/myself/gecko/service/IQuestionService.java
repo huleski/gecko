@@ -3,7 +3,7 @@ package com.myself.gecko.service;
 import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.User;
 
-public interface IQuestioinService {
+public interface IQuestionService {
 
 	void save(Question question) throws Exception ;
 

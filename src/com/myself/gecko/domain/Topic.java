@@ -8,7 +8,18 @@ public class Topic {
 	private String photo;
 	private String description;
 	private Date date;
+	
 	private Integer watchCount;
+	private Integer watched;
+	
+
+	public Integer getWatched() {
+		return watched;
+	}
+
+	public void setWatched(Integer watched) {
+		this.watched = watched;
+	}
 
 	public String getPhoto() {
 		return photo;

@@ -6,6 +6,7 @@ import java.util.List;
 import com.myself.gecko.dao.ITopicDao;
 import com.myself.gecko.dao.impl.TopicDaoImpl;
 import com.myself.gecko.domain.Topic;
+import com.myself.gecko.domain.User;
 import com.myself.gecko.service.ITopicService;
 import com.myself.gecko.util.JsonUtil;
 
@@ -38,8 +39,8 @@ public class TopicServiceImpl implements ITopicService {
 	}
 
 	@Override
-	public Topic findTopicById(int id) throws SQLException {
-		return topicDao.findTopicById(id);
+	public Topic findTopicById(int id, User user) throws SQLException {
+		return topicDao.findTopicById(id, user);
 	}
 
 	@Override
@@ -50,8 +51,17 @@ public class TopicServiceImpl implements ITopicService {
 	@Override
 	public String findOthers() throws SQLException {
 		List<Topic> list = topicDao.findOthers();
-System.out.println(list.size());
 		return JsonUtil.list2json(list);
+	}
+
+	@Override
+	public void cancleWatch(int tid, User user) throws SQLException {
+		topicDao.cancleWatch(tid, user);
+	}
+
+	@Override
+	public void addWatch(int tid, User user) throws SQLException {
+		topicDao.addWatch(tid, user);
 	}
 	
 }

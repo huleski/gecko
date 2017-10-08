@@ -12,12 +12,12 @@ import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IAnswerService;
-import com.myself.gecko.service.IQuestioinService;
-import com.myself.gecko.service.impl.QuetionServiceImpl;
+import com.myself.gecko.service.IQuestionService;
+import com.myself.gecko.service.impl.QuestionServiceImpl;
 
 @SuppressWarnings("all")
 public class QuestionServlet extends BaseServlet {
-	private static IQuestioinService questionService = new QuetionServiceImpl();
+	private static IQuestionService questionService = new QuestionServiceImpl();
 	
 	public String addWatch(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");

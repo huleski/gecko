@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.myself.gecko.dao.IUserDao;
 import com.myself.gecko.domain.User;
@@ -65,6 +66,39 @@ public class UserDaoImpl extends BaseDao<User> implements IUserDao {
 		String sql = "insert into user_login values(?, ?, ?)";
 		Object[] params = { null, user.getId(), new Date() };
 		queryRunner.update(sql, params);
+	}
+
+	@Override
+	public void cancleWatch(int uid, User user) throws SQLException {
+		int watcherId = user.getId();
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "delete from user_watch where hostId = ? and watcherId = ?";
+		queryRunner.update(sql, uid, watcherId);
+	}
+
+	@Override
+	public void addWatch(int uid, User user) throws SQLException {
+		int watcherId = user.getId();
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "select count(*) from user_watch where hostId = ? and watcherId = ?";
+		Long count = (Long) queryRunner.query(sql, new ScalarHandler(), uid, watcherId);
+		if (count.intValue() == 0) {
+			sql = "insert into user_watch values(null, ?, ?, ?)";
+			queryRunner.update(sql, uid, watcherId, new Date());
+		}
+	}
+
+	@Override
+	public User findPersonById(int id, User user) throws SQLException {
+		User person = findById(id);
+		if(user != null) {
+			int watcherId = user.getId();
+			String sql = "select count(*) from user_watch where hostId = ? and watcherId = ?";
+			QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+			Long count = (Long) queryRunner.query(sql, new ScalarHandler(), id, watcherId);
+			person.setWatched(count.intValue());
+		}
+		return person;
 	}
 
 }
