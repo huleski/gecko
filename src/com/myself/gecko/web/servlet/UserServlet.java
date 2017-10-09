@@ -144,6 +144,7 @@ public class UserServlet extends BaseServlet {
 		user.setPassword(password);
 		user.setPhone(phone);
 		user.setPhoto("img/default.jpg");
+		user.setBackphoto("img/backphoto.png");
 
 		try {
 			userService.register(user);

@@ -308,23 +308,12 @@
 
 			<!--个人展示div-->
 			<div id="personalshow">
-				<c:if test="${empty user.backphoto }">
-				<div id="topdiv">
-					<button class="btn" id="uploadphotobtn">
-						<span class="glyphicon glyphicon-camera" ></span>
-						上传封面图片
-					</button>
-				</div>
-				</c:if>
-				
-				<c:if test="${not empty user.backphoto }">
 				<div id="topdiv" style="background:url(${pageContext.request.contextPath}/${user.backphoto})">
 					<button class="btn" id="uploadphotobtn">
 						<span class="glyphicon glyphicon-camera" ></span>
 						上传封面图片
 					</button>
 				</div>
-				</c:if>
 				<input id="backphoto" type="file" style="display:none"/>
 				
 				<div id="bottomdiv">
@@ -420,5 +409,4 @@
 			
 		</div>
 	</body>
-
 </html>

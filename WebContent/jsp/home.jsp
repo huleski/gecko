@@ -241,7 +241,7 @@
 			#topdiv {
 				width: 1015px;
 				height: 130px;
-				background-color: darkgray;
+				background:url(${pageContext.request.contextPath}/${user.backphoto});
 			}
 			
 			#bottomdiv {
@@ -267,17 +267,6 @@
 				border-radius: 5px;
 				margin-top: 5px;
 				margin-left: 5px;
-			}
-			
-			#uploadphotobtn {
-				position: absolute;
-				right: 25px;
-				top: 25px;
-				padding-left: 15px;
-				padding-right: 15px;
-				background-color: darkgray;
-				border: 1px solid #F3F3F3;
-				color: #F3F3F3;
 			}
 			
 			#personalname {
@@ -313,12 +302,10 @@
 				margin-bottom: 10px;
 			}
 			
-			#editpersonal {
+			.watchOrEdit {
 				position: absolute;
 				right: 0px;
 				bottom: 0px;
-				border: deepskyblue 1px solid;
-				color: deepskyblue;
 			}
 		</style>
 		<style type="text/css">
@@ -409,12 +396,6 @@
 						$(this).css("color", "darkgray");
 					});
 
-				$("#uploadphotobtn").hover(function() {
-					$("#uploadphotobtn").css("background-color", "#C1C1C1");
-				}, function() {
-					$("#uploadphotobtn").css("background-color", "darkgray");
-				});
-				
 				$(".text-content").hover(function() {
 					$(this).css("color", "darkgray");
 				}, function() {
@@ -489,57 +470,98 @@
 					$("#completedInfo").hide();
 				});
 				
-				// 滑动到页面底部实现自动加载
-				var totalheight = 0;
-				var question_index = 0;
-				$(window).scroll(function() {
-					totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
-					if((totalheight >= $(document).height()) && question_index >= 0) {
-						var tabId = $(".tab-pane:visible").attr("id");
-						if(tabId == "question") {
-							$.getJSON("${pageContext.request.contextPath}/questionServlet", 
-									{"method":"ajaxLoad","currentPage": ++question_index, "personId":"${person.id}"}, 
-									function(result) {
-										if(result != "") {
-											$("#noQuestion").css("display", "none");
-											$(result).each(function(i, obj) {
-												$("#question").append(
-													"<div class='question-div'>"+
-													"<div><a class='question-title' href='${pageContext.request.contextPath}/questionServlet?method=findById&id="+obj.id+"'>" + obj.title + "</a></div>" +
-													"<div class='question-state'>"+
-													"<span>" + new Date(obj.date.time).format("yyyy-MM-dd") +"</span>"+
-													"<span>" + obj.answerList.length + " 个回答</span>"+
-													"<span>" + obj.watchCount + " 个关注</span>"+
-													"</div></div>" + 
-													"<div class='separator'></div>"
-												);
-											});
-										} else {
-											$("#question").append("<div style='height:30px; background-color:#F3F3F3;'/><h4 style='margin:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
-											question_index = -1;
-										}
-							});
-						}
-					}
+				$("#cancleWatch").hover(function(){
+					this.innerText="取消关注";
+				},function(){
+					this.innerText="已关注";
 				});
 				
-				/*格式化日期*/
-				Date.prototype.format = function (fmt) { //author: meizz 
-				    var o = {
-				        "M+": this.getMonth() + 1, //月份 
-				        "d+": this.getDate(), //日 
-				        "h+": this.getHours(), //小时 
-				        "m+": this.getMinutes(), //分 
-				        "s+": this.getSeconds(), //秒 
-				        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-				        "S": this.getMilliseconds() //毫秒 
-				    };
-				    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-				    for (var k in o)
-				    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-				    return fmt;
+			});
+			
+
+			//关注作者
+			function addWatch(uid) {
+				if("${user}" == "") {	//若用户未登录,不能关注
+					$('#loginModal').modal();
+					return;
+				}
+				$("#addWatch").toggle();
+				$("#cancleWatch").toggle();
+				$.post("${pageContext.request.contextPath}/userServlet", {"method":"addWatch", "uid":uid},
+						function(result) {
+							if(result == 1){
+								var count = parseInt($("#authorWatchCount").text());
+								$("#authorWatchCount").text(count + 1);
+							}
+					});
+			}
+			//取消作者关注
+			function cancleWatch(uid) {
+				if("${user}" == "") {	//若用户未登录,不能取消关注
+					$('#loginModal').modal();
+					return;
+				}
+				$("#addWatch").toggle();
+				$("#cancleWatch").toggle();
+				$.post("${pageContext.request.contextPath}/userServlet", {"method":"cancleWatch", "uid":uid},
+						function(result) {
+							if(result == 1){
+								var count = parseInt($("#authorWatchCount").text());
+								$("#authorWatchCount").text(count - 1);
+							}
+					});
+			}
+			
+			// 滑动到页面底部实现自动加载
+			var totalheight = 0;
+			var question_index = 0;
+			$(window).scroll(function() {
+				totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
+				if((totalheight >= $(document).height()) && question_index >= 0) {
+					var tabId = $(".tab-pane:visible").attr("id");
+					if(tabId == "question") {
+						$.getJSON("${pageContext.request.contextPath}/questionServlet", 
+								{"method":"ajaxLoad","currentPage": ++question_index, "personId":"${person.id}"}, 
+								function(result) {
+									if(result != "") {
+										$("#noQuestion").css("display", "none");
+										$(result).each(function(i, obj) {
+											$("#question").append(
+												"<div class='question-div'>"+
+												"<div><a class='question-title' href='${pageContext.request.contextPath}/questionServlet?method=findById&id="+obj.id+"'>" + obj.title + "</a></div>" +
+												"<div class='question-state'>"+
+												"<span>" + new Date(obj.date.time).format("yyyy-MM-dd") +"</span>"+
+												"<span>" + obj.answerList.length + " 个回答</span>"+
+												"<span>" + obj.watchCount + " 个关注</span>"+
+												"</div></div>" + 
+												"<div class='separator'></div>"
+											);
+										});
+									} else {
+										$("#question").append("<div style='height:30px; background-color:#F3F3F3;'/><h4 style='margin:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
+										question_index = -1;
+									}
+						});
+					}
 				}
 			});
+			
+			/*格式化日期*/
+			Date.prototype.format = function (fmt) { //author: meizz 
+			    var o = {
+			        "M+": this.getMonth() + 1, //月份 
+			        "d+": this.getDate(), //日 
+			        "h+": this.getHours(), //小时 
+			        "m+": this.getMinutes(), //分 
+			        "s+": this.getSeconds(), //秒 
+			        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+			        "S": this.getMilliseconds() //毫秒 
+			    };
+			    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+			    for (var k in o)
+			    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+			    return fmt;
+			}
 		</script>
 	</head>
 
@@ -550,12 +572,8 @@
 
 			<!--个人展示div-->
 			<div id="personalshow">
-				<div id="topdiv">
-					<button class="btn" id="uploadphotobtn">
-						<span class="glyphicon glyphicon-camera" ></span>
-						上传封面图片
-					</button>
-				</div>
+				<!-- 背景图 -->
+				<div id="topdiv"></div>
 				<div id="bottomdiv">
 					<div id="photoback">
 						<img src="${pageContext.request.contextPath}/img/default.jpg" id="personalimg" />
@@ -611,10 +629,17 @@
 							</a>
 						</div>
 						<c:if test="${user.id == person.id}">					
-							<button type="button" class="btn btn-default" id="editpersonal" onclick="window.location.href='${pageContext.request.contextPath}/userServlet?method=editUserUI'">编辑个人资料</button>
+							<button type="button" class="btn btn-default watchOrEdit" style="border: deepskyblue 1px solid;color: deepskyblue;" onclick="window.location.href='${pageContext.request.contextPath}/userServlet?method=editUserUI'">编辑个人资料</button>
 						</c:if>
 						<c:if test="${user.id != person.id}">
-							<button type="button" class="btn btn-default" id="editpersonal" onclick="window.location.href='#'">关注他</button>
+							<c:if test="${person.watched != 1}">
+								<button type="button" class="btn btn-default watchOrEdit" id="addWatch" style="border: deepskyblue 1px solid;color: deepskyblue;" onclick="addWatch(${person.id})">关注Ta</button>
+								<button type="button" class="btn btn-info watchOrEdit" id="cancleWatch" onclick="cancleWatch(${person.id})" style="display:none;">已关注</button>
+							</c:if>
+							<c:if test="${person.watched == 1}">
+								<button type="button" class="btn btn-default watchOrEdit" id="addWatch" onclick="addWatch(${person.id})" style="display:none;border: deepskyblue 1px solid;color: deepskyblue;">关注Ta</button>
+								<button type="button" class="btn btn-info watchOrEdit" id="cancleWatch" onclick="cancleWatch(${person.id})">已关注</button>
+							</c:if>
 						</c:if>
 					</div>
 				</div>
@@ -1158,7 +1183,7 @@
 					</span>
 					<span style="position:relative;left: 100px;">
 						<span style="color: darkgray;">关注者</span>
-					<span style="font-size: 19px;position: relative;top: 25px;left: -48px;">1848</span>
+					<span id="authorWatchCount" style="font-size: 19px;position: relative;top: 25px;left: -48px;">1848</span>
 					</span>
 				</div>
 				<div id="navDiv">

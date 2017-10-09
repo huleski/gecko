@@ -47,8 +47,8 @@ public class UserDaoImpl extends BaseDao<User> implements IUserDao {
 
 	@Override
 	public void save(User user) throws SQLException {
-		String sql = "insert into user(id, name, password, phone) values(?, ?, ?, ?)";
-		Object[] params = {null, user.getName(), user.getPassword(), user.getPhone()};
+		String sql = "insert into user(id, name, password, phone, photo, backphoto) values(?, ?, ?, ?, ?, ?)";
+		Object[] params = {null, user.getName(), user.getPassword(), user.getPhone(), user.getPhoto(), user.getBackphoto()};
 		CU(sql, params);
 	}
 
@@ -91,7 +91,7 @@ public class UserDaoImpl extends BaseDao<User> implements IUserDao {
 	@Override
 	public User findPersonById(int id, User user) throws SQLException {
 		User person = findById(id);
-		if(user != null) {
+		if(user != null && person != null) {
 			int watcherId = user.getId();
 			String sql = "select count(*) from user_watch where hostId = ? and watcherId = ?";
 			QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
