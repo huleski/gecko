@@ -2,6 +2,7 @@ package com.myself.gecko.service;
 
 import java.sql.SQLException;
 
+import com.myself.gecko.domain.PersonInfo;
 import com.myself.gecko.domain.User;
 
 public interface IUserService {
@@ -13,4 +14,5 @@ public interface IUserService {
 	public abstract void register(User user) throws SQLException;
 	public abstract void cancleWatch(int uid, User user) throws SQLException;
 	public abstract void addWatch(int uid, User user) throws SQLException;
+	public abstract PersonInfo findPersonInfo(int id) throws SQLException;
 }

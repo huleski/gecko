@@ -17,6 +17,7 @@ public class User {
 	private String photo;
 	private String backphoto;
 	private Integer watched;
+	private Integer visitedCount;
 	
 	@Override
 	public String toString() {
@@ -26,6 +27,14 @@ public class User {
 				+ ", backphoto=" + backphoto + "]";
 	}
 	
+	public Integer getVisitedCount() {
+		return visitedCount;
+	}
+
+	public void setVisitedCount(Integer visitedCount) {
+		this.visitedCount = visitedCount;
+	}
+
 	public Integer getWatched() {
 		return watched;
 	}

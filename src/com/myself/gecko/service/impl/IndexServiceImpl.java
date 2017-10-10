@@ -1,4 +1,4 @@
-package com.myself.gecko.web.servlet;
+package com.myself.gecko.service.impl;
 
 import java.lang.reflect.Method;
 import java.util.Comparator;
@@ -9,8 +9,13 @@ import java.util.TreeSet;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IIndexService;
 
+/**
+ * 自己的关注:话题(新增问题), 问题 (新增的回答)
+ * 关注的用户:写回答, 写文章, 关注话题/问题, 赞同回答/文章, 
+ *
+ */
 public class IndexServiceImpl implements IIndexService {
-
+	
 	@Override
 	public Set getSet(User user) throws Exception {
 		@SuppressWarnings("all") // 创建根据时间排序的TreeSet集合

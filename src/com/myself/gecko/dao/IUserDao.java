@@ -2,6 +2,7 @@ package com.myself.gecko.dao;
 
 import java.sql.SQLException;
 
+import com.myself.gecko.domain.PersonInfo;
 import com.myself.gecko.domain.User;
 
 public interface IUserDao extends IBaseDao<User> {
@@ -30,4 +31,5 @@ public interface IUserDao extends IBaseDao<User> {
 	public abstract void cancleWatch(int uid, User user) throws SQLException;
 	public abstract void addWatch(int uid, User user) throws SQLException;
 	public abstract User findPersonById(int id, User user) throws SQLException;
+	public abstract PersonInfo findPersonInfo(int id) throws SQLException;
 }

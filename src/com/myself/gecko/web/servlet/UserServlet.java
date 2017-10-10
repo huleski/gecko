@@ -1,14 +1,8 @@
 package com.myself.gecko.web.servlet;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.Map;
-import java.util.TreeSet;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -16,12 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.junit.Test;
 
-import com.myself.gecko.domain.Answer;
-import com.myself.gecko.domain.Comment;
-import com.myself.gecko.domain.Question;
-import com.myself.gecko.domain.Topic;
+import com.myself.gecko.domain.PersonInfo;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IUserService;
 import com.myself.gecko.service.impl.UserServiceImpl;
@@ -86,7 +76,9 @@ public class UserServlet extends BaseServlet {
 			int id = Integer.parseInt(idStr);
 			User person = userService.findPersonById(id, user);
 			if (person != null) {
+				PersonInfo personInfo = userService.findPersonInfo(id);
 				request.setAttribute("person", person);
+				request.setAttribute("personInfo", personInfo);
 				return "/jsp/home.jsp";
 			}
 		} catch (Exception e) {

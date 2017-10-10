@@ -173,6 +173,7 @@
 				background-color: white;
 				border-radius: 3px;
 				padding-top: 14px;
+				position:relative;
 			}
 			
 			#navDiv {
@@ -191,10 +192,12 @@
 			
 			#navDiv .navlayer {
 				padding-bottom: 15px;
+				position:relative;
 			}
 			
 			#navDiv .navtitle {
-				float: right;
+				position:absolute;
+				right:10px;
 			}
 			
 			#rightDiv .iconcls {
@@ -477,7 +480,6 @@
 				});
 				
 			});
-			
 
 			//关注作者
 			function addWatch(uid) {
@@ -1173,46 +1175,46 @@
 					<div style="background-color: #F0F2F7;height: 1px;"></div>
 					<div style="padding: 20px;">
 						<span class="glyphicon glyphicon-thumbs-up"></span>
-						<span style="margin-left: 10px;">获得 1 次赞同</span>
+						<span style="margin-left: 10px;">获得 ${personInfo.approvaledCount } 次赞同</span>
 					</div>
 				</div>
 				<div id="subscribe">
-					<span style="position:relative;left: 50px;">
-						<span style="color: darkgray;">关注了</span>
-					<span style="font-size: 19px;position: relative;top: 25px;left: -35px;">16</span>
-					</span>
-					<span style="position:relative;left: 100px;">
-						<span style="color: darkgray;">关注者</span>
-					<span id="authorWatchCount" style="font-size: 19px;position: relative;top: 25px;left: -48px;">1848</span>
-					</span>
+					<div style="width:150px;position:absolute;left:0;">
+						<div style="color: darkgray;text-align:center;margin-bottom:5px;">关注了</div>
+						<div style="text-align:center;font-size: 19px;">${personInfo.followedCount }</div>
+					</div>
+					<div style="width:150px;position:absolute;right:0;">
+						<div style="text-align:center;color: darkgray;margin-bottom:5px;">关注者</div>
+						<div id="authorWatchCount" style="text-align:center;font-size: 19px;">${personInfo.watchedCount }</div>
+					</div>
 				</div>
 				<div id="navDiv">
 					<div class="navseparator"></div>
 					<div class="navlayer">
-						<a href="#">
+						<a href="javascript:void(0)">
 							关注的话题
-							<span class="navtitle">9</span>
+							<span class="navtitle">${personInfo.watchTopicCount }</span>
 						</a>
 					</div>
 					<div class="navseparator"></div>
 					<div class="navlayer">
-						<a href="#">
+						<a href="javascript:void(0)">
 							关注的专栏
-							<span class="navtitle">2</span>
+							<span class="navtitle">${personInfo.watchColumnCount }</span>
 						</a>
 					</div>
 					<div class="navseparator"></div>
 					<div class="navlayer">
-						<a href="#">
+						<a href="javascript:void(0)">
 							关注的问题
-							<span class="navtitle">89</span>
+							<span class="navtitle">${personInfo.watchQuestionCount }</span>
 						</a>
 					</div>
 					<div class="navseparator"></div>
 					<div class="navlayer">
-						<a href="#">
+						<a href="javascript:void(0)">
 							关注的收藏夹
-							<span class="navtitle">0</span>
+							<span class="navtitle">${personInfo.watchCollectionCount }</span>
 						</a>
 					</div>
 					<div class="navseparator"></div>

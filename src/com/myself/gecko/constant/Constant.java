@@ -22,7 +22,6 @@ public interface Constant {
 	 * 评论类型:回答
 	 */
 	public static final int COMMENT_TYPE_ANSWER = 1;
-
 	/**
 	 * 评论类型:文章
 	 */

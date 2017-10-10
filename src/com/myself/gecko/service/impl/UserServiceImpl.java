@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import com.myself.gecko.dao.IUserDao;
 import com.myself.gecko.dao.impl.UserDaoImpl;
+import com.myself.gecko.domain.PersonInfo;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IUserService;
 
@@ -61,6 +62,11 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public void addWatch(int uid, User user) throws SQLException {
 		userDao.addWatch(uid, user);
+	}
+
+	@Override
+	public PersonInfo findPersonInfo(int id) throws SQLException {
+		return userDao.findPersonInfo(id);
 	}
 
 }
