@@ -19,6 +19,18 @@ import com.myself.gecko.service.impl.QuestionServiceImpl;
 public class QuestionServlet extends BaseServlet {
 	private static IQuestionService questionService = new QuestionServiceImpl();
 	
+	public String findRelativeQuestion(HttpServletRequest request, HttpServletResponse response) {
+		String tidStr = request.getParameter("tid");
+		try {
+			int tid = Integer.parseInt(tidStr);
+			String result = questionService.findRelativeQuestion(tid);
+			response.getWriter().print(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public String addWatch(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 		if(user == null) {
@@ -58,6 +70,15 @@ public class QuestionServlet extends BaseServlet {
 		String idStr = request.getParameter("id");
 		try {
 			int id = Integer.parseInt(idStr);
+			
+			//更新问题浏览次数
+			Boolean visited = (Boolean) request.getSession().getAttribute(idStr);
+			
+			if (visited == null) {	//每浏览一次问题则递增浏览次数
+				request.getSession().setAttribute(idStr, true);
+				questionService.visitQuestion(id);
+			}
+			
 			Question question = questionService.findQuestioinById(id, user);
 			request.setAttribute("question", question);
 			return "/jsp/question.jsp";
@@ -101,7 +122,6 @@ public class QuestionServlet extends BaseServlet {
 			question.setDate(new Date());
 			
 			questionService.save(question);
-			
 			response.sendRedirect(request.getContextPath() + "/jsp/index.jsp");
 			return null;
 		} catch (Exception e) {

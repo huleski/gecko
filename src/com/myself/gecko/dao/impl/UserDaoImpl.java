@@ -51,9 +51,8 @@ public class UserDaoImpl extends BaseDao<User> implements IUserDao {
 
 	@Override
 	public void save(User user) throws SQLException {
-		String sql = "insert into user(id, name, password, phone, photo, backphoto) values(?, ?, ?, ?, ?, ?)";
-		Object[] params = { null, user.getName(), user.getPassword(), user.getPhone(), user.getPhoto(),
-				user.getBackphoto() };
+		String sql = "insert into user(id, name, password, phone, photo, backphoto, visitedCount) values(?, ?, ?, ?, ?, ?, ?)";
+		Object[] params = { null, user.getName(), user.getPassword(), user.getPhone(), user.getPhoto(), user.getBackphoto(), user.getVisitedCount()};
 		CU(sql, params);
 	}
 
@@ -167,6 +166,13 @@ public class UserDaoImpl extends BaseDao<User> implements IUserDao {
 		personInfo.setWatchQuestionCount(watchQuestionCount.intValue());
 		personInfo.setWatchTopicCount(watchTopicCount.intValue());
 		return personInfo;
+	}
+
+	@Override
+	public void visitHome(int id) throws SQLException {
+		String sql = "update user set visitedCount = visitedCount + 1 where id = ?";
+		Object[] params = {id};
+		CU(sql, params);
 	}
 
 }

@@ -88,8 +88,9 @@ public class TopicServlet extends BaseServlet {
 	}
 
 	public String findOthers(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
 		try {
-			String topics = topicService.findOthers();
+			String topics = topicService.findOthers(user);
 			response.getWriter().print(topics);
 		} catch (Exception e) {
 			e.printStackTrace();

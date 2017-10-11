@@ -49,8 +49,8 @@ public class TopicServiceImpl implements ITopicService {
 	}
 
 	@Override
-	public String findOthers() throws SQLException {
-		List<Topic> list = topicDao.findOthers();
+	public String findOthers(User user) throws SQLException {
+		List<Topic> list = topicDao.findOthers(user);
 		return JsonUtil.list2json(list);
 	}
 

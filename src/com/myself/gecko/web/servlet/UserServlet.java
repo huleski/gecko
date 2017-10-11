@@ -74,6 +74,16 @@ public class UserServlet extends BaseServlet {
 		try {
 			String idStr = request.getParameter("id");
 			int id = Integer.parseInt(idStr);
+			
+			//更新用户主页浏览次数
+			Boolean visited = (Boolean) request.getSession().getAttribute(idStr);
+			
+			if (visited == null && (user == null || user.getId() != id)) {	//游客或者不是本人浏览主页则递增浏览次数
+				request.getSession().setAttribute(idStr, true);
+				userService.visitHome(id);
+			}
+			
+			//查询用户个人信息
 			User person = userService.findPersonById(id, user);
 			if (person != null) {
 				PersonInfo personInfo = userService.findPersonInfo(id);
@@ -137,6 +147,7 @@ public class UserServlet extends BaseServlet {
 		user.setPhone(phone);
 		user.setPhoto("img/default.jpg");
 		user.setBackphoto("img/backphoto.png");
+		user.setVisitedCount(0);
 
 		try {
 			userService.register(user);

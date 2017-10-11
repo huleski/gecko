@@ -15,4 +15,8 @@ public interface IQuestionService {
 	
 	void cancleWatch(int qid, User user) throws Exception;
 
+	String findRelativeQuestion(int tid) throws Exception;
+
+	void visitQuestion(int id) throws Exception;
+
 }

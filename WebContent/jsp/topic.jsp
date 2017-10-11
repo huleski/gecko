@@ -319,6 +319,27 @@
 					});
 			}
 			
+			//关注其他话题
+			function watchOrCancle(tid, obj) {
+				if("${user}" == "") {	//若用户未登录,不能关注
+					$('#loginModal').modal();
+					return;
+				}
+				if(obj.innerText == "关注"){
+					$.post("${pageContext.request.contextPath}/topicServlet", {"method":"addWatch", "tid":tid}, function(result) {
+						if(result == 1){
+							obj.innerText="取消关注";						
+						}
+					});
+				} else {
+					$.post("${pageContext.request.contextPath}/topicServlet", {"method":"cancleWatch", "tid":tid}, function(result) {
+						if(result == 1){
+							obj.innerText="关注";						
+						}
+					});
+				}
+			}
+			
 			function ajaxLoadOtherTopics(){
 				$.getJSON("${pageContext.request.contextPath}/topicServlet", {"method":"findOthers"},
 					function(result){
@@ -327,7 +348,7 @@
 							topics += '<div class="topicdiv">';
 							topics += '<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id='+obj.id+'"><img class="topicicon" src="${pageContext.request.contextPath}/'+obj.photo+'" /></a>';
 							topics += '<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id='+obj.id+'" class="topicfont">'+obj.name+'</a>';
-							topics += '<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id='+obj.id+'" class="topicfocus">关注</a>';
+							topics += '<a href="javascript:void(0)" onclick="watchOrCancle('+obj.id+', this)" class="topicfocus">关注</a>';
 							topics += '</div>';
 						});
 						$("#otherTopicsDiv").html(topics);

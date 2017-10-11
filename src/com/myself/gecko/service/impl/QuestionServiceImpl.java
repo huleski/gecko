@@ -47,4 +47,19 @@ public class QuestionServiceImpl implements IQuestionService {
 		questionDao.cancleWatch(qid, user);
 	}
 
+	@Override
+	public String findRelativeQuestion(int tid) throws Exception {
+		List<Question> list = questionDao.findRelativeQuestion(tid);
+		for (Question question : list) {
+			List<Answer> answerList = answerDao.findListByQid(question.getId());
+			question.getAnswerList().addAll(answerList);
+		}
+		return JsonUtil.list2json(list);
+	}
+
+	@Override
+	public void visitQuestion(int id) throws Exception {
+		questionDao.visitQuestion(id);
+	}
+
 }

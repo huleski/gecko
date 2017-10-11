@@ -282,6 +282,28 @@
 				}
 			}
 			
+			//关注其他话题
+			function watchOrCancle(tid, obj) {
+				if("${user}" == "") {	//若用户未登录,不能关注
+					$('#loginModal').modal();
+					return;
+				}
+				if(obj.innerText == "关注"){
+					$.post("${pageContext.request.contextPath}/topicServlet", {"method":"addWatch", "tid":tid}, function(result) {
+						if(result == 1){
+							obj.innerText="取消关注";						
+						}
+					});
+				} else {
+					$.post("${pageContext.request.contextPath}/topicServlet", {"method":"cancleWatch", "tid":tid}, function(result) {
+						if(result == 1){
+							obj.innerText="关注";						
+						}
+					});
+				}
+			}
+			
+			//ajax加载其他话题
 			function ajaxLoadOtherTopics(){
 				$.getJSON("${pageContext.request.contextPath}/topicServlet", {"method":"findOthers"},
 					function(result){
@@ -290,7 +312,7 @@
 							topics += '<div class="topicdiv">';
 							topics += '<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id='+obj.id+'"><img class="topicicon" src="${pageContext.request.contextPath}/'+obj.photo+'" /></a>';
 							topics += '<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id='+obj.id+'" class="topicfont">'+obj.name+'</a>';
-							topics += '<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id='+obj.id+'" class="topicfocus">关注</a>';
+							topics += '<a href="javascript:void(0)" onclick="watchOrCancle('+obj.id+', this)" class="topicfocus">关注</a>';
 							topics += '</div>';
 						});
 						$("#otherTopicsDiv").html(topics);
@@ -324,8 +346,10 @@
 					</div>
 					<div style="height: 1px;background-color: lightgray;"></div>
 					<div style="margin-top: 15px;margin-bottom:40px;position: relative;">
-						<img src="${pageContext.request.contextPath}/img/internet.jpg" height="40px" style="border-radius: 4px;" />
-						<span style="font-weight: bold;margin-left: 20px;">互联网</span>
+						<a href="#" style="text-decoration:none;">
+							<img src="${pageContext.request.contextPath}/img/internet.jpg" height="40px" style="border-radius: 4px;" />
+							<span style="font-weight: bold;margin-left: 20px;">互联网</span>
+						</a>
 						<span style="color: darkgray;margin-left: 410px;">热门排序 |</span>
 						<a href="#" style="">时间排序</a>
 					</div>

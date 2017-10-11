@@ -16,6 +16,7 @@ public class Question {
 	private Date date;
 	private Integer lookCount;
 	private Integer watchCount;
+	
 	private Integer watched;
 
 	private List<Answer> answerList = new ArrayList<>();

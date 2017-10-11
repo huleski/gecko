@@ -12,7 +12,7 @@ public interface ITopicService {
 	public abstract void update(Topic topic) throws SQLException;
 	public abstract Topic findTopicById(int id, User user) throws SQLException;
 	public abstract List<Topic> findAll() throws SQLException;
-	public abstract String findOthers() throws SQLException;
+	public abstract String findOthers(User user) throws SQLException;
 	public abstract void cancleWatch(int tid, User user) throws SQLException;
 	public abstract void addWatch(int tid, User user) throws SQLException;
 }

@@ -20,6 +20,7 @@ import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 
 public class QuestionDaoImpl extends BaseDao<Question> implements IQuestionDao {
 
@@ -27,7 +28,7 @@ public class QuestionDaoImpl extends BaseDao<Question> implements IQuestionDao {
 	public void save(Question question) throws Exception {
 		String sql = "insert into question values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Object[] params = {null, question.getUser().getId(), question.getTopic().getId(), question.getAnonymous(),
-				question.getTitle(), question.getPureContent(), question.getContent(), question.getDate(), null};
+				question.getTitle(), question.getPureContent(), question.getContent(), question.getDate(), 0};
 		CU(sql, params);
 	}
 
@@ -81,7 +82,7 @@ public class QuestionDaoImpl extends BaseDao<Question> implements IQuestionDao {
 	}
 
 	@Override
-	public void addWatch(int qid, User user) throws SQLException, Exception {
+	public void addWatch(int qid, User user) throws Exception {
 		int uid = user.getId();
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "select count(*) from question_watch where qid = ? and uid = ?";
@@ -93,11 +94,24 @@ public class QuestionDaoImpl extends BaseDao<Question> implements IQuestionDao {
 	}
 
 	@Override
-	public void cancleWatch(int qid, User user) throws SQLException, Exception {
+	public void cancleWatch(int qid, User user) throws Exception {
 		int uid = user.getId();
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "delete from question_watch where qid = ? and uid = ?";
 		queryRunner.update(sql, qid, uid);
+	}
+
+	@Override
+	public List<Question> findRelativeQuestion(int tid) throws Exception {
+		String whereClause = "where tid = " + tid + " order by rand()";
+		return this.selectLimitByWhere(1, Constant.RELATIVE_QUESTION_COUNT, whereClause );
+	}
+
+	@Override
+	public void visitQuestion(int id) throws Exception {
+		String sql = "update question set lookCount = lookCount + 1 where id = ?";
+		Object[] params = {id};
+		CU(sql, params);
 	}
 
 }

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>404NOT FOUND</title>
+<title>404 NOT FOUND</title>
 </head>
 <body>
 	<div style="width:1000px;margin:auto;position:relative">

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>系统维护中</title>
+<title>500 系统维护中</title>
 </head>
 <body>
 	<center>

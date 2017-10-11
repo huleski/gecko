@@ -5,6 +5,12 @@ package com.myself.gecko.constant;
  */
 public interface Constant {
 	
+	
+	/**
+	 * 查询话题相关问题
+	 */
+	public static final int RELATIVE_QUESTION_COUNT = 5;
+	
 	/**
 	 * ajax自动加载问题数
 	 */

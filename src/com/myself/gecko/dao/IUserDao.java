@@ -32,4 +32,5 @@ public interface IUserDao extends IBaseDao<User> {
 	public abstract void addWatch(int uid, User user) throws SQLException;
 	public abstract User findPersonById(int id, User user) throws SQLException;
 	public abstract PersonInfo findPersonInfo(int id) throws SQLException;
+	public abstract void visitHome(int id) throws SQLException;
 }

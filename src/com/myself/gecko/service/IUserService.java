@@ -15,4 +15,5 @@ public interface IUserService {
 	public abstract void cancleWatch(int uid, User user) throws SQLException;
 	public abstract void addWatch(int uid, User user) throws SQLException;
 	public abstract PersonInfo findPersonInfo(int id) throws SQLException;
+	public abstract void visitHome(int id) throws SQLException;
 }

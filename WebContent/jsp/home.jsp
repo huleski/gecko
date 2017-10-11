@@ -243,7 +243,7 @@
 			
 			#topdiv {
 				width: 1015px;
-				height: 130px;
+				height: 240px;
 				background:url(${pageContext.request.contextPath}/${user.backphoto});
 			}
 			
@@ -1218,10 +1218,12 @@
 						</a>
 					</div>
 					<div class="navseparator"></div>
-					<div class="navlayer">
-						<span style="color: #337AB7;">个人主页被浏览 239</span>
-					</div>
-					<div class="navseparator"></div>
+					<c:if test="${person.id == user.id }">
+						<div class="navlayer">
+							<span style="color: #337AB7;">个人主页被浏览  ${person.visitedCount } 次</span>
+						</div>
+						<div class="navseparator"></div>
+					</c:if>
 				</div>
 				<div id="rootDiv">
 					<div>

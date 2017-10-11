@@ -43,34 +43,6 @@ public class BaseDao<E> implements IBaseDao<E> {
 		queryRunner.update(sql, params);
 	}
 	
-	public void isAgree(E e) throws Exception {
-		String name = e.getClass().getSimpleName();
-		if(name.equalsIgnoreCase("answer")) {
-			Answer answer = (Answer) e;
-			QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-			String sql = "select count(*) from answer_agree where uid = " + answer.getUser().getId() + " and aid = " + answer.getId();
-			Long count = (Long) queryRunner.query(sql, new ScalarHandler());
-			if(count != null && count == 1) {
-				answer.setAgree(1);
-			}
-		} else if(name.equalsIgnoreCase("article")) {
-			Article article = (Article) e;
-			QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-			String sql = "select count(*) from article_agree where uid = " + article.getUser().getId() + " and aid = " + article.getId();
-			Long count = (Long) queryRunner.query(sql, new ScalarHandler());
-			if(count != null && count == 1) {
-				article.setAgree(1);
-			}
-		} else if(name.equalsIgnoreCase("comment")) {
-			Comment comment = (Comment) e;
-			QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-			String sql = "select count(*) from comment_agree where uid = " + comment.getUser().getId() + " and cid = " + comment.getId();
-			Long count = (Long) queryRunner.query(sql, new ScalarHandler());
-			if(count != null && count == 1) {
-				comment.setAgree(1);
-			}
-		}
-	}
 
 	@Override
 	public void deleteById(int id) throws SQLException {
@@ -139,5 +111,34 @@ public class BaseDao<E> implements IBaseDao<E> {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "select * from " + tableName + " " + whereClause + " limit ?, ?";
 		return queryRunner.query(sql, new BeanListHandler<>(clazz), (currentPage - 1) * pageSize, pageSize);
+	}
+	
+	public void isAgree(E e) throws Exception {
+		String name = e.getClass().getSimpleName();
+		if(name.equalsIgnoreCase("answer")) {
+			Answer answer = (Answer) e;
+			QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+			String sql = "select count(*) from answer_agree where uid = " + answer.getUser().getId() + " and aid = " + answer.getId();
+			Long count = (Long) queryRunner.query(sql, new ScalarHandler());
+			if(count != null && count == 1) {
+				answer.setAgree(1);
+			}
+		} else if(name.equalsIgnoreCase("article")) {
+			Article article = (Article) e;
+			QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+			String sql = "select count(*) from article_agree where uid = " + article.getUser().getId() + " and aid = " + article.getId();
+			Long count = (Long) queryRunner.query(sql, new ScalarHandler());
+			if(count != null && count == 1) {
+				article.setAgree(1);
+			}
+		} else if(name.equalsIgnoreCase("comment")) {
+			Comment comment = (Comment) e;
+			QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+			String sql = "select count(*) from comment_agree where uid = " + comment.getUser().getId() + " and cid = " + comment.getId();
+			Long count = (Long) queryRunner.query(sql, new ScalarHandler());
+			if(count != null && count == 1) {
+				comment.setAgree(1);
+			}
+		}
 	}
 }

@@ -10,7 +10,7 @@ public interface ITopicDao extends IBaseDao<Topic> {
 
 	Topic findTopicById(int id, User user) throws SQLException;
 
-	List<Topic> findOthers() throws SQLException;
+	List<Topic> findOthers(User user) throws SQLException;
 
 	void cancleWatch(int tid, User user) throws SQLException;
 	

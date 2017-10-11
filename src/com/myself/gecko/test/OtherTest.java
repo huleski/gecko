@@ -1,19 +1,13 @@
 package com.myself.gecko.test;
 
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.ArrayListHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.junit.Test;
 
 import com.myself.gecko.util.C3P0Utils;
 
-public class Test {
+public class OtherTest {
 
-	@org.junit.Test
+	@Test
 	public void test() {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 
@@ -21,6 +15,12 @@ public class Test {
 		StringBuilder sb = new StringBuilder(sql);
 		sb.append("1");
 		sb.append("2");
+	}
+	
+	@Test
+	public void test2() {
+		Boolean boolean1 = true;
+		System.out.println(boolean1);
 	}
 
 }

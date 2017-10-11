@@ -12,10 +12,14 @@ public interface IQuestionDao extends IBaseDao<Question> {
 	
 	List<Question> ajaxQueryByUid(int currentPage, int pageSize, int uid) throws SQLException;
 
-	Question findQuestionById(int id, User user) throws SQLException, Exception;
+	Question findQuestionById(int id, User user) throws Exception;
 
-	void addWatch(int qid, User user) throws SQLException, Exception;
+	void addWatch(int qid, User user) throws Exception;
 	
-	void cancleWatch(int qid, User user) throws SQLException, Exception;
+	void cancleWatch(int qid, User user) throws Exception;
+
+	List<Question> findRelativeQuestion(int tid) throws Exception;
+
+	void visitQuestion(int id) throws Exception;
 
 }

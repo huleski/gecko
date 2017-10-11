@@ -442,6 +442,17 @@
 					$(this).text("已关注");
 				});
 				
+				$.getJSON("${pageContext.request.contextPath}/questionServlet", {"method":"findRelativeQuestion", "tid":"${question.topic.id}"}, function(result) {
+					var content = "";
+					$(result).each(function(i, obj){
+						content += '<div style="padding:8px 15px;font-size: 14px;">';
+						content += '<a href="${pageContext.request.contextPath}/questionServlet?method=findById&id='+obj.id+'">'+obj.title+'</a>';
+						content += '<span style="color: darkgray;"> '+obj.answerList.length+' 个回答</span>';
+						content += '</div> ';
+					});
+					$("#relativeQuestion").html(content);
+				});
+				
 				//举报弹出框
 				$(".report").popover();
 				
@@ -860,26 +871,7 @@
 					<div id="icoDiv">
 						<div style="font-weight: bold;padding: 13px;">相关问题</div>
 						<div style="background-color: #F0F2F7;height: 1px;"></div>
-						<div style="padding:8px 15px;font-size: 14px;">
-							<a href="#" style="">下一个最火爆的电子竞技游戏会是什么样的？</a>
-							<span style="color: darkgray;"> 62 个回答</span>
-						</div>
-						<div style="padding:8px 15px;font-size: 14px;">
-							<a href="#" style="">玩刀塔你说过或者听过最霸气的话？</a>
-							<span style="color: darkgray;"> 546 个回答</span>
-						</div>
-						<div style="padding:8px 15px;font-size: 14px;">
-							<a href="#" style="">游戏难度和游戏本身乐趣是否相关？</a>
-							<span style="color: darkgray;"> 22 个回答</span>
-						</div>
-						<div style="padding:8px 15px;font-size: 14px;">
-							<a href="#" style="">大神看菜鸟玩游戏是种什么体验？ </a>
-							<span style="color: darkgray;"> 458 个回答</span>
-						</div>
-						<div style="padding:8px 15px;font-size: 14px;">
-							<a href="#" style="">Dota 2 还能在中国继续爆红吗？ </a>
-							<span style="color: darkgray;"> 107 个回答</span>
-						</div>
+						<div id="relativeQuestion"></div>
 					</div>
 					
 					<div id="rootDiv">

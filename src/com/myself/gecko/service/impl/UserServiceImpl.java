@@ -69,4 +69,9 @@ public class UserServiceImpl implements IUserService {
 		return userDao.findPersonInfo(id);
 	}
 
+	@Override
+	public void visitHome(int id) throws SQLException {
+		userDao.visitHome(id);
+	}
+
 }
