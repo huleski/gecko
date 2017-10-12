@@ -1,5 +1,6 @@
 package com.myself.gecko.web.servlet;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,41 @@ import com.myself.gecko.util.JsonUtil;
  */
 public class TopicServlet extends BaseServlet {
 	private static ITopicService topicService = TopicServiceImpl.getTopicService();
+	
+	/**
+	 * 查询已关注话题
+	 */
+	public String findTopicDynamic(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+		if (user == null) {
+			return "/500.jsp";
+		}
+		try {
+			request.setAttribute("list", "");
+			return "/template/topicanswer.jsp";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "/500.jsp";
+		}
+	}
+	
+	/**
+	 * 查询已关注话题
+	 */
+	public String findWatchedTopic(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+		if (user == null) {
+			return "/500.jsp";
+		}
+		try {
+			List<Topic> list = topicService.findWatchedTopic(user.getId());
+			request.setAttribute("list", list);
+			return "/jsp/topicdynamic.jsp";
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "/500.jsp";
+		}
+	}
 	
 	/**
 	 * 添加关注

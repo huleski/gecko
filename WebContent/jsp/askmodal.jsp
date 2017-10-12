@@ -16,11 +16,11 @@
 	}
 	
 	//打开话题动态
-	function openTopicDynamic(){
+	function findWatchedTopic(){
 		if("${user}" == "") {
 			$('#loginModal').modal();
 		} else {
-			location.href="${pageContext.request.contextPath}/jsp/topicdynamic.jsp";
+			location.href="${pageContext.request.contextPath}/topicServlet?method=findWatchedTopic";
 		}
 	}
 	
@@ -76,7 +76,7 @@
 								<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js"></script>
 								<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
 								<div id="editordiv" style="margin-bottom: 15px;">
-									<script id="editor" name="content" type="text/plain" style="width:568px;height:150px;">写下你的问题</script>
+									<script id="editor" name="content" type="text/plain" style="width:568px;height:150px;"><font color="gray">写下你的问题</font></script>
 								</div>
 								<script type="text/javascript">
 									var askUE = UE.getEditor('editor', {

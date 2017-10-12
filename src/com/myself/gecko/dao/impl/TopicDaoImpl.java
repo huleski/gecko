@@ -51,7 +51,7 @@ public class TopicDaoImpl extends BaseDao<Topic> implements ITopicDao {
 	@Override
 	public List<Topic> findOthers(User user) throws SQLException {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-		if (user != null){
+		if (user != null) {
 			int uid = user.getId();
 			String sql = "select tid from topic_watch where uid = ?";
 			List<Object[]> watchedTopicsId = queryRunner.query(sql, new ArrayListHandler(), uid);
@@ -63,7 +63,7 @@ public class TopicDaoImpl extends BaseDao<Topic> implements ITopicDao {
 				}
 				String substring = sb.substring(0, sb.length() - 1);
 				substring += ")";
-				
+
 				String whereClause = "where id not in " + substring + " order by rand()";
 				return this.selectLimitByWhere(1, 6, whereClause);
 			}
@@ -92,4 +92,23 @@ public class TopicDaoImpl extends BaseDao<Topic> implements ITopicDao {
 		}
 	}
 
+	@Override
+	public List<Topic> findWatchedTopic(int id) throws SQLException {
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "select tid from topic_watch where uid = ?";
+		List<Object[]> watchedTopicsId = queryRunner.query(sql, new ArrayListHandler(), id);
+		if (watchedTopicsId.size() > 0) {
+			StringBuilder sb = new StringBuilder("(");
+			for (Object[] objects : watchedTopicsId) {
+				sb.append(objects[0]);
+				sb.append(",");
+			}
+			String substring = sb.substring(0, sb.length() - 1);
+			substring += ")";
+
+			sql = "select * from topic where id in " + substring;
+			return queryRunner.query(sql, new BeanListHandler<>(Topic.class));
+		}
+		return null;
+	}
 }

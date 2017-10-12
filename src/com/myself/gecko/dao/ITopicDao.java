@@ -15,4 +15,6 @@ public interface ITopicDao extends IBaseDao<Topic> {
 	void cancleWatch(int tid, User user) throws SQLException;
 	
 	void addWatch(int tid, User user) throws SQLException;
+
+	List<Topic> findWatchedTopic(int id) throws SQLException;
 }

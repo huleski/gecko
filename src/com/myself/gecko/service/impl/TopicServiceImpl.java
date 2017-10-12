@@ -63,5 +63,10 @@ public class TopicServiceImpl implements ITopicService {
 	public void addWatch(int tid, User user) throws SQLException {
 		topicDao.addWatch(tid, user);
 	}
+
+	@Override
+	public List<Topic> findWatchedTopic(int id) throws SQLException {
+		return topicDao.findWatchedTopic(id);
+	}
 	
 }

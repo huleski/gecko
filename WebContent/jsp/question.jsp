@@ -323,7 +323,6 @@
 			.comment-situation a{
 				margin-right: 30px;
 				cursor: pointer;
-				/* color: gray; */
 			}
 			.comment-input {
 				margin: 8px 0 15px 0;
@@ -671,7 +670,7 @@
 						<a href="${pageContext.request.contextPath}/jsp/index.jsp" style="font-size: 32px; color: deepskyblue;font-family: '黑体';">逼乎</a>
 						<span style="position: relative;top: -5px;">
 							<a class="topmenu" href="${pageContext.request.contextPath}/jsp/index.jsp" style="margin-left: 30px;">首页</a>
-							<a class="topmenu" onclick="openTopicDynamic()" href="javascript:void(0)" style="margin-left: 30px;">话题</a>
+							<a class="topmenu" onclick="findWatchedTopic()" href="javascript:void(0)" style="margin-left: 30px;">话题</a>
 							<a class="topmenu" href="${pageContext.request.contextPath}/jsp/find.jsp" style="margin-left: 30px;">发现</a>
 							<form action="${pageContext.request.contextPath}/questionServlet" method="post" style="position: relative;display: inline;">
 								<div class="input-group" style="width:350px;position: absolute;top:-8px;left: 20px;">

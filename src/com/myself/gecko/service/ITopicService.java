@@ -15,4 +15,5 @@ public interface ITopicService {
 	public abstract String findOthers(User user) throws SQLException;
 	public abstract void cancleWatch(int tid, User user) throws SQLException;
 	public abstract void addWatch(int tid, User user) throws SQLException;
+	public abstract List<Topic> findWatchedTopic(int id) throws SQLException;
 }
