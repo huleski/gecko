@@ -2,6 +2,7 @@ package com.myself.gecko.web.servlet;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,8 +28,13 @@ public class TopicServlet extends BaseServlet {
 			return "/500.jsp";
 		}
 		try {
-			request.setAttribute("list", "");
-			return "/template/topicanswer.jsp";
+			String tidStr = request.getParameter("tid");
+			String orderStyle = request.getParameter("orderStyle");
+			int tid = Integer.parseInt(tidStr);
+			
+			Set set = topicService.findTopicDynamic(tid, orderStyle, user);
+			request.setAttribute("set", set);
+			return "/template/topicdynamic.jsp";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "/500.jsp";
@@ -61,7 +67,7 @@ public class TopicServlet extends BaseServlet {
 		if(user == null) {
 			return null;
 		}
-		
+
 		String tidStr = request.getParameter("tid");
 		try {
 			int tid = Integer.parseInt(tidStr);

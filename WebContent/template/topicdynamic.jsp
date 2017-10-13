@@ -8,12 +8,11 @@
 </head>
 <body>
 	<div style="margin-top: 15px; margin-bottom: 40px; position: relative;">
-		<a href="#" style="text-decoration: none;"> <img
-			src="${pageContext.request.contextPath}/img/internet.jpg"
-			height="40px" style="border-radius: 4px;" /> <span
-			style="font-weight: bold; margin-left: 20px;">互联网</span>
-		</a> <span style="color: darkgray; margin-left: 410px;">热门排序 |</span> <a
-			href="#" style="">时间排序</a>
+		<a href="#" style="text-decoration: none;"> 
+			<img src="${pageContext.request.contextPath}/img/internet.jpg" height="40px" style="border-radius: 4px;" /> 
+			<span style="font-weight: bold; margin-left: 20px;">互联网</span>
+		</a> 
+		<span style="color: darkgray; margin-left: 410px;">热门排序 |</span> <a href="#" style="">时间排序</a>
 	</div>
 
 	<div class="text-block">

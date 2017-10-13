@@ -348,8 +348,8 @@
 			}
 			
 			// ajax加载话题动态
-			function showTopicAnswer(tid){
-				$.post("${pageContext.request.contextPath}/topicServlet", {"method":"findTopicDynamic", "tid":tid}, function(result){
+			function showTopicAnswer(tid, orderStyle){
+				$.post("${pageContext.request.contextPath}/topicServlet", {"method":"findTopicDynamic", "tid":tid, orderStyle:orderStyle}, function(result){
 					$("#topicAnswer").html(result);
 				});
 			}

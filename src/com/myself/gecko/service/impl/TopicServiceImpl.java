@@ -2,9 +2,18 @@ package com.myself.gecko.service.impl;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
+import com.myself.gecko.dao.IAnswerDao;
+import com.myself.gecko.dao.IArticleDao;
+import com.myself.gecko.dao.IQuestionDao;
 import com.myself.gecko.dao.ITopicDao;
+import com.myself.gecko.dao.IUserDao;
+import com.myself.gecko.dao.impl.AnswerDaoImpl;
+import com.myself.gecko.dao.impl.ArticleDaoImpl;
+import com.myself.gecko.dao.impl.QuestionDaoImpl;
 import com.myself.gecko.dao.impl.TopicDaoImpl;
+import com.myself.gecko.dao.impl.UserDaoImpl;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.service.ITopicService;
@@ -13,6 +22,10 @@ import com.myself.gecko.util.JsonUtil;
 public class TopicServiceImpl implements ITopicService {
 	private static TopicServiceImpl topicService;
 	private ITopicDao topicDao = TopicDaoImpl.getTopicDao();
+	private IUserDao userDao = UserDaoImpl.getUserDao();
+	private IQuestionDao questionDao = new QuestionDaoImpl();
+	private IAnswerDao answerDao= new AnswerDaoImpl();
+	private IArticleDao articleDao = new ArticleDaoImpl();
 	
 	private TopicServiceImpl() {}
 	
@@ -67,6 +80,12 @@ public class TopicServiceImpl implements ITopicService {
 	@Override
 	public List<Topic> findWatchedTopic(int id) throws SQLException {
 		return topicDao.findWatchedTopic(id);
+	}
+
+	@Override
+	public Set findTopicDynamic(int tid, String orderStyle, User user) throws SQLException {
+		
+		return null;
 	}
 	
 }
