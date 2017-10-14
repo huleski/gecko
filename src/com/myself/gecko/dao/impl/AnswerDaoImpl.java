@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
@@ -34,33 +35,36 @@ public class AnswerDaoImpl extends BaseDao<Answer> implements IAnswerDao {
 
 		String whereClause = "where qid = " + qid;
 		List<Answer> list = selectLimitByWhere(currentPage, Constant.ANSWER_AJAX_LOAD_COUNT, whereClause);
-		String sql = null;
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		for (Answer answer : list) {
-			sql = "select user.id, user.name, user.sentence,user.photo from user join answer on answer.uid = user.id where answer.id = ?";
-			Map<String, Object> map = queryRunner.query(sql, new MapHandler(), answer.getId());
-			User author = new User();
-			BeanUtils.populate(author, map);
-			answer.setUser(author);
-
-			// 查询赞同数
-			sql = "select count(*) from answer_agree where aid = ?";
-			Long agreeCount = (Long) queryRunner.query(sql, new ScalarHandler(), answer.getId());
-			answer.setAgreeCount(agreeCount.intValue());
-			
-			// 查询评论数
-			sql = "select count(*) from comment where type = ? and targetId = ?";
-			Long commentCount = (Long) queryRunner.query(sql, new ScalarHandler(), Constant.COMMENT_TYPE_ANSWER, answer.getId());
-			answer.setCommentCount(commentCount.intValue());
-			
-			//查询我是否点过赞
-			if (uid != 0) {
-				sql = "select count(*) from answer_agree where aid = ? and uid = ?";
-				Long agree = (Long) queryRunner.query(sql, new ScalarHandler(), answer.getId(), uid);
-				answer.setAgree(agree.intValue());
-			}
+			improveAnswerInfo(answer, queryRunner, uid);
 		}
 		return list;
+	}
+	
+	public void improveAnswerInfo(Answer answer, QueryRunner queryRunner, int uid) throws Exception {
+		String sql = "select user.id, user.name, user.sentence,user.photo from user join answer on answer.uid = user.id where answer.id = ?";
+		Map<String, Object> map = queryRunner.query(sql, new MapHandler(), answer.getId());
+		User author = new User();
+		BeanUtils.populate(author, map);
+		answer.setUser(author);
+
+		// 查询赞同数
+		sql = "select count(*) from answer_agree where aid = ?";
+		Long agreeCount = (Long) queryRunner.query(sql, new ScalarHandler(), answer.getId());
+		answer.setAgreeCount(agreeCount.intValue());
+		
+		// 查询评论数
+		sql = "select count(*) from comment where type = ? and targetId = ?";
+		Long commentCount = (Long) queryRunner.query(sql, new ScalarHandler(), Constant.COMMENT_TYPE_ANSWER, answer.getId());
+		answer.setCommentCount(commentCount.intValue());
+		
+		//查询我是否点过赞
+		if (uid != 0) {
+			sql = "select count(*) from answer_agree where aid = ? and uid = ?";
+			Long agree = (Long) queryRunner.query(sql, new ScalarHandler(), answer.getId(), uid);
+			answer.setAgree(agree.intValue());
+		}
 	}
 
 	@Override
@@ -90,6 +94,25 @@ public class AnswerDaoImpl extends BaseDao<Answer> implements IAnswerDao {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "delete from answer_agree where aid = ? and uid = ?";
 		queryRunner.update(sql, aid, uid);
+	}
+
+	@Override
+	public Answer findAnswerByOrderStyle(int qid, User user, String orderStyle) throws Exception {
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = null;
+		if ("hot".equals(orderStyle)) {
+			sql = "select * from answer where id = (select answer.id from answer,answer_agree where answer_agree.aid = answer.id and answer.qid = ? group by answer.id order by count(answer_agree.id) desc limit 0, 1)";
+		} else {
+			sql = "select * from answer where qid = ? order by date desc limit 0, 1";
+		}
+		Answer answer = queryRunner.query(sql, new BeanHandler<>(Answer.class), qid);
+		
+		int uid = 0;
+		if (user != null) {
+			uid = user.getId();
+		}
+		improveAnswerInfo(answer, queryRunner, uid);
+		return answer;
 	}
 
 }

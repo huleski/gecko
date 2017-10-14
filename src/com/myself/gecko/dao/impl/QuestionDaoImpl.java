@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
@@ -20,7 +21,6 @@ import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 
 public class QuestionDaoImpl extends BaseDao<Question> implements IQuestionDao {
 
@@ -112,6 +112,22 @@ public class QuestionDaoImpl extends BaseDao<Question> implements IQuestionDao {
 		String sql = "update question set lookCount = lookCount + 1 where id = ?";
 		Object[] params = {id};
 		CU(sql, params);
+	}
+
+	@Override
+	public List<Question> findLastWatchQuestionListByTid(int tid, int currentPage, int pageSize) throws Exception {
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = "select distinct question.id, question.title from question, question_watch where question.id = question_watch.qid and question.tid = ? order by question_watch.date desc limit ?, ?";
+		return queryRunner.query(sql, new BeanListHandler<>(Question.class), tid, (currentPage - 1) * pageSize, pageSize);
+		
+		/*String sql = "select date from user_login where uid = ? order by date limit " + count + ", 1";
+		Date date = (Date) queryRunner.query(sql, new ScalarHandler(), user.getId());
+		System.out.println(date);
+		
+		//如果查到登录时间之前了
+		sql = "select distinct question.id, question.title from question, question_watch where question.id = question_watch.qid and question.tid = ? and question_watch.date > ? order by question_watch.date desc limit ?, ?";
+		return queryRunner.query(sql, new BeanListHandler<>(Question.class), tid, date, 0, Constant.TOPIC_DYNAIC_LOAD_COUNT);*/
+		
 	}
 
 }

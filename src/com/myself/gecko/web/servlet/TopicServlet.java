@@ -20,20 +20,23 @@ public class TopicServlet extends BaseServlet {
 	private static ITopicService topicService = TopicServiceImpl.getTopicService();
 	
 	/**
-	 * 查询已关注话题
+	 * 查询话题动态
 	 */
 	public String findTopicDynamic(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
-		if (user == null) {
-			return "/500.jsp";
-		}
+		
 		try {
 			String tidStr = request.getParameter("tid");
 			String orderStyle = request.getParameter("orderStyle");
+			String pageNum = request.getParameter("currentPage");
 			int tid = Integer.parseInt(tidStr);
+			int currentPage = Integer.parseInt(pageNum);
 			
-			Set set = topicService.findTopicDynamic(tid, orderStyle, user);
+			Set set = topicService.findTopicDynamic(tid, orderStyle, user, currentPage);
+			Topic topic = topicService.findById(tid);
 			request.setAttribute("set", set);
+			request.setAttribute("topic", topic);
+System.out.println("---------------------" + set.size());			
 			return "/template/topicdynamic.jsp";
 		} catch (Exception e) {
 			e.printStackTrace();

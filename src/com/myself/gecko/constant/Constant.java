@@ -36,4 +36,13 @@ public interface Constant {
 	 * 评论类型:问题
 	 */
 	public static final int COMMENT_TYPE_QUESTION = 3;
+
+	/**
+	 * 话题动态加载回答数
+	 */
+	public static final int TOPIC_DYNAIC_LOAD_ANSWER_COUNT = 1;
+	/**
+	 * 话题动态加载文章数
+	 */
+	public static final int TOPIC_DYNAIC_LOAD_ARTICLE_COUNT = 1;
 }

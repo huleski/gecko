@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -294,6 +295,8 @@
 				//ajax查询其他话题
 				ajaxLoadOtherTopics();
 				
+				$(".focusedtopic:first").click();
+				
 				/*回到顶部*/
 				$("#gotobtn").click(function() {
 					 $('body,html').animate({scrollTop:0}, 500);
@@ -348,9 +351,10 @@
 			}
 			
 			// ajax加载话题动态
-			function showTopicAnswer(tid, orderStyle){
-				$.post("${pageContext.request.contextPath}/topicServlet", {"method":"findTopicDynamic", "tid":tid, orderStyle:orderStyle}, function(result){
+			function showTopicDynamic(tid, orderStyle, currentPage){
+				$.post("${pageContext.request.contextPath}/topicServlet", {"method":"findTopicDynamic", tid:tid, orderStyle:orderStyle, currentPage:currentPage}, function(result){
 					$("#topicAnswer").html(result);
+					currentPage += 1;
 				});
 			}
 		</script>
@@ -361,11 +365,11 @@
 				margin:auto;
 				margin-top: 15px;
 				margin-bottom:30px;
-				width: 600px;
+				width: 550px;
 				display: none;
 			}
 			.user-comment {
-				width: 600px;
+				width: 550px;
 				padding: 12px 20px;
 			}
 			.comment-user-photo {
@@ -387,7 +391,7 @@
 			}
 			
 			.commentInput {
-				width: 480px;
+				width: 75%;
 				display: inline;
 				margin: 15px 30px 15px 20px;
 			}
@@ -417,13 +421,13 @@
 				<div style="width:650px;float: left;">
 					<div>
 						<span style="font-weight: bold;margin-left: 20px;">已关注的话题动态</span>
-						<a href="#" style="margin-left: 415px;">共关注8个话题</a>
+						<a href="javascript:void(0)" style="margin-left: 415px;">共关注 ${fn:length(list)}个话题</a>
 					</div>
 					<div style="height: 1px;background-color: darkgray;margin-top: 10px;"></div>
 					<div style="padding: 15px 0;">
 						<!-- 已关注话题 -->
 						<c:forEach items="${list}" var="topic">
-							<button class="focusedtopic" onclick="showTopicAnswer(${topic.id})">${topic.name }</button>
+							<button class="focusedtopic" onclick="showTopicDynamic(${topic.id}, 'hot', 1)">${topic.name }</button>
 						</c:forEach>
 					</div>
 					<div style="height: 1px;background-color: lightgray;"></div>

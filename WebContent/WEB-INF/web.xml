@@ -99,12 +99,4 @@
     <servlet-name>UploadServlet</servlet-name>
     <url-pattern>/uploadServlet</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <servlet-name>UploadPhotoServlet</servlet-name>
-    <servlet-class>com.myself.gecko.web.servlet.UploadServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>UploadPhotoServlet</servlet-name>
-    <url-pattern>/uploadPhotoServlet</url-pattern>
-  </servlet-mapping>
 </web-app>

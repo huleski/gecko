@@ -1,10 +1,13 @@
 package com.myself.gecko.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
@@ -82,5 +85,25 @@ public class ArticleDaoImpl extends BaseDao<Article> implements IArticleDao {
 			article.setAgree(agree.intValue());
 		}
 		return article;
+	}
+
+	@Override
+	public List<Article> findArticleByOrderStyle(int tid, User user, String orderStyle, int currentPage, int pageSize)
+			throws Exception {
+		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+		String sql = null;
+		if ("hot".equals(orderStyle)) {
+			sql = "select article.id from article, article_agree where tid = ? and article.id = article_agree.aid group by article.id order by count(article_agree.id) limit ?, ?";
+		} else {
+			sql = "select id from article where tid = ? order by date desc limit ?, ?";
+		}
+		List<Article> aList = queryRunner.query(sql, new BeanListHandler<>(Article.class), tid, (currentPage - 1) * pageSize, pageSize);
+		List<Article> list = new ArrayList<>();
+		
+		for (Article article : aList) {
+			article = findAnswerById(article.getId(), user);
+			list.add(article);
+		}
+		return list;
 	}
 }

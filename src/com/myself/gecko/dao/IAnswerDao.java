@@ -15,4 +15,6 @@ public interface IAnswerDao extends IBaseDao<Answer> {
 	void agree(User user, int aid) throws Exception;
 	
 	void disagree(User user, int aid) throws Exception;
+
+	Answer findAnswerByOrderStyle(int qid, User user, String orderStyle) throws Exception;
 }

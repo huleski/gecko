@@ -8,10 +8,9 @@ public class Topic {
 	private String photo;
 	private String description;
 	private Date date;
-	
+
 	private Integer watchCount;
 	private Integer watched;
-	
 
 	public Integer getWatched() {
 		return watched;

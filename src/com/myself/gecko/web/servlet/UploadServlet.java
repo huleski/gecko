@@ -102,9 +102,6 @@ public class UploadServlet extends HttpServlet {
 					// 3. 保存文件
 					FileUtils.copyInputStreamToFile(is, new File(filePath));
 					response.getWriter().print(returnPath);
-
-					System.out.println(fieldName);
-					System.out.println(returnPath);
 				}
 			}
 		} catch (Exception e) {

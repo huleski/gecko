@@ -14,6 +14,12 @@ public class Answer {
 	private Integer commentCount;
 	private Integer agreeCount;
 	private Integer agree;
+	
+	private Integer mark = 1;
+
+	public Integer getMark() {
+		return mark;
+	}
 
 	@Override
 	public String toString() {

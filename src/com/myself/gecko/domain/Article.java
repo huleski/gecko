@@ -14,7 +14,13 @@ public class Article {
 	private Date date;
 	private Integer commentCount;
 	private Integer agreeCount;
+	
 	private Integer agree;
+	private Integer mark = 2;
+
+	public Integer getMark() {
+		return mark;
+	}
 
 	public Integer getAgree() {
 		return agree;

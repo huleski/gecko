@@ -1,5 +1,7 @@
 package com.myself.gecko.test;
 
+import java.util.ArrayList;
+
 import org.apache.commons.dbutils.QueryRunner;
 import org.junit.Test;
 
@@ -19,8 +21,11 @@ public class OtherTest {
 	
 	@Test
 	public void test2() {
-		Boolean boolean1 = true;
-		System.out.println(boolean1);
+		ArrayList<String> list = null;
+		for (String string : list) {
+			System.out.println(string);
+			
+		}
 	}
 
 }

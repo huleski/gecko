@@ -1,9 +1,14 @@
 package com.myself.gecko.service.impl;
 
+import java.lang.reflect.Method;
 import java.sql.SQLException;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
+import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IAnswerDao;
 import com.myself.gecko.dao.IArticleDao;
 import com.myself.gecko.dao.IQuestionDao;
@@ -14,6 +19,9 @@ import com.myself.gecko.dao.impl.ArticleDaoImpl;
 import com.myself.gecko.dao.impl.QuestionDaoImpl;
 import com.myself.gecko.dao.impl.TopicDaoImpl;
 import com.myself.gecko.dao.impl.UserDaoImpl;
+import com.myself.gecko.domain.Answer;
+import com.myself.gecko.domain.Article;
+import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.service.ITopicService;
@@ -24,11 +32,12 @@ public class TopicServiceImpl implements ITopicService {
 	private ITopicDao topicDao = TopicDaoImpl.getTopicDao();
 	private IUserDao userDao = UserDaoImpl.getUserDao();
 	private IQuestionDao questionDao = new QuestionDaoImpl();
-	private IAnswerDao answerDao= new AnswerDaoImpl();
+	private IAnswerDao answerDao = new AnswerDaoImpl();
 	private IArticleDao articleDao = new ArticleDaoImpl();
-	
-	private TopicServiceImpl() {}
-	
+
+	private TopicServiceImpl() {
+	}
+
 	public static TopicServiceImpl getTopicService() {
 		if (topicService == null) {
 			topicService = new TopicServiceImpl();
@@ -38,17 +47,17 @@ public class TopicServiceImpl implements ITopicService {
 
 	@Override
 	public void add(Topic topic) throws SQLException {
-		
+
 	}
 
 	@Override
 	public void delete(int id) throws SQLException {
-		
+
 	}
 
 	@Override
 	public void update(Topic topic) throws SQLException {
-		
+
 	}
 
 	@Override
@@ -83,9 +92,39 @@ public class TopicServiceImpl implements ITopicService {
 	}
 
 	@Override
-	public Set findTopicDynamic(int tid, String orderStyle, User user) throws SQLException {
+	public Set findTopicDynamic(int tid, String orderStyle, User user, int currentPage) throws Exception {
+		@SuppressWarnings("all") // 创建根据时间排序的TreeSet集合
+		TreeSet set = new TreeSet<>(new Comparator() {
+			@Override
+			public int compare(Object o1, Object o2) {
+				try {
+					Method method1 = o1.getClass().getMethod("getDate");
+					Method method2 = o2.getClass().getMethod("getDate");
+					Date d1 = (Date) method1.invoke(o1);
+					Date d2 = (Date) method2.invoke(o2);
+					return d1.compareTo(d2);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return 0;
+				}
+			}
+		});
+
+		List<Question> qList = questionDao.findLastWatchQuestionListByTid(tid, currentPage, Constant.TOPIC_DYNAIC_LOAD_ANSWER_COUNT);
+		List<Article> aList = articleDao.findArticleByOrderStyle(tid, user, orderStyle, currentPage, Constant.TOPIC_DYNAIC_LOAD_ARTICLE_COUNT);
+
+		for (Question question : qList) {
+			Answer answer = answerDao.findAnswerByOrderStyle(question.getId(), user, orderStyle);
+			answer.setQuestion(question);
+			set.add(answer);
+		}
+		set.addAll(aList);
 		
-		return null;
+		return set;
 	}
-	
+
+	@Override
+	public Topic findById(int id) throws SQLException {
+		return topicDao.findById(id);
+	}
 }
