@@ -17,12 +17,21 @@ public class CommentVO {
 	private String parentName;
 	
 	private Integer agree;
+	private Integer type;
 	
 	@Override
 	public String toString() {
 		return "CommentVO [id=" + id + ", pid=" + pid + ", content=" + content + ", agreeCount=" + agreeCount
 				+ ", date=" + date + ", uid=" + uid + ", name=" + name + ", photo=" + photo + ", parentUid=" + parentUid
 				+ ", parentName=" + parentName + ", agree=" + agree + "]";
+	}
+	
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 	public Integer getAgree() {

@@ -50,7 +50,7 @@
 				<input type="text" class="form-control comment-input" placeholder="回复  ${vo.name}"/>
 				<div style="text-align: right;" class="comment-reply-opr">
 					<button type="button" class="btn btn-default comment-cancel">取消</button>
-					<button type="button" class="btn btn-info comment-ok" disabled="" onclick="submitCommentReply(this, ${vo.id}, ${targetId})">评论</button>
+					<button type="button" class="btn btn-info comment-ok" disabled="" onclick="submitCommentReply(this, ${vo.id}, ${targetId}, ${vo.type })">评论</button>
 				</div>
 			</div>
 		</div>
@@ -66,7 +66,7 @@
 				  <li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>
 				</c:if>						
 				<c:if test="${pageBean.currentPage != 1 }">
-				  <li><a href="javascript:void(0)" onclick="showComment(${targetId}, ${pageBean.currentPage - 1}, this)">&laquo;</a></li>
+				  <li><a href="javascript:void(0)" onclick="showComment(${targetId}, ${pageBean.currentPage - 1}, ${pageBean.list[0].type }, this)">&laquo;</a></li>
 				</c:if>
 				
 				<!-- 翻页数 -->
@@ -75,13 +75,13 @@
 					  <li class="active" style="z-index:3"><a href="javascript:void(0)">${n }</a></li>
 					</c:if>
 					<c:if test="${pageBean.currentPage != n }">						
-					  <li><a href="javascript:void(0)" onclick="showComment(${targetId}, ${n}, this)">${n }</a></li>
+					  <li><a href="javascript:void(0)" onclick="showComment(${targetId}, ${n}, ${pageBean.list[0].type }, this)">${n }</a></li>
 					</c:if>
 				</c:forEach>
 						
 				<!-- 下一页 -->
 				<c:if test="${pageBean.currentPage < pageBean.totalPage}">				  
-				  <li><a href="javascript:void(0)" onclick="showComment(${targetId}, ${pageBean.currentPage + 1}, this)">&raquo;</a></li>
+				  <li><a href="javascript:void(0)" onclick="showComment(${targetId}, ${pageBean.currentPage + 1}, ${pageBean.list[0].type }, this)">&raquo;</a></li>
 				</c:if>
 				<c:if test="${pageBean.currentPage >= pageBean.totalPage}">				  
 				  <li class="disabled"><a href="javascript:void(0)">&raquo;</a></li>

@@ -25,7 +25,7 @@ public class CommentDaoImpl extends BaseDao<Comment> implements ICommentDao {
 		}
 		
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-		String sql = "select comment.id, pid, uid, content, date, user.name, user.photo from comment, user where comment.uid = user.id and type = ? and targetId = ? limit ?, ?";
+		String sql = "select comment.id, pid, uid, content, type, date, user.name, user.photo from comment, user where comment.uid = user.id and type = ? and targetId = ? limit ?, ?";
 		Object[] params = {type, targetId, (currentPage -1) * pageSize, pageSize};
 		List<CommentVO> list = queryRunner.query(sql, new BeanListHandler<>(CommentVO.class), params);
 		for (CommentVO vo : list) {

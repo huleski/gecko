@@ -431,7 +431,7 @@
 							<a href="${pageContext.request.contextPath}/jsp/answer.jsp" style="margin-left: 40px;">
 								<span class="glyphicon glyphicon-file"></span> 回答
 							</a>
-							<a href="${pageContext.request.contextPath}/jsp/writearticle.jsp" style="margin-left: 40px;">
+							<a href="${pageContext.request.contextPath}/jsp/articleedit.jsp" style="margin-left: 40px;">
 								<span class="glyphicon glyphicon-pencil"></span> 写文章
 							</a>
 							<a href="#" style="margin-left: 360px;">

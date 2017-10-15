@@ -52,7 +52,7 @@
 				</button>
 				<span>
 					<a class="text-situation text-comment">
-						<span onclick="showComment(${a.id}, 1, this)">
+						<span onclick="showComment(${a.id}, 1, 1, this)">
 							<span class="comment-count"><span class="glyphicon glyphicon-comment"></span> ${a.commentCount} 条评论</span>
 						</span>
 						<span class="hidecomment" style="display: none;"><span class="glyphicon glyphicon-comment"></span> 收起评论</span>

@@ -402,12 +402,41 @@
 		</style>
 		<script type="text/javascript">
 			//ajax加载评论
-			function showComment(aid, currentPage, obj) {
+			function showComment(aid, currentPage, type, obj) {
 				var $commentblock = $(obj).parents(".text-block").find(".user-commentblock");
-				$.post("${pageContext.request.contextPath}/commentServlet", {"method":"ajaxLoad","targetId":aid, "currentPage": currentPage, "type":1}, function(result) {
+				$.post("${pageContext.request.contextPath}/commentServlet", {"method":"ajaxLoad","targetId":aid, "currentPage": currentPage, "type":type}, function(result) {
 					$commentblock.html(result);
 				}); 
 			}
+
+			//ajax提交答案评论
+			function submitAnswerComment(obj, pid, targetId, type) {
+				if("${user}" == "") {
+					$('#loginModal').modal();
+				} else {
+					var content = $(obj).prev(".commentInput").val();
+					$.post("${pageContext.request.contextPath}/commentServlet", {"method":"add", "pid":pid, "type":type, "targetId": targetId, "content":content},
+						function(result) {	
+						$(obj).prev(".commentInput").val("");
+						$(obj).attr("disabled", true);
+						showComment(targetId, 1, type, obj);
+					});
+				}
+			}
+			
+			//ajax提交评论回复
+			function submitCommentReply(obj, pid, targetId, type) {
+				if("${user}" == "") {
+					$('#loginModal').modal();
+				} else {
+					var content = $(obj).parent(".comment-reply-opr").prev(".comment-input").val();			
+					$.post("${pageContext.request.contextPath}/commentServlet", {"method":"add", "pid":pid, "type":type, "targetId": targetId, "content":content},
+						function(result) {	
+						showComment(targetId, 1, type, obj);
+					});
+				}
+			}
+			
 		</script>
 	</head>
 

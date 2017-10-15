@@ -22,10 +22,9 @@ public class ArticleDaoImpl extends BaseDao<Article> implements IArticleDao {
 
 	@Override
 	public void save(Article article) throws Exception {
-		String sql = "insert into article values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "insert into article values(?, ?, ?, ?, ?, ?, ?, ?)";
 		Object[] params = { null, article.getUser().getId(), article.getTopic().getId(), article.getTitlePicture(),
-				article.getTitle(), article.getPureContent(), article.getContent(), article.getDate(),
-				article.getCommentCount(), article.getAgreeCount() };
+				article.getTitle(), article.getPureContent(), article.getContent(), article.getDate()};
 		CU(sql, params);
 	}
 

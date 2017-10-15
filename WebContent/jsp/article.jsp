@@ -197,7 +197,7 @@
 		     	<span style="font-weight:bold;margin-left:10px">${article.user.name}</span>
 		    </div>
 		    <ul class="nav navbar-nav navbar-right" style="position:absolute;top:0;right:30px">
-		      <li><a href="${pageContext.request.contextPath}/jsp/writearticle.jsp" style="font-size: 17px;"><span class="glyphicon glyphicon-file"></span> 写文章</a></li>
+		      <li><a href="${pageContext.request.contextPath}/jsp/articleedit.jsp" style="font-size: 17px;"><span class="glyphicon glyphicon-file"></span> 写文章</a></li>
 		      <li class="dropdown">
 		        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> ○○○ </a>
 		        <ul class="dropdown-menu nav nav-pills nav-stacked">

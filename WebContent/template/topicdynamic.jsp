@@ -22,12 +22,12 @@
 		<c:if test="${a.mark == 1 }">
 			<div class="text-block">
 				<div class="question">
-					<a href="${pageContext.request.contextPath}/questionServlet?method=findById&id=22">
+					<a href="${pageContext.request.contextPath}/questionServlet?method=findById&id=${a.question.id}">
 						${fn:substring(a.question.title, 0, 50) }...
 					</a>
 				</div>
 				<div style="position: relative;">
-					<button class="thinking">839</button>
+					<button class="thinking">${a.agreeCount }</button>
 					<span class="author-info"> 
 						<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=${a.user.id}" class="author-name">
 							${a.user.name }
@@ -38,10 +38,10 @@
 				<div class="text">
 					<span class="word">${fn:substring(a.pureContent, 0, 300) }...</span> <span class="showall">显示全部</span>
 				</div>
-				<div class="text-all"> </div>
+				<div class="text-all">${a.content }</div>
 				<div class="text-footer">
 					<a href="#">关注问题</a> 
-					<a class="text-comment" href="javascript:void(0)" onclick="showComment(${a.id}, 1, this)">${a.commentCount } 条评论</a> 
+					<a class="text-comment" href="javascript:void(0)" onclick="showComment(${a.id}, 1, 1, this)">${a.commentCount } 条评论</a> 
 					<span class="hidelabel">
 						<a href="#">感谢</a> 
 						<a href="#">分享</a> 
@@ -53,115 +53,68 @@
 					<span class="takebackspan"><a>收起</a></span>
 				</div>
 				
-				
 				<!-- 评论div -->
 				<div class="commentdiv">
 					<!-- 用户评论 -->
 					<div class="user-commentblock">
-						<div class="user-comment">
-							<div style="position:relative">
-								<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=12">
-									<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
-									<span style="margin-left: 10px;color: black;">Silito</span>
-								</a>
-								<span style="color:gray; margin:0 10px;"> 回复 </span><a href="${pageContext.request.contextPath}/userServlet?method=findById&id=2" style="color:black">XXX</a>
-								<span class="comment-time">2017-10-12</span>
-							</div>
-							<div style="margin: 10px 0;">
-								马猴烧酒拉克丝接待来访啊散列码撒旦法IE解放路加上阿斯兰
-							</div>
-							<div class="comment-situation">
-								<a href="javascript:void(0)" onclick="agreeComment(1, this)">
-									<i class="fa fa-thumbs-o-up" ></i>
-									<i class="fa fa-thumbs-up" style="display:none"></i>
-									<span>2333</span>
-								</a>
-								<a class="comment-replybtn">
-									<span class="glyphicon glyphicon-edit"></span>
-									<span>回复</span>
-								</a>
-								<a>
-									<i class="fa fa-thumbs-o-down"></i>
-									<span>踩</span>
-								</a>
-								<a>
-									<span class="glyphicon glyphicon-flag"></span>
-									<span>举报</span>
-								</a>
-							</div>
-							<div class="comment-reply" style="display: none;">
-								<input type="text" class="form-control comment-input" placeholder="回复  XXX"/>
-								<div style="text-align: right;" class="comment-reply-opr">
-									<button type="button" class="btn btn-default comment-cancel">取消</button>
-									<button type="button" class="btn btn-info comment-ok" disabled="" onclick="submitCommentReply(this, 1, 1)">评论</button>
-								</div>
-							</div>
-						</div>
-						<div class="separator"></div>
-						
-						<!-- 另外一条评论 -->
-						<div class="user-comment">
-							<div style="position:relative">
-								<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=12">
-									<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
-									<span style="margin-left: 10px;color: black;">Silito</span>
-								</a>
-								<span style="color:gray; margin:0 10px;"> 回复 </span><a href="${pageContext.request.contextPath}/userServlet?method=findById&id=1" style="color:black">XXX</a>
-								<span class="comment-time">2017-10-12</span>
-							</div>
-							<div style="margin: 10px 0;">
-								拉克丝大姐夫立卡减少的是地方了静安寺
-							</div>
-							<div class="comment-situation">
-								<a href="javascript:void(0)" onclick="agreeComment(1, this)">
-									<i class="fa fa-thumbs-o-up" ></i>
-									<i class="fa fa-thumbs-up" style="display:none"></i>
-									<span>2333</span>
-								</a>
-								<a class="comment-replybtn">
-									<span class="glyphicon glyphicon-edit"></span>
-									<span>回复</span>
-								</a>
-								<a>
-									<i class="fa fa-thumbs-o-down"></i>
-									<span>踩</span>
-								</a>
-								<a>
-									<span class="glyphicon glyphicon-flag"></span>
-									<span>举报</span>
-								</a>
-							</div>
-							<div class="comment-reply" style="display: none;">
-								<input type="text" class="form-control comment-input" placeholder="回复  XXX"/>
-								<div style="text-align: right;" class="comment-reply-opr">
-									<button type="button" class="btn btn-default comment-cancel">取消</button>
-									<button type="button" class="btn btn-info comment-ok" disabled="" onclick="submitCommentReply(this, 1, 1)">评论</button>
-								</div>
-							</div>
-						</div>
-						<div class="separator"></div>
-						
-						<!-- 分页 -->
-						<div style="padding:10px 0;text-align: center;">
-							<ul class="pagination" style="margin:auto">
-								<!-- 上一页 -->
-							  	<li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>
-								
-								<!-- 翻页数 -->
-							  	<li class="active" style="z-index:3"><a href="javascript:void(0)">1</a></li>
-							  	<li style="z-index:3"><a href="javascript:void(0)">2</a></li>
-							  	<li style="z-index:3"><a href="javascript:void(0)">3</a></li>
-										
-								<!-- 下一页 -->
-							  <li><a href="javascript:void(0)" onclick="showComment(1, 2, this)">&raquo;</a></li>
-							</ul>		
-						</div>
 					</div>
 					<div class="separator"></div>
 					<!--评论回答-->
 					<div>
 						<input type="text" class="form-control commentInput" placeholder="写下你的评论"/>
-						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${a.id})">评论</button>
+						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${a.id}, 1)">评论</button>
+					</div>
+				</div>
+				<div class="separator"></div>
+			</div>
+		</c:if>
+	
+		<!-- 加载的是文章 -->
+		<c:if test="${a.mark == 2 }">
+			<div class="text-block">
+				<div class="question">
+					<a href="${pageContext.request.contextPath}/articleServlet?method=findById&aid=${a.id}">
+						${fn:substring(a.title, 0, 50) }...
+					</a>
+				</div>
+				<div style="position: relative;">
+					<button class="thinking">${a.agreeCount}</button>
+					<span class="author-info"> 
+						<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=${a.user.id}" class="author-name">
+							${a.user.name }
+						</a>
+						<span class="author-signal">, ${a.user.sentence }</span>
+					</span>
+				</div>
+				<div class="text">
+					<img alt="titlePic" src="${pageContext.request.contextPath}/${a.titlePicture}">
+					<span class="word">${fn:substring(a.pureContent, 0, 300) }...</span> <span class="showall">显示全部</span>
+				</div>
+				<div class="text-all">${a.content }</div>
+				<div class="text-footer">
+					<a href="#">关注问题</a> 
+					<a class="text-comment" href="javascript:void(0)" onclick="showComment(${a.id}, 1, 2, this)">${a.commentCount } 条评论</a> 
+					<span class="hidelabel">
+						<a href="#">感谢</a> 
+						<a href="#">分享</a> 
+						<a href="#">收藏</a> 
+						<a href="#">没有帮助</a>
+						<a href="#">举报</a>
+					</span> 
+					<a href="#">作者保留权利</a> 
+					<span class="takebackspan"><a>收起</a></span>
+				</div>
+				
+				<!-- 评论div -->
+				<div class="commentdiv">
+					<!-- 用户评论 -->
+					<div class="user-commentblock">
+					</div>
+					<div class="separator"></div>
+					<!--评论回答-->
+					<div>
+						<input type="text" class="form-control commentInput" placeholder="写下你的评论"/>
+						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${a.id}, 2)">评论</button>
 					</div>
 				</div>
 				<div class="separator"></div>
@@ -221,7 +174,7 @@
 		</div>
 		<div class="text-footer">
 			<a href="#">关注问题</a> 
-			<a class="text-comment" href="javascript:void(0)" onclick="showComment(1, 1, this)">463 条评论</a> 
+			<a class="text-comment" href="javascript:void(0)" onclick="showComment(1, 1, 1, this)">463 条评论</a> 
 			<span class="hidelabel">
 				<a href="#">感谢</a> 
 				<a href="#">分享</a> 
@@ -238,87 +191,7 @@
 		<div class="commentdiv">
 			<!-- 用户评论 -->
 			<div class="user-commentblock">
-				<div class="user-comment">
-					<div style="position:relative">
-						<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=12">
-							<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
-							<span style="margin-left: 10px;color: black;">Silito</span>
-						</a>
-						<span style="color:gray; margin:0 10px;"> 回复 </span><a href="${pageContext.request.contextPath}/userServlet?method=findById&id=2" style="color:black">XXX</a>
-						<span class="comment-time">2017-10-12</span>
-					</div>
-					<div style="margin: 10px 0;">
-						马猴烧酒拉克丝接待来访啊散列码撒旦法IE解放路加上阿斯兰
-					</div>
-					<div class="comment-situation">
-						<a href="javascript:void(0)" onclick="agreeComment(1, this)">
-							<i class="fa fa-thumbs-o-up" ></i>
-							<i class="fa fa-thumbs-up" style="display:none"></i>
-							<span>2333</span>
-						</a>
-						<a class="comment-replybtn">
-							<span class="glyphicon glyphicon-edit"></span>
-							<span>回复</span>
-						</a>
-						<a>
-							<i class="fa fa-thumbs-o-down"></i>
-							<span>踩</span>
-						</a>
-						<a>
-							<span class="glyphicon glyphicon-flag"></span>
-							<span>举报</span>
-						</a>
-					</div>
-					<div class="comment-reply" style="display: none;">
-						<input type="text" class="form-control comment-input" placeholder="回复  XXX"/>
-						<div style="text-align: right;" class="comment-reply-opr">
-							<button type="button" class="btn btn-default comment-cancel">取消</button>
-							<button type="button" class="btn btn-info comment-ok" disabled="" onclick="submitCommentReply(this, 1, 1)">评论</button>
-						</div>
-					</div>
-				</div>
-				<div class="separator"></div>
-				
-				<!-- 另外一条评论 -->
-				<div class="user-comment">
-					<div style="position:relative">
-						<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=12">
-							<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
-							<span style="margin-left: 10px;color: black;">Silito</span>
-						</a>
-						<span style="color:gray; margin:0 10px;"> 回复 </span><a href="${pageContext.request.contextPath}/userServlet?method=findById&id=1" style="color:black">XXX</a>
-						<span class="comment-time">2017-10-12</span>
-					</div>
-					<div style="margin: 10px 0;">
-						拉克丝大姐夫立卡减少的是地方了静安寺
-					</div>
-					<div class="comment-situation">
-						<a href="javascript:void(0)" onclick="agreeComment(1, this)">
-							<i class="fa fa-thumbs-o-up" ></i>
-							<i class="fa fa-thumbs-up" style="display:none"></i>
-							<span>2333</span>
-						</a>
-						<a class="comment-replybtn">
-							<span class="glyphicon glyphicon-edit"></span>
-							<span>回复</span>
-						</a>
-						<a>
-							<i class="fa fa-thumbs-o-down"></i>
-							<span>踩</span>
-						</a>
-						<a>
-							<span class="glyphicon glyphicon-flag"></span>
-							<span>举报</span>
-						</a>
-					</div>
-					<div class="comment-reply" style="display: none;">
-						<input type="text" class="form-control comment-input" placeholder="回复  XXX"/>
-						<div style="text-align: right;" class="comment-reply-opr">
-							<button type="button" class="btn btn-default comment-cancel">取消</button>
-							<button type="button" class="btn btn-info comment-ok" disabled="" onclick="submitCommentReply(this, 1, 1)">评论</button>
-						</div>
-					</div>
-				</div>
+				<div class="user-comment"></div>
 				<div class="separator"></div>
 				
 				<!-- 分页 -->

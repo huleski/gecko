@@ -19,16 +19,26 @@
 				
 				//发表文章
 				$("#publish").click(function(){
-					//判断输入是否为空, 非空才能上传
 					$("#hidePureContent").val(articleUE.getContentTxt());
-					var content = articleUE.getContentTxt();
-					var titlevalue = $("#titleInput").val();
-					var topicId = $("#topicselect").val();
-					var titlePic = $("#hideTitlePictrue").val();
-					if(content != "" && titlevalue != "" && topicId != 0 && titlePic != "") {
-						$("#articleForm").submit();
+					
+					if ($("#hideTitlePictrue").val() == ""){	//必须添加题图
+						alert("必须添加(上传)题图!");
+						return;
+					}
+					if ($("#titleInput").val() == ""){	//文章标题不能为空
+						alert("文章标题不能为空!");
+						return;
+					}
+					if ($("#topicselect").val() == 0){	//必须选择文章所属话题
+						alert("必须选择文章所属话题!");
+						return;
+					}
+					if (articleUE.getContentTxt() == ""){	//文章内容不能为空
+						alert("文章内容不能为空!");
+						return;
 					}
 					
+					$("#articleForm").submit();
 				});
 				//打开文件上传选择框
 				$("#titlepic").click(function() {
