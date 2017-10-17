@@ -15,7 +15,7 @@ import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
 import com.sun.mail.imap.protocol.UID;
 
-public class TopicDaoImpl extends BaseDao<Topic> implements ITopicDao {
+public class TopicDaoImpl extends BaseDaoImpl<Topic> implements ITopicDao {
 	private static TopicDaoImpl topicDao;
 
 	private TopicDaoImpl() {

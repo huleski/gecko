@@ -58,11 +58,11 @@ public class UploadServlet extends HttpServlet {
 					InputStream is = fileItem.getInputStream();
 
 					// 创建文件名前缀名
-					StringBuilder fileName = new StringBuilder();
 					Date date = new Date();
 					String dateStr = new SimpleDateFormat("yyyyMMdd").format(date);
+					StringBuilder fileName = new StringBuilder(dateStr);
 					long time = date.getTime();
-					fileName.append(dateStr).append("_").append(time);
+					fileName.append("_").append(time);
 
 					// 随机4位数字
 					String s = "0123456789ABCDEF";
@@ -72,13 +72,12 @@ public class UploadServlet extends HttpServlet {
 					}
 					fileName.append(subfix); // 得到最后文件名
 
-					String uploadPath = null;
+					String basePath = "E:/java/GitRepository/upload";
 					String filePath = null;
 					String returnPath = null;
 
 					if (fieldName.equals("photo")) { // 上传头像
-						uploadPath = getServletContext().getRealPath("/upload/photo");
-						filePath = uploadPath + "/" + fileName;
+						filePath = basePath + "/photo/" + fileName;
 						returnPath = "upload/photo/" + fileName;
 						
 						//更新用户
@@ -86,8 +85,7 @@ public class UploadServlet extends HttpServlet {
 						userService.update(user);
 						request.getSession().setAttribute("user", user);
 					} else if (fieldName.equals("backphoto")) { // 上传背景图
-						uploadPath = getServletContext().getRealPath("/upload/backphoto");
-						filePath = uploadPath + "/" + fileName;
+						filePath = basePath + "/backphoto/" + fileName;
 						returnPath = "upload/backphoto/" + fileName;
 						
 						//更新用户
@@ -95,8 +93,7 @@ public class UploadServlet extends HttpServlet {
 						userService.update(user);
 						request.getSession().setAttribute("user", user);
 					} else if (fieldName.equals("titlePicture")) { // 上传文章题图
-						uploadPath = getServletContext().getRealPath("/upload/titlePicture");
-						filePath = uploadPath + "/" + fileName;
+						filePath = basePath + "/titlePicture/" + fileName;
 						returnPath = "upload/titlePicture/" + fileName;
 					}
 					// 3. 保存文件

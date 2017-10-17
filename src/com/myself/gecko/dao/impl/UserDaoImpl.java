@@ -14,7 +14,7 @@ import com.myself.gecko.domain.PersonInfo;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
 
-public class UserDaoImpl extends BaseDao<User> implements IUserDao {
+public class UserDaoImpl extends BaseDaoImpl<User> implements IUserDao {
 	private static UserDaoImpl userDao;
 
 	private UserDaoImpl() {

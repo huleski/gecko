@@ -17,7 +17,7 @@ import com.myself.gecko.domain.Answer;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
 
-public class AnswerDaoImpl extends BaseDao<Answer> implements IAnswerDao {
+public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
 
 	@Override
 	public List<Answer> findListByQid(int qid) throws Exception {

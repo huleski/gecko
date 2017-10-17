@@ -18,7 +18,7 @@ import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
 
-public class ArticleDaoImpl extends BaseDao<Article> implements IArticleDao {
+public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao {
 
 	@Override
 	public void save(Article article) throws Exception {

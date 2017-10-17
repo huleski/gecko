@@ -15,7 +15,7 @@ import com.myself.gecko.domain.CommentVO;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
 
-public class CommentDaoImpl extends BaseDao<Comment> implements ICommentDao {
+public class CommentDaoImpl extends BaseDaoImpl<Comment> implements ICommentDao {
 
 	@Override
 	public List<CommentVO> ajaxLoad(int currentPage, int pageSize,int type, int targetId, User user) throws Exception {

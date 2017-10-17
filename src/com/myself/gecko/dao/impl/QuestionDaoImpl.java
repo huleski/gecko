@@ -22,7 +22,7 @@ import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
 
-public class QuestionDaoImpl extends BaseDao<Question> implements IQuestionDao {
+public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionDao {
 
 	@Override
 	public void save(Question question) throws Exception {

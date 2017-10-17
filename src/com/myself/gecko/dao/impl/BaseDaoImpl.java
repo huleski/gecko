@@ -16,16 +16,14 @@ import com.myself.gecko.domain.Comment;
 import com.myself.gecko.util.C3P0Utils;
 
 @SuppressWarnings("all")
-public class BaseDao<E> implements IBaseDao<E> {
+public class BaseDaoImpl<E> implements IBaseDao<E> {
 	Class<E> clazz;
 	String tableName;
 
-	public BaseDao() {
+	public BaseDaoImpl() {
 		ParameterizedType paramType = (ParameterizedType) this.getClass().getGenericSuperclass();
 		clazz = (Class<E>) paramType.getActualTypeArguments()[0];
-		System.out.println(clazz);
 		tableName = clazz.getSimpleName().toLowerCase();
-		System.out.println(tableName);
 	}
 
 	/**
