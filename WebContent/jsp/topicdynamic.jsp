@@ -130,13 +130,12 @@
 			}
 			
 			.text-footer {
-				margin-left: 70px;
-				margin-bottom: 15px;
+				margin: 20px 0 20px 55px;
 				position: relative;
 			}
 			
 			.text-footer a {
-				padding: 20px 12px 20px 0;
+				padding-right: 12px;
 			}
 			
 			.hidelabel {
@@ -256,8 +255,6 @@
 				
 				$("#topicAnswer").on("click", ".text-comment", function() {
 					$(this).parents(".text-block").find(".commentdiv").toggle();
-					//$(this).find(".comment-count").toggle();
-					//$(this).find(".hidecomment").toggle();
 				});
 				
 				$("#topicAnswer").on("click", ".comment-replybtn", function() {
@@ -295,6 +292,7 @@
 				//ajax查询其他话题
 				ajaxLoadOtherTopics();
 				
+				//ajax加载第一个话题动态
 				$(".focusedtopic:first").click();
 				
 				/*回到顶部*/
@@ -350,13 +348,7 @@
 				});
 			}
 			
-			// ajax加载话题动态
-			function showTopicDynamic(tid, orderStyle, currentPage){
-				$.post("${pageContext.request.contextPath}/topicServlet", {"method":"findTopicDynamic", tid:tid, orderStyle:orderStyle, currentPage:currentPage}, function(result){
-					$("#topicAnswer").html(result);
-					currentPage += 1;
-				});
-			}
+			
 		</script>
 		<style type="text/css">
 			.commentdiv {
@@ -401,10 +393,25 @@
 			}
 		</style>
 		<script type="text/javascript">
+		//点击 话题 按钮
+			function clickWatchedTopic(tid) {
+				currentPage = 1;
+				topicId = tid;
+				$.getJSON("${pageContext.request.contextPath}/topicServlet", {"method":"ajaxLoadTopic", tid:tid}, function(result){
+					var s = '<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id='+result.id+'" style="text-decoration: none;">';
+					s += '<img src="${pageContext.request.contextPath}/'+result.photo+'" height="40px" style="border-radius: 4px;" />';
+					s += '<span style="font-weight: bold; margin-left: 20px;">'+result.name+'</span>';	 
+					s += '</a>';	
+					$("#topicInfo").html(s);
+				});
+				$("#topicAnswer").html("");
+				showTopicDynamic();
+			}
+		
 			//ajax加载评论
-			function showComment(aid, currentPage, type, obj) {
+			function showComment(aid, curPage, type, obj) {
 				var $commentblock = $(obj).parents(".text-block").find(".user-commentblock");
-				$.post("${pageContext.request.contextPath}/commentServlet", {"method":"ajaxLoad","targetId":aid, "currentPage": currentPage, "type":type}, function(result) {
+				$.post("${pageContext.request.contextPath}/commentServlet", {"method":"ajaxLoad","targetId":aid, "currentPage": curPage, "type":type}, function(result) {
 					$commentblock.html(result);
 				}); 
 			}
@@ -436,7 +443,36 @@
 					});
 				}
 			}
+
+			// ajax加载话题动态
+			function showTopicDynamic(){
+				$.post("${pageContext.request.contextPath}/topicServlet", {"method":"findTopicDynamic", tid:topicId, orderStyle:orderStyle, currentPage:currentPage++}, function(result){
+					if(result != "0") {
+						$("#waitResult").hide();
+						$("#topicAnswer").append(result);
+						
+						if(currentPage == 3) {
+							$("#showMoreDynamic").show();
+						}
+					} else {
+						$("#showMoreDynamic").hide();
+						$("#topicAnswer").append("<h4 style='padding:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
+						currentPage = -1;
+					}
+				});
+			}
 			
+			// 滑动到页面底部实现自动加载
+			var totalheight = 0;
+			var currentPage = 1;
+			var topicId = 0;
+			var orderStyle = "hot";
+			 $(window).scroll(function() {
+				totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
+				if((totalheight >= $(document).height()) && currentPage > 0 && currentPage < 3) {
+					showTopicDynamic();
+				}
+			}); 
 		</script>
 	</head>
 
@@ -456,17 +492,27 @@
 					<div style="padding: 15px 0;">
 						<!-- 已关注话题 -->
 						<c:forEach items="${list}" var="topic">
-							<button class="focusedtopic" onclick="showTopicDynamic(${topic.id}, 'hot', 1)">${topic.name }</button>
+							<button class="focusedtopic" onclick="clickWatchedTopic(${topic.id})">${topic.name }</button>
 						</c:forEach>
 					</div>
 					<div style="height: 1px;background-color: lightgray;"></div>
+					
+					<!-- ajax加载话题信息 -->
+					<div style="margin-top: 15px; margin-bottom: 40px; position: relative;">
+						<span id="topicInfo"></span>
+						<span style="color: darkgray; margin-left: 410px;">热门排序 |</span> <a href="javascript:timeOrder()">时间排序</a>
+					</div>
+					
 					<!-- ajax加载话题答案 -->
-					<div id="topicAnswer">
-						<div style="text-align:center;padding:40px;color:deepskyblue;">
+					<div>
+						<div id="waitResult" style="text-align:center;padding:40px;color:deepskyblue;">
 							<i class="fa fa-spinner fa-pulse fa-5x"></i>
 							<span class="sr-only">Loading...</span>
 						</div>
+						<div id="topicAnswer"></div>
 					</div>
+					<!-- 查看更多回答 -->
+					<button id="showMoreDynamic" class="btn btn-default btn-block btn-lg" style="margin-bottom:100px;display:none" onclick='showTopicDynamic()'>查看更多动态</button>
 				</div>
 			</div>
 

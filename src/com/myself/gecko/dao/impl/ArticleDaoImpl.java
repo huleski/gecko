@@ -24,7 +24,7 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
 	public void save(Article article) throws Exception {
 		String sql = "insert into article values(?, ?, ?, ?, ?, ?, ?, ?)";
 		Object[] params = { null, article.getUser().getId(), article.getTopic().getId(), article.getTitlePicture(),
-				article.getTitle(), article.getPureContent(), article.getContent(), article.getDate()};
+				article.getTitle(), article.getPureContent(), article.getContent(), article.getDate() };
 		CU(sql, params);
 	}
 
@@ -92,13 +92,13 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = null;
 		if ("hot".equals(orderStyle)) {
-			sql = "select article.id from article, article_agree where tid = ? and article.id = article_agree.aid group by article.id order by count(article_agree.id) limit ?, ?";
+			sql = "select article.id from article left join article_agree on article.id = article_agree.aid where tid = ? group by article.id order by count(article_agree.id) desc limit ?, ?";
 		} else {
 			sql = "select id from article where tid = ? order by date desc limit ?, ?";
 		}
 		List<Article> aList = queryRunner.query(sql, new BeanListHandler<>(Article.class), tid, (currentPage - 1) * pageSize, pageSize);
 		List<Article> list = new ArrayList<>();
-		
+
 		for (Article article : aList) {
 			article = findAnswerById(article.getId(), user);
 			list.add(article);

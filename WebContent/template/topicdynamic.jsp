@@ -9,14 +9,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div style="margin-top: 15px; margin-bottom: 40px; position: relative;">
-		<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id=${topic.id}" style="text-decoration: none;"> 
-			<img src="${pageContext.request.contextPath}/${topic.photo}" height="40px" style="border-radius: 4px;" /> 
-			<span style="font-weight: bold; margin-left: 20px;">${topic.name}</span>
-		</a> 
-		<span style="color: darkgray; margin-left: 410px;">热门排序 |</span> <a href="javascript:void(0)" onclick="showTopicDynamic('${topic.id}', 'time', 1);">时间排序</a>
-	</div>
-	
 	<c:forEach items="${set }" var="a">
 		<!-- 加载的是回答 -->
 		<c:if test="${a.mark == 1 }">
@@ -87,7 +79,7 @@
 					</span>
 				</div>
 				<div class="text">
-					<img alt="titlePic" src="${pageContext.request.contextPath}/${a.titlePicture}">
+					<img alt="titlePic" width="200px" height="120px" src="${pageContext.request.contextPath}/${a.titlePicture}">
 					<span class="word">${fn:substring(a.pureContent, 0, 300) }...</span> <span class="showall">显示全部</span>
 				</div>
 				<div class="text-all">${a.content }</div>

@@ -18,6 +18,7 @@ public class Question {
 	private Integer watchCount;
 	
 	private Integer watched;
+	private Integer mark = 3;
 
 	private List<Answer> answerList = new ArrayList<>();
 	private List<Comment> commentList = new ArrayList<>();
@@ -28,6 +29,10 @@ public class Question {
 		return "Question [id=" + id + ", user=" + user + ", topic=" + topic + ", anonymous=" + anonymous + ", title="
 				+ title + ", date=" + date + ", lookCount=" + lookCount + ", watchCount=" + watchCount + ", watched="
 				+ watched + "]";
+	}
+	
+	public Integer getMark() {
+		return mark;
 	}
 
 	public Integer getWatched() {

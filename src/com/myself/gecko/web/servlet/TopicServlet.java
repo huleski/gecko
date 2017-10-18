@@ -19,6 +19,21 @@ import com.myself.gecko.util.JsonUtil;
 public class TopicServlet extends BaseServlet {
 	private static ITopicService topicService = TopicServiceImpl.getTopicService();
 	
+	
+	public String ajaxLoadTopic(HttpServletRequest request, HttpServletResponse response) {
+		String tidStr = request.getParameter("tid");
+		int tid = Integer.parseInt(tidStr);
+		
+		try {
+			Topic topic = topicService.findById(tid);
+			String data = JsonUtil.object2json(topic);
+			response.getWriter().print(data);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/**
 	 * 查询话题动态
 	 */
@@ -33,11 +48,13 @@ public class TopicServlet extends BaseServlet {
 			int currentPage = Integer.parseInt(pageNum);
 			
 			Set set = topicService.findTopicDynamic(tid, orderStyle, user, currentPage);
-			Topic topic = topicService.findById(tid);
-			request.setAttribute("set", set);
-			request.setAttribute("topic", topic);
-System.out.println("---------------------" + set.size());			
-			return "/template/topicdynamic.jsp";
+			if (set.size() == 0) {
+				response.getWriter().print(0);
+				return null;
+			} else {
+				request.setAttribute("set", set);
+				return "/template/topicdynamic.jsp";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "/500.jsp";

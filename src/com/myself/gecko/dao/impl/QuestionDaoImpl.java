@@ -117,7 +117,7 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
 	@Override
 	public List<Question> findLastWatchQuestionListByTid(int tid, int currentPage, int pageSize) throws Exception {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-		String sql = "select distinct question.id, question.title from question, question_watch where question.id = question_watch.qid and question.tid = ? order by question_watch.date desc limit ?, ?";
+		String sql = "select distinct question.id, question.title from question left join question_watch on question.id = question_watch.qid where question.tid = ? order by question_watch.date desc limit ?, ?";
 		return queryRunner.query(sql, new BeanListHandler<>(Question.class), tid, (currentPage - 1) * pageSize, pageSize);
 		
 		/*String sql = "select date from user_login where uid = ? order by date limit " + count + ", 1";

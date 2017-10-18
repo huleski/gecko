@@ -101,17 +101,19 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = null;
 		if ("hot".equals(orderStyle)) {
-			sql = "select * from answer where id = (select answer.id from answer,answer_agree where answer_agree.aid = answer.id and answer.qid = ? group by answer.id order by count(answer_agree.id) desc limit 0, 1)";
+			sql = "select * from answer where id = (select answer.id from answer left join answer_agree on answer.id = answer_agree.aid where answer.qid = ? group by answer.id order by count(answer_agree.id) desc limit 0, 1)";
 		} else {
 			sql = "select * from answer where qid = ? order by date desc limit 0, 1";
 		}
 		Answer answer = queryRunner.query(sql, new BeanHandler<>(Answer.class), qid);
-		
-		int uid = 0;
-		if (user != null) {
-			uid = user.getId();
+
+		if (answer != null) {
+			int uid = 0;
+			if (user != null) {
+				uid = user.getId();
+			}
+			improveAnswerInfo(answer, queryRunner, uid);
 		}
-		improveAnswerInfo(answer, queryRunner, uid);
 		return answer;
 	}
 

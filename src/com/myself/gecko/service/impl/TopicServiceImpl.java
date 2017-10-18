@@ -115,11 +115,14 @@ public class TopicServiceImpl implements ITopicService {
 
 		for (Question question : qList) {
 			Answer answer = answerDao.findAnswerByOrderStyle(question.getId(), user, orderStyle);
-			answer.setQuestion(question);
-			set.add(answer);
+			if (answer != null) {	//已有回答
+				answer.setQuestion(question);
+				set.add(answer);
+			} else {	//还没有回答
+				set.add(questionDao.findQuestionById(question.getId(), user));
+			}
 		}
 		set.addAll(aList);
-		
 		return set;
 	}
 

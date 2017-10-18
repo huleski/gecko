@@ -40,9 +40,9 @@ public interface Constant {
 	/**
 	 * 话题动态加载回答数
 	 */
-	public static final int TOPIC_DYNAIC_LOAD_ANSWER_COUNT = 1;
+	public static final int TOPIC_DYNAIC_LOAD_ANSWER_COUNT = 3;
 	/**
 	 * 话题动态加载文章数
 	 */
-	public static final int TOPIC_DYNAIC_LOAD_ARTICLE_COUNT = 1;
+	public static final int TOPIC_DYNAIC_LOAD_ARTICLE_COUNT = 3;
 }
