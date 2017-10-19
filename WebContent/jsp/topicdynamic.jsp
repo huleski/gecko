@@ -106,6 +106,7 @@
 				margin-left: 55px;
 				cursor: pointer;
 				margin-bottom: 20px;
+				position:relative;
 			}
 			
 			.author-info {
@@ -302,14 +303,14 @@
 
 			});
 
-			window.onscroll = function() {
+			$(window).scroll(function() {
 				if(document.body.scrollTop > 600) {
 					$("#gotobtn").show();
 				}
 				if(document.body.scrollTop < 600) {
 					$("#gotobtn").hide();
 				}
-			}
+			});
 			
 			//关注其他话题
 			function watchOrCancle(tid, obj) {

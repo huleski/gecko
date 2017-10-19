@@ -277,14 +277,14 @@
 
 			});
 
-			window.onscroll = function() {
+			$(window).scroll(function() {
 				if(document.body.scrollTop > 600) {
 					$("#gotobtn").show();
 				}
 				if(document.body.scrollTop < 600) {
 					$("#gotobtn").hide();
 				}
-			}
+			});
 			
 			//关注话题
 			function watchTopic(tid) {

@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
 </head>
 <body>
 	<c:forEach items="${set }" var="a">
@@ -28,7 +27,7 @@
 					</span>
 				</div>
 				<div class="text">
-					<span class="word">${fn:substring(a.pureContent, 0, 300) }...</span> <span class="showall">显示全部</span>
+					<span class="word">${fn:substring(a.pureContent, 0, 120) }...</span> <span class="showall">显示全部</span>
 				</div>
 				<div class="text-all">${a.content }</div>
 				<div class="text-footer">
@@ -79,12 +78,15 @@
 					</span>
 				</div>
 				<div class="text">
-					<img alt="titlePic" width="200px" height="120px" src="${pageContext.request.contextPath}/${a.titlePicture}">
-					<span class="word">${fn:substring(a.pureContent, 0, 300) }...</span> <span class="showall">显示全部</span>
+					<img alt="[图片]" style="width:200px;height:120px;" src="${pageContext.request.contextPath}/${a.titlePicture}">
+					<div style="position:absolute;right:0;top:0;width:380px;">
+						<span class="word">${fn:substring(a.pureContent, 0, 120) }...</span> 
+						<span class="showall">显示全部</span>
+					</div>
 				</div>
 				<div class="text-all">${a.content }</div>
 				<div class="text-footer">
-					<a href="#">关注问题</a> 
+					<a href="#">关注问题</a>
 					<a class="text-comment" href="javascript:void(0)" onclick="showComment(${a.id}, 1, 2, this)">${a.commentCount } 条评论</a> 
 					<span class="hidelabel">
 						<a href="#">感谢</a> 
