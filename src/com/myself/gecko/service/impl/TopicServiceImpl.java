@@ -102,7 +102,8 @@ public class TopicServiceImpl implements ITopicService {
 					Method method2 = o2.getClass().getMethod("getDate");
 					Date d1 = (Date) method1.invoke(o1);
 					Date d2 = (Date) method2.invoke(o2);
-					return d1.compareTo(d2);
+					int result = d1.compareTo(d2);
+					return result == 0 ? 1 : result;
 				} catch (Exception e) {
 					e.printStackTrace();
 					return 0;
@@ -115,11 +116,12 @@ public class TopicServiceImpl implements ITopicService {
 
 		for (Question question : qList) {
 			Answer answer = answerDao.findAnswerByOrderStyle(question.getId(), user, orderStyle);
-			if (answer != null) {	//已有回答
+			if (answer != null) { // 已有回答
 				answer.setQuestion(question);
 				set.add(answer);
-			} else {	//还没有回答
-				set.add(questionDao.findQuestionById(question.getId(), user));
+			} else { // 还没有回答
+				Question q = questionDao.findQuestionById(question.getId(), user);
+				set.add(q);
 			}
 		}
 		set.addAll(aList);

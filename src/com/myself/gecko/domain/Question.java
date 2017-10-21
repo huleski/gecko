@@ -16,21 +16,18 @@ public class Question {
 	private Date date;
 	private Integer lookCount;
 	private Integer watchCount;
-	
+
 	private Integer watched;
 	private Integer mark = 3;
 
 	private List<Answer> answerList = new ArrayList<>();
 	private List<Comment> commentList = new ArrayList<>();
 
-
 	@Override
 	public String toString() {
-		return "Question [id=" + id + ", user=" + user + ", topic=" + topic + ", anonymous=" + anonymous + ", title="
-				+ title + ", date=" + date + ", lookCount=" + lookCount + ", watchCount=" + watchCount + ", watched="
-				+ watched + "]";
+		return "Question [title=" + title + ", date=" + date + "]";
 	}
-	
+
 	public Integer getMark() {
 		return mark;
 	}

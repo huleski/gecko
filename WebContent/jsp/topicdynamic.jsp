@@ -15,7 +15,7 @@
 		<script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
 		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 		<style type="text/css">
-			#topbar a:hover {
+			a:hover {
 				text-decoration: none;
 			}
 			
@@ -470,7 +470,7 @@
 			var orderStyle = "hot";
 			 $(window).scroll(function() {
 				totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
-				if((totalheight >= $(document).height()) && currentPage > 0 && currentPage < 3) {
+				if((totalheight >= $(document).height()) && currentPage > 0 && currentPage <= 5) {
 					showTopicDynamic();
 				}
 			}); 
