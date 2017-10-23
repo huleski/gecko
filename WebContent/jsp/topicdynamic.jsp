@@ -448,10 +448,9 @@
 			// ajax加载话题动态
 			function showTopicDynamic(){
 				$.post("${pageContext.request.contextPath}/topicServlet", {"method":"findTopicDynamic", tid:topicId, orderStyle:orderStyle, currentPage:currentPage++}, function(result){
+					$("#waitResult").hide();
 					if(result != "0") {
-						$("#waitResult").hide();
 						$("#topicAnswer").append(result);
-						
 						if(currentPage == 3) {
 							$("#showMoreDynamic").show();
 						}
