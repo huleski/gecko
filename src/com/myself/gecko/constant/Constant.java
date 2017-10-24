@@ -44,5 +44,5 @@ public interface Constant {
 	/**
 	 * 话题动态加载文章数
 	 */
-	public static final int TOPIC_DYNAIC_LOAD_ARTICLE_COUNT = 0;
+	public static final int TOPIC_DYNAIC_LOAD_ARTICLE_COUNT = 3;
 }

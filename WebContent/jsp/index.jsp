@@ -31,7 +31,6 @@
 			}
 			
 			#topbar {
-				/*height: 50px;*/
 				background-color: white;
 				width: 100%;
 				position: fixed;
@@ -425,7 +424,7 @@
 				<div id="browseDiv">
 					<c:if test="${not empty user }">
 						<div class="answerblock" style="font-size: 16px;">
-							<a href="#" data-toggle="modal" data-target="#askModal">
+							<a href="javascript:writeQuestioin()">
 								<span class="glyphicon glyphicon-question-sign"></span> 提问
 							</a>
 							<a href="${pageContext.request.contextPath}/jsp/answer.jsp" style="margin-left: 40px;">

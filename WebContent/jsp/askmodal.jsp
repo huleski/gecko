@@ -7,11 +7,22 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 	//点击提问
+	var topicselectloaded = false;
 	function writeQuestioin(){
 		if("${user}" == "") {
 			$('#loginModal').modal();
 		} else {
-			$("#askModal").modal();
+			if(topicselectloaded){
+				$("#askModal").modal();
+			}else{
+				$.getJSON("${pageContext.request.contextPath}/topicServlet", {"method": "findAll"}, function(result) {
+					$(result).each(function(index, object) {
+						$("#topicselect").append("<option value='" + object.id + "'>" + object.name + "</option>");
+						$("#askModal").modal();
+						topicselectloaded = true;
+					});
+				});	
+			}
 		}
 	}
 	
@@ -25,19 +36,36 @@
 	}
 	
 	$(function() {
-		$("#topicselect").change(function() {
-			if(this.value != 0) {
+		$("#editordiv").mouseout(function(){
+			var editval = askUE.getContentTxt().trim();
+			var topoicval = $("#topicselect").val();
+			var questiontitletextval = $("#questiontitletext").val().trim();
+			if(Number(topoicval) != 0 && editval !="" && questiontitletextval !=""){
 				$("#submitbtn").attr("disabled", false);
 			} else {
 				$("#submitbtn").attr("disabled", true);
-			}	
+			}
 		});
-		
-		$.getJSON("${pageContext.request.contextPath}/topicServlet", {"method": "findAll"}, function(result) {
-			$(result).each(function(index, object) {
-				$("#topicselect").append("<option value='" + object.id + "'>" + object.name + "</option>");
-			});
-		});	
+		$("#topicselect").change(function(){
+			var editval = askUE.getContentTxt().trim();
+			var topoicval = $("#topicselect").val();
+			var questiontitletextval = $("#questiontitletext").val().trim();
+			if(Number(topoicval) != 0 && editval !="" && questiontitletextval !=""){
+				$("#submitbtn").attr("disabled", false);
+			} else {
+				$("#submitbtn").attr("disabled", true);
+			}
+		});
+		$("#questiontitletext").keyup(function(){
+			var editval = askUE.getContentTxt().trim();
+			var topoicval = $("#topicselect").val();
+			var questiontitletextval = $("#questiontitletext").val().trim();
+			if(Number(topoicval) != 0 && editval !="" && questiontitletextval !=""){
+				$("#submitbtn").attr("disabled", false);
+			} else {
+				$("#submitbtn").attr("disabled", true);
+			}
+		});
 		
 		$("#submitbtn").click(function() {
 			$("#hideContent").val(askUE.getContentTxt());
@@ -65,7 +93,7 @@
 							<input type="hidden" name="method" value="addQuestion" />
 							<input id="hideContent" type="hidden" name="pureContent"/>
 							<div>
-								<textarea name="title" class="form-control" rows="3" placeholder="问题标题" required ></textarea>
+								<textarea id="questiontitletext" name="title" class="form-control" rows="3" placeholder="问题标题" required ></textarea>
 								<select id="topicselect" name="tid" class="form-control input-lg" style="margin-top: 12px;" required>
 									<option value="0">请选择话题</option>
 								</select>
@@ -76,7 +104,7 @@
 								<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js"></script>
 								<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
 								<div id="editordiv" style="margin-bottom: 15px;">
-									<script id="editor" name="content" type="text/plain" style="width:568px;height:150px;"><font color="gray">写下你的问题</font></script>
+									<script id="editor" name="content" type="text/plain" style="width:568px;height:150px;"></script>
 								</div>
 								<script type="text/javascript">
 									var askUE = UE.getEditor('editor', {

@@ -14,15 +14,11 @@ public class IndexServlet extends BaseServlet {
 		IIndexService indexService = new IndexServiceImpl();
 
 		User user = (User) request.getSession().getAttribute("user");
-		if (user != null) { // 已经登录
-			try {
-				Set set = indexService.getSet(user);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		try {
+			Set set = indexService.getSet(user);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		// 没有登录
 
 		return "/template/index.jsp";
 	}

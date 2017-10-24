@@ -25,7 +25,7 @@ public class Question {
 
 	@Override
 	public String toString() {
-		return "Question [title=" + title + ", date=" + date + "]";
+		return "Question [title=" + title + ", date=" + date + ", user=" + user.getName() +"]";
 	}
 
 	public Integer getMark() {

@@ -552,15 +552,15 @@
 			<div style="padding-top: 20px;margin: auto;width: 1000px;color: darkgray;">
 				<span style="margin-left: 20px;">© 2017 逼乎 </span>
 				<span style="margin-left: 500px;">
-						<ul style="display: inline;">
-							<li><a href="#" target="_blank">赵日天</a></li>
-							<li><a href="#" target="_blank">移动应用</a></li>
-							<li><a href="#">加入逼乎</a></li>
-							<li><a href="#" target="_blank">逼乎协议</a></li>
-							<li><a href="#" target="_blank">举报投诉</a></li>
-							<li><a href="#">联系我们</a></li>
-						</ul>
-					</span>
+					<ul style="display: inline;">
+						<li><a href="#" target="_blank">赵日天</a></li>
+						<li><a href="#" target="_blank">移动应用</a></li>
+						<li><a href="#">加入逼乎</a></li>
+						<li><a href="#" target="_blank">逼乎协议</a></li>
+						<li><a href="#" target="_blank">举报投诉</a></li>
+						<li><a href="#">联系我们</a></li>
+					</ul>
+				</span>
 			</div>
 		</div>
 

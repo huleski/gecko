@@ -42,7 +42,7 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
 	public Question findQuestionById(int id, User user) throws Exception {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		//查询问题
-		String sql = "select * from question where question.id = ?";
+		String sql = "select * from question where id = ?";
 		Question question = queryRunner.query(sql, new BeanHandler<>(Question.class), id);
 		
 		//查询是否已经关注
@@ -78,6 +78,17 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
 		for (Map<String, Object> map4 : list3) {
 			question.getCommentList().add(new Comment());
 		}
+		
+		//查询提问者并封装
+		sql = "select uid from question where id = ?";
+		int uid = -1;
+		List<Map<String, Object>> list4 = queryRunner.query(sql, new MapListHandler(), id);
+		for (Map<String, Object> map4 : list4) {
+			uid = (int) map4.get("uid");
+		}
+		sql = "select * from user where id = ?";
+		User asker = queryRunner.query(sql, new BeanHandler<>(User.class), uid);
+		question.setUser(asker);
 		return question;
 	}
 
