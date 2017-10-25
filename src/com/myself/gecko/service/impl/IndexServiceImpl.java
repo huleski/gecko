@@ -6,6 +6,10 @@ import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.myself.gecko.dao.IQuestionDao;
+import com.myself.gecko.dao.ITopicDao;
+import com.myself.gecko.dao.impl.QuestionDaoImpl;
+import com.myself.gecko.dao.impl.TopicDaoImpl;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IIndexService;
 
@@ -15,7 +19,9 @@ import com.myself.gecko.service.IIndexService;
  */
 @SuppressWarnings("all")
 public class IndexServiceImpl implements IIndexService {
-	
+	private ITopicDao topicDao = TopicDaoImpl.getTopicDao();
+	private IQuestionDao QuestionDao = new QuestionDaoImpl();
+    
 	@Override
 	public Set getSet(User user) throws Exception {
 		// 创建根据时间排序的TreeSet集合
@@ -36,6 +42,7 @@ public class IndexServiceImpl implements IIndexService {
 		});
 		//自己的关注:话题(新增问题), 问题 (新增的回答)
 		// 关注的用户:写回答, 写文章, 关注话题/问题, 赞同回答/文章, 
+		
 		
 		return null;
 	}
