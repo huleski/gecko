@@ -31,16 +31,16 @@
 				</div>
 				<div class="text-all">${a.content }</div>
 				<div class="text-footer">
-					<a href="#">关注问题</a> 
+					<a href="javascript:void(0)">关注问题</a> 
 					<a class="text-comment" href="javascript:void(0)" onclick="showComment(${a.id}, 1, 1, this)">${a.commentCount } 条评论</a> 
 					<span class="hidelabel">
-						<a href="#">感谢</a> 
-						<a href="#">分享</a> 
-						<a href="#">收藏</a> 
-						<a href="#">没有帮助</a>
-						<a href="#">举报</a>
+						<a href="javascript:void(0)">感谢</a> 
+						<a href="javascript:void(0)">分享</a> 
+						<a href="javascript:void(0)">收藏</a> 
+						<a href="javascript:void(0)">没有帮助</a>
+						<a href="javascript:void(0)">举报</a>
 					</span> 
-					<a href="#">作者保留权利</a> 
+					<a href="javascript:void(0)">作者保留权利</a> 
 					<span class="takebackspan"><a>收起</a></span>
 				</div>
 				
@@ -89,16 +89,16 @@
 					<div>${a.content }</div>
 				</div>
 				<div class="text-footer">
-					<a href="#">关注问题</a>
+					<a href="javascript:void(0)">关注问题</a>
 					<a class="text-comment" href="javascript:void(0)" onclick="showComment(${a.id}, 1, 2, this)">${a.commentCount } 条评论</a> 
 					<span class="hidelabel">
-						<a href="#">感谢</a> 
-						<a href="#">分享</a> 
-						<a href="#">收藏</a> 
-						<a href="#">没有帮助</a>
-						<a href="#">举报</a>
+						<a href="javascript:void(0)">感谢</a> 
+						<a href="javascript:void(0)">分享</a> 
+						<a href="javascript:void(0)">收藏</a> 
+						<a href="javascript:void(0)">没有帮助</a>
+						<a href="javascript:void(0)">举报</a>
 					</span> 
-					<a href="#">作者保留权利</a> 
+					<a href="javascript:void(0)">作者保留权利</a> 
 					<span class="takebackspan"><a>收起</a></span>
 				</div>
 				
@@ -131,16 +131,16 @@
 					</a>
 				</div>
 				<div class="text-footer">
-					<a href="#">关注问题</a> 
+					<a href="javascript:void(0)">关注问题</a> 
 					<a class="text-comment" href="javascript:void(0)">${fn:length(a.answerList)} 个回答</a> 
 					<span class="hidelabel">
-						<a href="#">感谢</a> 
-						<a href="#">分享</a> 
-						<a href="#">收藏</a> 
-						<a href="#">没有帮助</a>
-						<a href="#">举报</a>
+						<a href="javascript:void(0)">感谢</a> 
+						<a href="javascript:void(0)">分享</a> 
+						<a href="javascript:void(0)">收藏</a> 
+						<a href="javascript:void(0)">没有帮助</a>
+						<a href="javascript:void(0)">举报</a>
 					</span> 
-					<a href="#">作者保留权利</a> 
+					<a href="javascript:void(0)">作者保留权利</a> 
 					<span class="takebackspan"><a>收起</a></span>
 				</div>
 				<div class="separator"></div>

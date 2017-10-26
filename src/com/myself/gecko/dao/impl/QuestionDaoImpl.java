@@ -138,7 +138,6 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
 		//如果查到登录时间之前了
 		sql = "select distinct question.id, question.title from question, question_watch where question.id = question_watch.qid and question.tid = ? and question_watch.date > ? order by question_watch.date desc limit ?, ?";
 		return queryRunner.query(sql, new BeanListHandler<>(Question.class), tid, date, 0, Constant.TOPIC_DYNAIC_LOAD_COUNT);*/
-		
 	}
 
 }

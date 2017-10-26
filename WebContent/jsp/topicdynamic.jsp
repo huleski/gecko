@@ -451,7 +451,7 @@
 					$("#waitResult").hide();
 					if(result != "0") {
 						$("#topicAnswer").append(result);
-						if(currentPage == 3) {
+						if(currentPage >= 5) {
 							$("#showMoreDynamic").show();
 						}
 					} else {
@@ -473,6 +473,24 @@
 					showTopicDynamic();
 				}
 			}); 
+			 //热度排序
+			 function hotOrder(){
+				 $("#timeOrder").toggle();
+				 $("#hotOrder").toggle();
+				 $("#topicAnswer").html("");
+				 orderStyle="hot";
+				 currentPage = 1;
+				 showTopicDynamic();
+			 }
+			 //时间排序
+			 function timeOrder(){
+				 $("#timeOrder").toggle();
+				 $("#hotOrder").toggle();
+				 $("#topicAnswer").html("");
+				 orderStyle="time";
+				 currentPage = 1;
+				 showTopicDynamic();
+			 }
 		</script>
 	</head>
 
@@ -500,7 +518,8 @@
 					<!-- ajax加载话题信息 -->
 					<div style="margin-top: 15px; margin-bottom: 40px; position: relative;">
 						<span id="topicInfo"></span>
-						<span style="color: darkgray; margin-left: 410px;">热门排序 |</span> <a href="javascript:timeOrder()">时间排序</a>
+						<span id="timeOrder"><span style="margin-left: 410px;">热门排序 |</span> <a href="javascript:timeOrder()">时间排序</a></span>
+						<span id="hotOrder" style="display: none;"><a style="margin-left: 410px;"  href="javascript:hotOrder()">热门排序 |</a> <span>时间排序</span></span>
 					</div>
 					
 					<!-- ajax加载话题答案 -->

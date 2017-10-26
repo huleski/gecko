@@ -96,6 +96,7 @@
 				margin-left: 55px;
 				cursor: pointer;
 				margin-bottom: 20px;
+				position:relative;
 			}
 			
 			.author-info {
@@ -120,8 +121,7 @@
 			}
 			
 			.text-footer {
-				margin-left: 70px;
-				margin-bottom: 15px;
+				margin: 20px 0 20px 55px;
 				position: relative;
 			}
 			
@@ -464,6 +464,25 @@
 					showTopicDynamic();
 				}
 			}); 
+			 
+			//热度排序
+			 function hotOrder(){
+				 $("#timeOrder").toggle();
+				 $("#hotOrder").toggle();
+				 $("#topicAnswer").html("");
+				 orderStyle="hot";
+				 currentPage = 1;
+				 showTopicDynamic();
+			 }
+			 //时间排序
+			 function timeOrder(){
+				 $("#timeOrder").toggle();
+				 $("#hotOrder").toggle();
+				 $("#topicAnswer").html("");
+				 orderStyle="time";
+				 currentPage = 1;
+				 showTopicDynamic();
+			 }
 		</script>
 	</head>
 
@@ -493,8 +512,8 @@
 					
 					<div style="height: 1px;background-color: lightgray;"></div>
 					<div style="margin:10px 0 20px 0;text-align:right;">
-						<span style="color: darkgray;">热门排序 |</span>
-						<a href="#">时间排序</a>
+						<span id="timeOrder"><span style="margin-left: 410px;">热门排序 |</span> <a href="javascript:timeOrder()">时间排序</a></span>
+						<span id="hotOrder" style="display: none;"><a style="margin-left: 410px;"  href="javascript:hotOrder()">热门排序 |</a> <span>时间排序</span></span>
 					</div>
 
 					<!-- ajax加载话题答案 -->
