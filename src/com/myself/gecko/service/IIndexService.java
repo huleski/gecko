@@ -6,6 +6,6 @@ import com.myself.gecko.domain.User;
 
 public interface IIndexService {
 
-	Set getSet(User user) throws Exception;
+	Set getSet(User user, int currentPage) throws Exception;
 
 }

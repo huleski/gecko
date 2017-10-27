@@ -14,8 +14,10 @@ public class IndexServlet extends BaseServlet {
 		IIndexService indexService = new IndexServiceImpl();
 
 		User user = (User) request.getSession().getAttribute("user");
+		String curPage = request.getParameter("currentPage");
 		try {
-			Set set = indexService.getSet(user);
+		    int currentPage = Integer.parseInt(curPage);
+			Set set = indexService.getSet(user, currentPage);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

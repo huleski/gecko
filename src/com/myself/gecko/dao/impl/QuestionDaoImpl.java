@@ -1,5 +1,7 @@
 package com.myself.gecko.dao.impl;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -139,5 +141,35 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
 		sql = "select distinct question.id, question.title from question, question_watch where question.id = question_watch.qid and question.tid = ? and question_watch.date > ? order by question_watch.date desc limit ?, ?";
 		return queryRunner.query(sql, new BeanListHandler<>(Question.class), tid, date, 0, Constant.TOPIC_DYNAIC_LOAD_COUNT);*/
 	}
+
+    @Override
+    public List<Question> findNewestQuestion(int topicId, int currentPage, int pageSize) throws Exception {
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        String sql = "select * from question where tid = ? order by date desc limit ?, ?";
+        List<Question> list = queryRunner.query(sql, new BeanListHandler<>(Question.class), topicId, (currentPage - 1) * pageSize, pageSize);
+        for (Question question : list) {
+            question = findQuestionById(question.getId(), null);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Question> findWatchedQuestion(int id) throws Exception {
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        String sql = "select distinct question.id, question.title from question left join question_watch on question.id = question_watch.qid where question_watch.uid = ?";
+        return queryRunner.query(sql, new BeanListHandler<>(Question.class), id);
+    }
+
+    @Override
+    public List<Question> findNewestQuestionInWatchedTopics(User user, int currentPage,
+            int pageSize) throws Exception {
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        String sql = "select distinct question.id, question.title from question left join topic on topic.id = question.tid join topic_watch on topic.id = topic_watch.tid where topic_watch.uid = ? order by question.date desc limit ?, ?";
+        List<Question> list = queryRunner.query(sql, new BeanListHandler<>(Question.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
+        for (Question question : list) {
+            question = findQuestionById(question.getId(), user);
+        }
+        return list;
+    }
 
 }

@@ -45,4 +45,13 @@ public interface Constant {
 	 * 话题动态加载文章数
 	 */
 	public static final int TOPIC_DYNAIC_LOAD_ARTICLE_COUNT = 3;
+
+    /**  
+     * 首页加载新增问题数
+     */
+    public static final int INDEX_NEW_QUESTION = 1;
+    /**  
+     * 首页加载新增问题回答数
+     */
+    public static final int INDEX_NEW_ANSWER = 1;
 }

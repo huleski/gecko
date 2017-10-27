@@ -17,4 +17,8 @@ public interface IAnswerDao extends IBaseDao<Answer> {
 	void disagree(User user, int aid) throws Exception;
 
 	Answer findAnswerByOrderStyle(int qid, User user, String orderStyle) throws Exception;
+
+    Answer findNewestAnswer(int id) throws Exception;
+
+    List<Answer> findNewestAnswerInWatchedQuestion(User user, int currentPage, int pageSize) throws Exception;
 }

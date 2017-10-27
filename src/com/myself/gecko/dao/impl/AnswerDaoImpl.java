@@ -14,6 +14,7 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IAnswerDao;
 import com.myself.gecko.domain.Answer;
+import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
 
@@ -116,5 +117,25 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
 		}
 		return answer;
 	}
+
+    @Override
+    public Answer findNewestAnswer(int id) throws Exception {
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        String sql = "select * from answer where qid = ? order by date limit 1";
+        sql = "select distinct question.id, question.title from question left join question_watch on question.id = question_watch.qid where question_watch.uid = ?";
+        return queryRunner.query(sql, new BeanHandler<>(Answer.class), id);  
+    }
+
+    @Override
+    public List<Answer> findNewestAnswerInWatchedQuestion(User user, int currentPage, int pageSize)
+            throws Exception {
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        String sql = "select distinct answer.id from answer left join question on question.id = answer.qid join question_watch on question.id = question_watch.qid where question_watch.uid = ? order by answer.date desc limit ?, ?";
+        List<Answer> list = queryRunner.query(sql, new BeanListHandler<>(Answer.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
+        for (Answer answer : list) {
+            improveAnswerInfo(answer, queryRunner, user.getId());
+        }
+        return list;
+    }
 
 }
