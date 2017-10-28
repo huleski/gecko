@@ -60,10 +60,8 @@ public class IndexServiceImpl implements IIndexService {
             
             List<Answer> newAnswers = answerDao.findNewestAnswerInWatchedQuestion(user, currentPage, Constant.INDEX_NEW_ANSWER);
             set.addAll(newAnswers);
-            /*List<Question> watchedQuestions = questionDao.findWatchedQuestion(user.getId());
-            for (Question question : watchedQuestions) {
-                Answer answer = answerDao.findNewestAnswer(question.getId());
-            }*/
+            
+            
         }
 
         return null;
