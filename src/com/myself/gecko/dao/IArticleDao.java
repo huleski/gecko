@@ -16,4 +16,6 @@ public interface IArticleDao extends IBaseDao<Article>{
 	Article findAnswerById(int aid, User user) throws Exception;
 
 	List<Article> findArticleByOrderStyle(int tid, User user, String orderStyle, int currentPage, int pageSize) throws Exception;
+
+    List<Article> findArticlesByUserWatch(User user, int currentPage, int pageSize) throws Exception;
 }

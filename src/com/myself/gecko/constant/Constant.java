@@ -54,4 +54,12 @@ public interface Constant {
      * 首页加载新增问题回答数
      */
     public static final int INDEX_NEW_ANSWER = 1;
+    /**  
+     * 首页加载关注用户的新增问题回答数
+     */
+    public static final int WATCHEDUSER_ANSWER_COUNT = 2;
+    /**  
+     * 首页加载关注用户的新增文章数
+     */
+    public static final int WATCHEDUSER_ARTICLE_COUNT = 2;
 }

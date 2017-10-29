@@ -1,5 +1,6 @@
 package com.myself.gecko.dao.impl;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IArticleDao;
+import com.myself.gecko.domain.Answer;
 import com.myself.gecko.domain.Article;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
@@ -105,4 +107,16 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
 		}
 		return list;
 	}
+
+    @Override
+    public List<Article> findArticlesByUserWatch(User user, int currentPage, int pageSize) throws Exception {
+        String sql = "select article.id from article left join user u1 on u1.id = article.uid join user_watch on user_watch.hostId = u1.id join user u2 on u2.id = user_watch.watcherId where u2.id = ? limit ?,?";
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        List<Article> list = queryRunner.query(sql, new BeanListHandler<>(Article.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
+        for (Article article : list) {
+            article = findAnswerById(article.getId(), user);
+            list.add(article);
+        }
+        return list;
+    }
 }

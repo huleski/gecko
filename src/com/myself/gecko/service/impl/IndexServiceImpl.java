@@ -17,6 +17,7 @@ import com.myself.gecko.dao.impl.ArticleDaoImpl;
 import com.myself.gecko.dao.impl.QuestionDaoImpl;
 import com.myself.gecko.dao.impl.TopicDaoImpl;
 import com.myself.gecko.domain.Answer;
+import com.myself.gecko.domain.Article;
 import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
@@ -29,7 +30,7 @@ import com.myself.gecko.service.IIndexService;
 public class IndexServiceImpl implements IIndexService {
     private ITopicDao topicDao = TopicDaoImpl.getTopicDao();
     private IQuestionDao questionDao = new QuestionDaoImpl();
-    private IArticleDao articledao = new ArticleDaoImpl();
+    private IArticleDao articleDao = new ArticleDaoImpl();
     private IAnswerDao answerDao = new AnswerDaoImpl();
 
     @Override
@@ -61,10 +62,14 @@ public class IndexServiceImpl implements IIndexService {
             List<Answer> newAnswers = answerDao.findNewestAnswerInWatchedQuestion(user, currentPage, Constant.INDEX_NEW_ANSWER);
             set.addAll(newAnswers);
             
+            List<Answer> watchedUserAnswers = answerDao.findAnswersByUserWatch(user, currentPage, Constant.WATCHEDUSER_ANSWER_COUNT);
+            set.addAll(watchedUserAnswers);
             
+            List<Article> watchedUserArticle = articleDao.findArticlesByUserWatch(user, currentPage, Constant.WATCHEDUSER_ARTICLE_COUNT);
+            set.addAll(watchedUserArticle);
         }
 
-        return null;
+        return set;
     }
 
 }

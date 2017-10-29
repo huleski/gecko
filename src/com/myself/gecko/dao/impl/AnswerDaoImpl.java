@@ -137,5 +137,16 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         }
         return list;
     }
+    
+    @Override
+    public List<Answer> findAnswersByUserWatch(User user, int currentPage, int pageSize) throws Exception {
+        String sql = "select answer.id from answer left join user u1 on u1.id = answer.uid join user_watch on user_watch.hostId = u1.id join user u2 on u2.id = user_watch.watcherId where u2.id = ? limit ?,?";
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        List<Answer> list = queryRunner.query(sql, new BeanListHandler<>(Answer.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
+        for (Answer answer : list) {
+            improveAnswerInfo(answer, queryRunner, user.getId());
+        }
+        return list;
+    }
 
 }
