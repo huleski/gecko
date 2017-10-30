@@ -1,19 +1,25 @@
 package com.myself.gecko.dao.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.myself.gecko.dao.ITopicDao;
+import com.myself.gecko.domain.Article;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
 import com.sun.mail.imap.protocol.UID;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class TopicDaoImpl extends BaseDaoImpl<Topic> implements ITopicDao {
 	private static TopicDaoImpl topicDao;
@@ -111,4 +117,20 @@ public class TopicDaoImpl extends BaseDaoImpl<Topic> implements ITopicDao {
 		}
 		return null;
 	}
+
+    @Override
+    public List<Topic> findNewWatchedTopicWithFriends(User user, int currentPage, int pageSize) throws SQLException {
+        List<Topic> topics = new ArrayList<>();
+        String sql = "select t.id, uw.hostId from topic t,topic_watch tw, user_watch uw where t.id = tw.tid and tw.uid = uw.hostId and uw.watcherId = ? limit ?,?";
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        List<Map<String, Object>> list = queryRunner.query(sql, new MapListHandler(), user.getId(), (currentPage - 1) * pageSize, pageSize);
+        for (Map<String, Object> map : list) {
+            Topic topic = findTopicById((int) map.get("id"), user);
+            sql = "select id, name from user where id = ?";
+            User watcher = queryRunner.query(sql, new BeanHandler<>(User.class), (int)map.get("hostId"));
+            topic.setWatcher(watcher);
+            topics.add(topic);
+        }
+        return topics;
+    }
 }

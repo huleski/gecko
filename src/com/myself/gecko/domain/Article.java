@@ -17,8 +17,21 @@ public class Article {
 	
 	private Integer agree;
 	private Integer mark = 2;
+	private User watcher;
+	
+	public User getWatcher() {
+        return watcher;
+    }
 
-	public Integer getMark() {
+    public void setWatcher(User watcher) {
+        this.watcher = watcher;
+    }
+
+    public void setMark(Integer mark) {
+        this.mark = mark;
+    }
+
+    public Integer getMark() {
 		return mark;
 	}
 

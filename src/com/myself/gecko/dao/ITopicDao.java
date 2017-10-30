@@ -17,4 +17,7 @@ public interface ITopicDao extends IBaseDao<Topic> {
 	void addWatch(int tid, User user) throws SQLException;
 
 	List<Topic> findWatchedTopic(int id) throws SQLException;
+
+    List<Topic> findNewWatchedTopicWithFriends(User user, int currentPage,
+            int watcheduserTopicWatchCount) throws SQLException;
 }

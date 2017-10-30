@@ -3,74 +3,83 @@ package com.myself.gecko.domain;
 import java.util.Date;
 
 public class Topic {
-	private Integer id;
-	private String name;
-	private String photo;
-	private String description;
-	private Date date;
+    private Integer id;
+    private String name;
+    private String photo;
+    private String description;
+    private Date date;
 
-	private Integer watchCount;
-	private Integer watched;
+    private Integer watchCount;
+    private Integer watched;
+    private User watcher;
 
-	public Integer getWatched() {
-		return watched;
-	}
+    public User getWatcher() {
+        return watcher;
+    }
 
-	public void setWatched(Integer watched) {
-		this.watched = watched;
-	}
+    public void setWatcher(User watcher) {
+        this.watcher = watcher;
+    }
 
-	public String getPhoto() {
-		return photo;
-	}
+    public Integer getWatched() {
+        return watched;
+    }
 
-	public void setPhoto(String photo) {
-		this.photo = photo;
-	}
+    public void setWatched(Integer watched) {
+        this.watched = watched;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public String getPhoto() {
+        return photo;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Date getDate() {
-		return date;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Integer getWatchCount() {
-		return watchCount;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public void setWatchCount(Integer watchCount) {
-		this.watchCount = watchCount;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	@Override
-	public String toString() {
-		return "Topic [id=" + id + ", name=" + name + ", photo=" + photo + ", description=" + description + ", date="
-				+ date + ", watchCount=" + watchCount + "]";
-	}
+    public Integer getWatchCount() {
+        return watchCount;
+    }
+
+    public void setWatchCount(Integer watchCount) {
+        this.watchCount = watchCount;
+    }
+
+    @Override
+    public String toString() {
+        return "Topic [id=" + id + ", name=" + name + ", photo=" + photo + ", description="
+                + description + ", date=" + date + ", watchCount=" + watchCount + "]";
+    }
 }

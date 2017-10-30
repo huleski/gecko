@@ -31,4 +31,7 @@ public interface IQuestionDao extends IBaseDao<Question> {
     List<Question> findNewestQuestionInWatchedTopics(User user, int currentPage,
             int pageSize) throws Exception;
 
+    List<Question> findNewWatchedQuestionWithFriends(User user, int currentPage,
+            int watcheduserQuestionWatchCount) throws Exception;
+
 }

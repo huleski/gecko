@@ -62,4 +62,12 @@ public interface Constant {
      * 首页加载关注用户的新增文章数
      */
     public static final int WATCHEDUSER_ARTICLE_COUNT = 2;
+    /**  
+     * 首页加载关注用户的新增话题关注数
+     */
+    public static final int WATCHEDUSER_TOPIC_WATCH_COUNT = 2;
+    /**  
+     * 首页加载关注用户的新增问题关注数
+     */
+    public static final int WATCHEDUSER_QUESTION_WATCH_COUNT = 2;
 }

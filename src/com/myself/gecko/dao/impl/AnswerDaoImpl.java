@@ -9,14 +9,17 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IAnswerDao;
 import com.myself.gecko.domain.Answer;
 import com.myself.gecko.domain.Question;
+import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
 
@@ -54,6 +57,11 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
 		sql = "select count(*) from answer_agree where aid = ?";
 		Long agreeCount = (Long) queryRunner.query(sql, new ScalarHandler(), answer.getId());
 		answer.setAgreeCount(agreeCount.intValue());
+		
+		//所属话题
+		sql = "select topic.id, topic.name from topic,question,answer where topic.id = question.tid and question.id = answer.qid and answer.id = ?";
+		Topic topic = queryRunner.query(sql, new BeanHandler<>(Topic.class), answer.getId());
+		answer.setTopic(topic);
 		
 		// 查询评论数
 		sql = "select count(*) from comment where type = ? and targetId = ?";
@@ -123,7 +131,7 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
         String sql = "select * from answer where qid = ? order by date limit 1";
         sql = "select distinct question.id, question.title from question left join question_watch on question.id = question_watch.qid where question_watch.uid = ?";
-        return queryRunner.query(sql, new BeanHandler<>(Answer.class), id);  
+        return queryRunner.query(sql, new BeanHandler<>(Answer.class), id);
     }
 
     @Override
@@ -140,11 +148,25 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
     
     @Override
     public List<Answer> findAnswersByUserWatch(User user, int currentPage, int pageSize) throws Exception {
-        String sql = "select answer.id from answer left join user u1 on u1.id = answer.uid join user_watch on user_watch.hostId = u1.id join user u2 on u2.id = user_watch.watcherId where u2.id = ? limit ?,?";
+        String sql = "select answer.id from answer join user u1 on u1.id = answer.uid join user_watch on user_watch.hostId = u1.id where user_watch.watcherId = ? limit ?,?";
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
         List<Answer> list = queryRunner.query(sql, new BeanListHandler<>(Answer.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
         for (Answer answer : list) {
             improveAnswerInfo(answer, queryRunner, user.getId());
+            answer.setMark(11);
+        }
+        sql = "select answer.id, uw.watcherId from answer join answer_agree aa on aa.aid = answer.id join user u1 on u1.id = aa.uid join user_watch uw on uw.hostId = u1.id where uw.watcherId = ? limit ?,?";
+        List<Map<String, Object>> list2 = queryRunner.query(sql, new MapListHandler(), user.getId(), (currentPage - 1) * pageSize, pageSize);
+        for (Map<String, Object> map : list2) {
+            Answer answer = new Answer();
+            answer.setId((Integer) map.get("id"));
+            improveAnswerInfo(answer, queryRunner, user.getId());
+            answer.setMark(21);
+            int uid = (int) map.get("watcherId");
+            sql = "select id, name from user where id = ?";
+            User watcher = queryRunner.query(sql, new BeanHandler<>(User.class), uid);
+            answer.setWatcher(watcher);
+            list.add(answer);
         }
         return list;
     }

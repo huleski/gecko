@@ -19,9 +19,21 @@ public class Question {
 
 	private Integer watched;
 	private Integer mark = 3;
-
+	private User watcher;
 	private List<Answer> answerList = new ArrayList<>();
 	private List<Comment> commentList = new ArrayList<>();
+
+	public User getWatcher() {
+        return watcher;
+    }
+
+    public void setWatcher(User watcher) {
+        this.watcher = watcher;
+    }
+
+    public void setMark(Integer mark) {
+        this.mark = mark;
+    }
 
 	@Override
 	public String toString() {

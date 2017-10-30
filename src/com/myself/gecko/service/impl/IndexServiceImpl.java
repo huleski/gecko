@@ -67,8 +67,14 @@ public class IndexServiceImpl implements IIndexService {
             
             List<Article> watchedUserArticle = articleDao.findArticlesByUserWatch(user, currentPage, Constant.WATCHEDUSER_ARTICLE_COUNT);
             set.addAll(watchedUserArticle);
+            
+            List<Topic> newWatchTopics = topicDao.findNewWatchedTopicWithFriends(user, currentPage, Constant.WATCHEDUSER_TOPIC_WATCH_COUNT);
+            set.addAll(newWatchTopics);
+            
+            List<Question> newWatchQuestions = questionDao.findNewWatchedQuestionWithFriends(user, currentPage, Constant.WATCHEDUSER_QUESTION_WATCH_COUNT);
+            set.addAll(newWatchQuestions);
         }
-
+System.out.println("------------------" + set.size());
         return set;
     }
 

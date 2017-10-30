@@ -3,6 +3,7 @@ package com.myself.gecko.dao.impl;
 import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -170,6 +171,22 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
             question = findQuestionById(question.getId(), user);
         }
         return list;
+    }
+
+    @Override
+    public List<Question> findNewWatchedQuestionWithFriends(User user, int currentPage, int pageSize) throws Exception {
+        List<Question> questions = new ArrayList<>();
+        String sql = "select q.id, uw.hostId from question q,question_watch qw, user_watch uw where q.id = qw.qid and qw.uid = uw.hostId and uw.watcherId = ? limit ?,?";
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        List<Map<String, Object>> list = queryRunner.query(sql, new MapListHandler(), user.getId(), (currentPage - 1) * pageSize, pageSize);
+        for (Map<String, Object> map : list) {
+            Question question = findQuestionById((int) map.get("id"), user);
+            sql = "select id, name from user where id = ?";
+            User watcher = queryRunner.query(sql, new BeanHandler<>(User.class), (int)map.get("hostId"));
+            question.setWatcher(watcher);
+            questions.add(question);
+        }
+        return questions;
     }
 
 }
