@@ -102,7 +102,6 @@ public class BaseDaoImpl<E> implements IBaseDao<E> {
 	 * 分页查询
 	 * @param currentPage当前页码
 	 * @param pageSize页面大小(每页显示结果条数)
-	 * @return pageBean
 	 */
 	@Override
 	public List<E> selectLimitByWhere(int currentPage, int pageSize, String whereClause) throws SQLException {

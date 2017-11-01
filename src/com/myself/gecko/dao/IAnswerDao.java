@@ -1,5 +1,6 @@
 package com.myself.gecko.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.myself.gecko.domain.Answer;
@@ -23,4 +24,6 @@ public interface IAnswerDao extends IBaseDao<Answer> {
     List<Answer> findNewestAnswerInWatchedQuestion(User user, int currentPage, int pageSize) throws Exception;
 
     List<Answer> findAnswersByUserWatch(User user, int currentPage, int pageSize) throws Exception;
+
+    List<Answer> findNewestAnswers(int currentPage, int pageSize) throws SQLException;
 }

@@ -1,5 +1,6 @@
 package com.myself.gecko.dao.impl;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +139,7 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
     public List<Answer> findNewestAnswerInWatchedQuestion(User user, int currentPage, int pageSize)
             throws Exception {
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        String sql = "select distinct answer.id from answer left join question on question.id = answer.qid join question_watch on question.id = question_watch.qid where question_watch.uid = ? order by answer.date desc limit ?, ?";
+        String sql = "select answer.* from answer left join question on question.id = answer.qid join question_watch on question.id = question_watch.qid where question_watch.uid = ? order by answer.date desc limit ?, ?";
         List<Answer> list = queryRunner.query(sql, new BeanListHandler<>(Answer.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
         for (Answer answer : list) {
             improveAnswerInfo(answer, queryRunner, user.getId());
@@ -148,7 +149,7 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
     
     @Override
     public List<Answer> findAnswersByUserWatch(User user, int currentPage, int pageSize) throws Exception {
-        String sql = "select answer.id from answer join user u1 on u1.id = answer.uid join user_watch on user_watch.hostId = u1.id where user_watch.watcherId = ? limit ?,?";
+        String sql = "select answer.* from answer join user u1 on u1.id = answer.uid join user_watch on user_watch.hostId = u1.id where user_watch.watcherId = ? limit ?,?";
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
         List<Answer> list = queryRunner.query(sql, new BeanListHandler<>(Answer.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
         for (Answer answer : list) {
@@ -158,10 +159,10 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         sql = "select answer.id, uw.watcherId from answer join answer_agree aa on aa.aid = answer.id join user u1 on u1.id = aa.uid join user_watch uw on uw.hostId = u1.id where uw.watcherId = ? limit ?,?";
         List<Map<String, Object>> list2 = queryRunner.query(sql, new MapListHandler(), user.getId(), (currentPage - 1) * pageSize, pageSize);
         for (Map<String, Object> map : list2) {
-            Answer answer = new Answer();
-            answer.setId((Integer) map.get("id"));
+            Answer answer = findById((int) map.get("id"));
             improveAnswerInfo(answer, queryRunner, user.getId());
             answer.setMark(21);
+            
             int uid = (int) map.get("watcherId");
             sql = "select id, name from user where id = ?";
             User watcher = queryRunner.query(sql, new BeanHandler<>(User.class), uid);
@@ -169,6 +170,12 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
             list.add(answer);
         }
         return list;
+    }
+
+    @Override
+    public List<Answer> findNewestAnswers(int currentPage, int pageSize) throws SQLException {
+        String whereClause = "order by date desc";
+        return selectLimitByWhere(currentPage, pageSize, whereClause );
     }
 
 }

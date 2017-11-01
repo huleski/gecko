@@ -164,11 +164,12 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
     @Override
     public List<Question> findNewestQuestionInWatchedTopics(User user, int currentPage,
             int pageSize) throws Exception {
+        ArrayList<Question> list = new ArrayList<>();
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        String sql = "select distinct question.id, question.title from question left join topic on topic.id = question.tid join topic_watch on topic.id = topic_watch.tid where topic_watch.uid = ? order by question.date desc limit ?, ?";
-        List<Question> list = queryRunner.query(sql, new BeanListHandler<>(Question.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
-        for (Question question : list) {
-            question = findQuestionById(question.getId(), user);
+        String sql = "select distinct question.id from question left join topic on topic.id = question.tid join topic_watch on topic.id = topic_watch.tid where topic_watch.uid = ? order by question.date desc limit ?, ?";
+        List<Map<String, Object>> mapList = queryRunner.query(sql, new MapListHandler(), user.getId(), (currentPage - 1) * pageSize, pageSize);
+        for (Map<String, Object> map : mapList) {
+            list.add(findQuestionById((int) map.get("id"), user));
         }
         return list;
     }
@@ -187,6 +188,12 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
             questions.add(question);
         }
         return questions;
+    }
+
+    @Override
+    public List<Question> findNewestQuestions(int currentPage, int pageSize) throws Exception {
+        String whereClause = "order by date desc";
+        return selectLimitByWhere(currentPage, pageSize, whereClause );
     }
 
 }

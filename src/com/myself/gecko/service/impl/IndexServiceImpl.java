@@ -54,28 +54,44 @@ public class IndexServiceImpl implements IIndexService {
         // 自己的关注:话题(新增问题), 问题 (新增的回答)
         // 关注的用户:写回答, 写文章, 关注话题/问题, 赞同回答/文章
         if (user == null) { // 用户未登录
+            //查询新增的回答
+            List<Answer> newAnswerList = answerDao.findNewestAnswers(currentPage, Constant.INDEX_NEW_ANSWER);
+            set.addAll(newAnswerList);
+            
+            //查询新提出的问题
+            List<Question> newQuestionList = questionDao.findNewestQuestions(currentPage, Constant.INDEX_NEW_QUESTION);
+            set.addAll(newQuestionList);
+            
+            //查询新发表的文章
+            List<Article> newArticleList = articleDao.findNewestArticles(currentPage, Constant.WATCHEDUSER_ARTICLE_COUNT);
+            set.addAll(newArticleList);
             
         } else { // 用户已登录
+            //查询已关注的话题中新增的问题
             List<Question> newQuestions = questionDao.findNewestQuestionInWatchedTopics(user, currentPage, Constant.INDEX_NEW_QUESTION);
             set.addAll(newQuestions);
             
+            // 查询已关注的问题中新增的回答
             List<Answer> newAnswers = answerDao.findNewestAnswerInWatchedQuestion(user, currentPage, Constant.INDEX_NEW_ANSWER);
             set.addAll(newAnswers);
             
+            // 查询已关注的用户中新增的回答
             List<Answer> watchedUserAnswers = answerDao.findAnswersByUserWatch(user, currentPage, Constant.WATCHEDUSER_ANSWER_COUNT);
             set.addAll(watchedUserAnswers);
             
+            // 查询已关注的用户中新发表的文章
             List<Article> watchedUserArticle = articleDao.findArticlesByUserWatch(user, currentPage, Constant.WATCHEDUSER_ARTICLE_COUNT);
             set.addAll(watchedUserArticle);
             
+            // 查询已关注的用户中新关注的话题
             List<Topic> newWatchTopics = topicDao.findNewWatchedTopicWithFriends(user, currentPage, Constant.WATCHEDUSER_TOPIC_WATCH_COUNT);
             set.addAll(newWatchTopics);
             
+            // 查询已关注的用户中新关注的问题
             List<Question> newWatchQuestions = questionDao.findNewWatchedQuestionWithFriends(user, currentPage, Constant.WATCHEDUSER_QUESTION_WATCH_COUNT);
             set.addAll(newWatchQuestions);
         }
-System.out.println("------------------" + set.size());
+System.out.println("-------------------------" + set.size());
         return set;
     }
-
 }

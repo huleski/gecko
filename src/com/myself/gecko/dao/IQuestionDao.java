@@ -32,6 +32,8 @@ public interface IQuestionDao extends IBaseDao<Question> {
             int pageSize) throws Exception;
 
     List<Question> findNewWatchedQuestionWithFriends(User user, int currentPage,
-            int watcheduserQuestionWatchCount) throws Exception;
+            int pageSize) throws Exception;
+
+    List<Question> findNewestQuestions(int currentPage, int pageSize) throws Exception;
 
 }

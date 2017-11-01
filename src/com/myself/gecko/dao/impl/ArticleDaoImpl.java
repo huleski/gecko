@@ -114,11 +114,12 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
 
     @Override
     public List<Article> findArticlesByUserWatch(User user, int currentPage, int pageSize) throws Exception {
+        ArrayList<Article> list = new ArrayList<>();
         String sql = "select article.id from article join user u1 on u1.id = article.uid join user_watch on user_watch.hostId = u1.id where user_watch.watcherId = ? limit ?,?";
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        List<Article> list = queryRunner.query(sql, new BeanListHandler<>(Article.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
-        for (Article article : list) {
-            article = findAnswerById(article.getId(), user);
+        List<Map<String, Object>> tempList = queryRunner.query(sql, new MapListHandler(), user.getId(), (currentPage - 1) * pageSize, pageSize);
+        for (Map<String, Object> map : tempList) {
+            Article article = findAnswerById((int) map.get("id"), user);
             article.setMark(12);
             list.add(article);
         }
@@ -135,5 +136,11 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
             list.add(article);
         }
         return list;
+    }
+
+    @Override
+    public List<Article> findNewestArticles(int currentPage, int pageSize) throws Exception {
+        String whereClause = "order by date desc";
+        return selectLimitByWhere(currentPage, pageSize, whereClause );
     }
 }
