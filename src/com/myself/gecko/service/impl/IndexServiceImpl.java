@@ -24,7 +24,8 @@ import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IIndexService;
 
 /**
- * 自己的关注:话题(新增问题), 问题 (新增的回答) 关注的用户:写回答, 写文章, 关注话题/问题, 赞同回答/文章,
+ * 自己的关注:话题(新增问题), 问题 (新增的回答) 
+ * 关注的用户:写回答, 写文章, 关注话题/问题, 赞同回答/文章,
  */
 @SuppressWarnings("all")
 public class IndexServiceImpl implements IIndexService {
@@ -51,8 +52,7 @@ public class IndexServiceImpl implements IIndexService {
                 }
             }
         });
-        // 自己的关注:话题(新增问题), 问题 (新增的回答)
-        // 关注的用户:写回答, 写文章, 关注话题/问题, 赞同回答/文章
+        
         if (user == null) { // 用户未登录
             //查询新增的回答
             List<Answer> newAnswerList = answerDao.findNewestAnswers(currentPage, Constant.INDEX_NEW_ANSWER);

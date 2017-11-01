@@ -16,11 +16,9 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IAnswerDao;
 import com.myself.gecko.domain.Answer;
-import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
 

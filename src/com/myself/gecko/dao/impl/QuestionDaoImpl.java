@@ -1,7 +1,5 @@
 package com.myself.gecko.dao.impl;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;

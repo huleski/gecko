@@ -1,6 +1,5 @@
 package com.myself.gecko.dao.impl;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +14,6 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IArticleDao;
-import com.myself.gecko.domain.Answer;
 import com.myself.gecko.domain.Article;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
