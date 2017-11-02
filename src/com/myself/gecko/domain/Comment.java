@@ -6,7 +6,7 @@ public class Comment {
 	private Integer id;
 	private User user;
 	private Comment parent;
-	private Integer type;
+	private Integer type;      //1代表回答,2代表文章
 	private Integer targetId;
 	
 	private String content;

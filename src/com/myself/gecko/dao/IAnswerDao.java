@@ -25,5 +25,5 @@ public interface IAnswerDao extends IBaseDao<Answer> {
 
     List<Answer> findAnswersByUserWatch(User user, int currentPage, int pageSize) throws Exception;
 
-    List<Answer> findNewestAnswers(int currentPage, int pageSize) throws SQLException;
+    List<Answer> findNewestAnswers(int currentPage, int pageSize) throws Exception;
 }

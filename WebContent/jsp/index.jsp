@@ -6,9 +6,9 @@
 
 	<head>
 		<title>首页</title>
-		<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/bi.ico" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/bi.ico" />
 		<link href="${pageContext.request.contextPath}/css/client.css" rel="stylesheet" type="text/css" />
 		<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 		<script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
@@ -261,6 +261,12 @@
 				margin: 8px 0 15px 0;
 			}
 			
+			.commentInput {
+				width: 75%;
+				display: inline;
+				margin: 15px 30px 15px 20px;
+			}
+			
 			.commentAnswer {
 				width: 540px;
 				display: inline;
@@ -376,6 +382,7 @@
 				ajaxLoadDynamic();
 			});
 
+			
 		
 			// 滑动到页面底部实现自动加载
 			var totalheight = 0;
@@ -408,9 +415,67 @@
 								$("#browseDiv").append("<h4 style='padding:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
 								answer_index = -1;
 							} */
-						}, "text");
+						});
 				}
 			}
+			
+			
+			//ajax加载评论
+			function showComment(aid, curPage, type, obj) {
+				var $commentblock = $(obj).parents(".answerblock").find(".user-commentblock");
+				$.post("${pageContext.request.contextPath}/commentServlet", {"method":"ajaxLoad","targetId":aid, "currentPage": curPage, "type":type}, function(result) {
+					$commentblock.html(result);
+				}); 
+			}
+
+			//ajax提交答案评论
+			function submitAnswerComment(obj, pid, targetId, type) {
+				if("${user}" == "") {
+					$('#loginModal').modal();
+				} else {
+					var content = $(obj).prev(".commentInput").val();
+					$.post("${pageContext.request.contextPath}/commentServlet", {"method":"add", "pid":pid, "type":type, "targetId": targetId, "content":content},
+						function(result) {	
+						$(obj).prev(".commentInput").val("");
+						$(obj).attr("disabled", true);
+						showComment(targetId, 1, type, obj);
+					});
+				}
+			}
+			
+			//ajax提交评论回复
+			function submitCommentReply(obj, pid, targetId, type) {
+				if("${user}" == "") {
+					$('#loginModal').modal();
+				} else {
+					var content = $(obj).parent(".comment-reply-opr").prev(".comment-input").val();			
+					$.post("${pageContext.request.contextPath}/commentServlet", {"method":"add", "pid":pid, "type":type, "targetId": targetId, "content":content},
+						function(result) {	
+						showComment(targetId, 1, type, obj);
+					});
+				}
+			}
+			
+			$(function(){
+				//检测答案评论输入框是否有值,有才能提交评论
+				$("#browseDiv").on("keyup", ".commentInput", function() {
+					if (this.value != "") {
+						$(this).next(".commentSubmitBtn").attr("disabled", false);
+					} else {
+						$(this).next(".commentSubmitBtn").attr("disabled", true);
+					}
+				});
+				
+				//检测评论回复输入框是否有值,有才能提交评论
+				$("#browseDiv").on("keyup", ".comment-input", function() {
+					if (this.value != "") {
+						$(this).next(".comment-reply-opr").find(".comment-ok").attr("disabled", false);
+					} else {
+						$(this).next(".comment-reply-opr").find(".comment-ok").attr("disabled", true);
+					}
+				});
+			});
+
 		</script>
 	</head>
 
@@ -460,7 +525,7 @@
 							<a href="#" class="text-title-a">三十岁还没有走到管理岗的人，后来都做了什么？</a>
 						</div>
 						<div class="text-content">
-							答：他们可以过得很好，只要做到几点（后面详述）前些年，公司每年都派个美国老大爷要飞一趟上海，做全球人才管理方面的培训，头发花白，感觉要60岁了吧（问他，他总说20出头）。人特别精神，每天早上6点就起床，在酒店泳池游1个小时再来上班。而他每年全球…
+							答：他们可以过得很好，只要做到几点（后面详述）前些年，公司每年都派个美国老大爷要飞一趟上海，做全球人才管理方面的培训，头发花白，感觉要60岁了吧（问他，他总说20出头）。人特别精神，每天早上6点就起床，在酒店泳池游1个小时再来上班。而他每年全球
 							<a class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>
 						</div>
 						<div class="text-all">
@@ -730,7 +795,7 @@
 					</div>
 					<div id="rootDiv">
 						<div>
-							<a class="footchain" href="#">赵日天</a>
+							<a class="footchain" href="#">刘日山</a>
 							<a class="footchain" href="#">逼乎指南</a>
 							<a class="footchain" href="#">逼乎协议</a>
 							<a class="footchain" href="#">应用工作</a>

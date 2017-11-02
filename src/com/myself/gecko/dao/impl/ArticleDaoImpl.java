@@ -15,6 +15,7 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IArticleDao;
 import com.myself.gecko.domain.Article;
+import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
@@ -139,6 +140,12 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
     @Override
     public List<Article> findNewestArticles(int currentPage, int pageSize) throws Exception {
         String whereClause = "order by date desc";
-        return selectLimitByWhere(currentPage, pageSize, whereClause );
+        List<Article> aList = new ArrayList<>(); 
+        List<Article> list = selectLimitByWhere(currentPage, pageSize, whereClause );
+        for (Article article : list) {
+            Article a = findAnswerById(article.getId(), null);
+            aList.add(a);
+        }
+        return aList;
     }
 }

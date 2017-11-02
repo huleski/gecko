@@ -34,7 +34,7 @@
 					<a href="javascript:void(0)">关注问题</a> 
 					<a class="text-comment" href="javascript:void(0)" onclick="showComment(${a.id}, 1, 1, this)">${a.commentCount } 条评论</a> 
 					<span class="hidelabel">
-						<a href="javascript:void(0)">感谢</a> 
+						<a href="javascript:void(0)">感谢</a>
 						<a href="javascript:void(0)">分享</a> 
 						<a href="javascript:void(0)">收藏</a> 
 						<a href="javascript:void(0)">没有帮助</a>

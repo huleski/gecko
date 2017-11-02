@@ -171,9 +171,13 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
     }
 
     @Override
-    public List<Answer> findNewestAnswers(int currentPage, int pageSize) throws SQLException {
+    public List<Answer> findNewestAnswers(int currentPage, int pageSize) throws Exception {
         String whereClause = "order by date desc";
-        return selectLimitByWhere(currentPage, pageSize, whereClause );
+        List<Answer> list = selectLimitByWhere(currentPage, pageSize, whereClause );
+        for (Answer answer : list) {
+            improveAnswerInfo(answer, new QueryRunner(C3P0Utils.getDataSource()), 0);
+        }
+        return list;
     }
 
 }

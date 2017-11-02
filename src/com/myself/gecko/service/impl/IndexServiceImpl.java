@@ -91,7 +91,6 @@ public class IndexServiceImpl implements IIndexService {
             List<Question> newWatchQuestions = questionDao.findNewWatchedQuestionWithFriends(user, currentPage, Constant.WATCHEDUSER_QUESTION_WATCH_COUNT);
             set.addAll(newWatchQuestions);
         }
-System.out.println("-------------------------" + set.size());
         return set;
     }
 }

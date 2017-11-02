@@ -1227,7 +1227,7 @@
 				</div>
 				<div id="rootDiv">
 					<div>
-						<a class="footchain" href="#">赵日天</a>
+						<a class="footchain" href="#">刘日山</a>
 						<a class="footchain" href="#">逼乎指南</a>
 						<a class="footchain" href="#">逼乎协议</a>
 						<a class="footchain" href="#">应用工作</a>

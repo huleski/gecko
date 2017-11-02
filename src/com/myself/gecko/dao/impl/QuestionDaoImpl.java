@@ -191,7 +191,13 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
     @Override
     public List<Question> findNewestQuestions(int currentPage, int pageSize) throws Exception {
         String whereClause = "order by date desc";
-        return selectLimitByWhere(currentPage, pageSize, whereClause );
+        List<Question> aList = new ArrayList<>(); 
+        List<Question> list = selectLimitByWhere(currentPage, pageSize, whereClause );
+        for (Question question : list) {
+            Question q = findQuestionById(question.getId(), null);
+            aList.add(q);
+        }
+        return aList;
     }
 
 }
