@@ -13,7 +13,7 @@
 		<!-- 新增回答 -->
 			<div class="answerblock">
 				<div class="text-dynamic">
-					来自 话题 ${s.topic.name }
+					来自 话题 <a class="text-dynamic-a" href="${pageContext.request.contextPath}/topicServlet?method=findById&id=${s.topic.id}">${s.topic.name }</a>
 					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 				</div>
 				<div class="text-author">
@@ -88,7 +88,7 @@
 		<!-- 新增文章 -->
 			<div class="answerblock">
 				<div class="text-dynamic">
-					来自 话题 ${s.topic.name }
+					来自 话题  <a class="text-dynamic-a" href="${pageContext.request.contextPath}/topicServlet?method=findById&id=${s.topic.id}">${s.topic.name }</a>
 					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 				</div>
 				<div class="text-author">
@@ -143,18 +143,45 @@
 					</span>
 					<button class="takeback btn btn-info btn-xs">收起</button>
 				</div>
-				
-				<!-- 评论div -->
-				<div class="commentdiv">
-					<!-- 用户评论 -->
-					<div class="user-commentblock">
-					</div>
-					<div class="separator"></div>
-					<!--评论回答-->
-					<div>
-						<input type="text" class="form-control commentInput" placeholder="写下你的评论"/>
-						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${s.id}, 2)">评论</button>
-					</div>
+			</div>
+		</c:if>
+		
+		<c:if test="${s.mark == 3}">
+		<!-- 新增问题 -->
+			<div class="answerblock">
+				<div class="text-dynamic">
+					来自 话题  <a class="text-dynamic-a" href="${pageContext.request.contextPath}/topicServlet?method=findById&id=${s.topic.id}">${s.topic.name }</a>
+					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
+				</div>
+				<div class="text-title">
+					<a href="${pageContext.request.contextPath}/questionServlet?method=findById&id=${s.id}" class="text-title-a">${fn:substring(s.title, 0, 50) }...</a>
+				</div>
+				<div class="text-content">
+					${fn:substring(s.pureContent, 0, 120)}
+					<a class="expand">...阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>
+				</div>
+				<div class="text-all">
+					${s.content }
+				</div>
+				<div class="text-end">
+					<span>
+						<a class="text-situation"> ${s.watchCount } 人关注 </a>
+						<a href="#" class="text-situation">
+							<span class="glyphicon glyphicon-share-alt"></span>
+							<span>分享</span>
+						</a>
+						<a href="#" class="text-situation">
+							<span class="glyphicon glyphicon-star"></span>
+							<span>收藏</span>
+						</a>
+						<a href="#" class="text-situation">
+							<span class="glyphicon glyphicon-heart"></span>
+							<span>感谢</span>
+						</a>
+						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="#">没有帮助</a></li><li><a href="#">举报</a></li></ul>'>
+							···
+						</a>
+					</span>
 				</div>
 			</div>
 		</c:if>
@@ -164,7 +191,7 @@
 		<!-- 新增回答 -->
 			<div class="answerblock">
 				<div class="text-dynamic">
-					特种作死狗 收藏了回答 1 天前
+					<a class="text-dynamic-a" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.user.id}">特种作死狗</a> 收藏了回答 1 天前
 					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 				</div>
 				<div class="text-author">

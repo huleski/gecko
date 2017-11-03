@@ -81,6 +81,10 @@
 				font-size: 15px;
 			}
 			
+			.text-dynamic-a {
+				color:gray;
+			}
+			
 			.text-author {
 				margin-top: 10px;
 				margin-bottom: 10px;
@@ -505,6 +509,7 @@
 					</c:if>
 						
 					<!--关注动态(只有关注了别人才会有内容)-->
+				<c:if test="${false}">
 					<div class="answerblock">
 						<div class="text-dynamic">
 							特种作死狗 收藏了回答 1 天前
@@ -713,7 +718,7 @@
 							</div>
 						</div>
 					</div>
-
+				</c:if>
 				</div>
 
 				<!--右侧导航栏div-->

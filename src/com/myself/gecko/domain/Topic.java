@@ -12,6 +12,15 @@ public class Topic {
     private Integer watchCount;
     private Integer watched;
     private User watcher;
+    private int mark = 4;
+
+    public int getMark() {
+        return mark;
+    }
+
+    public void setMark(int mark) {
+        this.mark = mark;
+    }
 
     public User getWatcher() {
         return watcher;

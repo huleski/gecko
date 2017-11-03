@@ -13,6 +13,7 @@ public class Comment {
 	private Date date;
 	private Integer agreeCount;
 	private Integer agree;
+	
 	public Integer getId() {
 		return id;
 	}

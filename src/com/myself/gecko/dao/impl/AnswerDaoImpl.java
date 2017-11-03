@@ -16,9 +16,11 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IAnswerDao;
 import com.myself.gecko.domain.Answer;
+import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
 
@@ -52,6 +54,11 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
 		BeanUtils.populate(author, map);
 		answer.setUser(author);
 
+		//查询问题
+		sql = "select question.id, question.title from question, answer where answer.qid = question.id and answer.id = ?";
+		Question question = queryRunner.query(sql, new BeanHandler<>(Question.class), answer.getId());
+		answer.setQuestion(question);
+		
 		// 查询赞同数
 		sql = "select count(*) from answer_agree where aid = ?";
 		Long agreeCount = (Long) queryRunner.query(sql, new ScalarHandler(), answer.getId());
