@@ -84,6 +84,81 @@
 			</div>
 		</c:if>
 		
+		<c:if test="${s.mark == 11}">
+		<!-- 新增回答 -->
+			<div class="answerblock">
+				<div class="text-dynamic">
+					来自 话题 <a class="text-dynamic-a" href="${pageContext.request.contextPath}/topicServlet?method=findById&id=${s.topic.id}">${s.topic.name }</a>
+					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
+				</div>
+				<div class="text-author">
+					<a href="#">
+						<img class="photo" src="${pageContext.request.contextPath}/${s.user.photo}" />
+						<span class="name">${s.user.name}</span>
+					</a>
+					<span class="signal">
+						,${s.user.sentence}...
+					</span>
+				</div>
+				<div class="text-title">
+					<a href="${pageContext.request.contextPath}/questionServlet?method=findById&id=${s.question.id}" class="text-title-a">${fn:substring(s.question.title, 0, 50) }...</a>
+				</div>
+				<div class="text-content">
+					${fn:substring(s.pureContent, 0, 120) }
+					<a class="expand">...阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>
+				</div>
+				<div class="text-all">
+					${s.content }
+				</div>
+				<div class="text-end">
+					<button class="btn btn-default">
+					<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">${s.agreeCount}</span></span>
+					</button>
+					<button class="btn btn-default">
+						<span class="glyphicon glyphicon-chevron-down opinion"></span>
+					</button>
+					<span>
+						<a class="text-situation text-comment">
+							<span onclick="showComment(${s.id}, 1, 1, this)">
+								<span class="glyphicon glyphicon-comment"></span>
+								<span class="comment-count">${s.commentCount } 条评论</span>
+							</span>
+							<span class="hidecomment" style="display: none;">收起评论</span>
+						</a>
+						<a href="#" class="text-situation">
+							<span class="glyphicon glyphicon-share-alt"></span>
+							<span>分享</span>
+						</a>
+						<a href="#" class="text-situation">
+							<span class="glyphicon glyphicon-star"></span>
+							<span>收藏</span>
+						</a>
+						<a href="#" class="text-situation">
+							<span class="glyphicon glyphicon-heart"></span>
+							<span>感谢</span>
+						</a>
+						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="#">没有帮助</a></li><li><a href="#">举报</a></li></ul>'>
+							···
+						</a>
+					</span>
+					<button class="takeback btn btn-info btn-xs">收起</button>
+				</div>
+				
+				<!-- 评论div -->
+				<div class="commentdiv">
+					<!-- 用户评论 -->
+					<div class="user-commentblock">
+					</div>
+					<div class="separator"></div>
+					<!--评论回答-->
+					<div>
+						<input type="text" class="form-control commentInput" placeholder="写下你的评论"/>
+						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${s.id}, 1)">评论</button>
+					</div>
+				</div>
+			</div>
+		</c:if>
+		
 		<c:if test="${s.mark == 2}">
 		<!-- 新增文章 -->
 			<div class="answerblock">
