@@ -154,6 +154,7 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
     
     @Override
     public List<Answer> findAnswersByUserWatch(User user, int currentPage, int pageSize) throws Exception {
+        //关注的好友新增加的回答
         String sql = "select answer.* from answer join user u1 on u1.id = answer.uid join user_watch on user_watch.hostId = u1.id where user_watch.watcherId = ? limit ?,?";
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
         List<Answer> list = queryRunner.query(sql, new BeanListHandler<>(Answer.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
@@ -161,6 +162,8 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
             improveAnswerInfo(answer, queryRunner, user.getId());
             answer.setMark(11);
         }
+        
+        //关注的好友点赞的回答
         sql = "select answer.id, uw.watcherId from answer join answer_agree aa on aa.aid = answer.id join user u1 on u1.id = aa.uid join user_watch uw on uw.hostId = u1.id where uw.watcherId = ? limit ?,?";
         List<Map<String, Object>> list2 = queryRunner.query(sql, new MapListHandler(), user.getId(), (currentPage - 1) * pageSize, pageSize);
         for (Map<String, Object> map : list2) {

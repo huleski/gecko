@@ -183,6 +183,7 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
             sql = "select id, name from user where id = ?";
             User watcher = queryRunner.query(sql, new BeanHandler<>(User.class), (int)map.get("hostId"));
             question.setWatcher(watcher);
+            question.setMark(13);
             questions.add(question);
         }
         return questions;

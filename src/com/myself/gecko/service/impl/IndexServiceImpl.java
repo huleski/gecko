@@ -24,7 +24,7 @@ import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IIndexService;
 
 /**
- * 自己的关注:话题(新增问题), 问题 (新增的回答) 
+ * 自己的关注:话题(新增问题/文章), 问题 (新增的回答) 
  * 关注的用户:写回答, 写文章, 关注话题/问题, 赞同回答/文章,
  */
 @SuppressWarnings("all")
@@ -71,15 +71,19 @@ public class IndexServiceImpl implements IIndexService {
             List<Question> newQuestions = questionDao.findNewestQuestionInWatchedTopics(user, currentPage, Constant.INDEX_NEW_QUESTION);
             set.addAll(newQuestions);
             
+            //查询已关注的话题中新增的文章
+            List<Article> newestArticles = articleDao.findNewestArticlesInWatchedTopics(user, currentPage, Constant.WATCHEDUSER_ARTICLE_COUNT);
+            set.addAll(newestArticles);
+            
             // 查询已关注的问题中新增的回答
             List<Answer> newAnswers = answerDao.findNewestAnswerInWatchedQuestion(user, currentPage, Constant.INDEX_NEW_ANSWER);
             set.addAll(newAnswers);
             
-            // 查询已关注的用户中新增的回答
+            // 查询已关注的用户中新增/赞同的回答
             List<Answer> watchedUserAnswers = answerDao.findAnswersByUserWatch(user, currentPage, Constant.WATCHEDUSER_ANSWER_COUNT);
             set.addAll(watchedUserAnswers);
             
-            // 查询已关注的用户中新发表的文章
+            // 查询已关注的用户中新发表/赞同的文章
             List<Article> watchedUserArticle = articleDao.findArticlesByUserWatch(user, currentPage, Constant.WATCHEDUSER_ARTICLE_COUNT);
             set.addAll(watchedUserArticle);
             

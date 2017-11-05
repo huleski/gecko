@@ -19,6 +19,7 @@ import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao {
 
@@ -114,6 +115,7 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
     @Override
     public List<Article> findArticlesByUserWatch(User user, int currentPage, int pageSize) throws Exception {
         ArrayList<Article> list = new ArrayList<>();
+        //查询关注用户新增的文章
         String sql = "select article.id from article join user u1 on u1.id = article.uid join user_watch on user_watch.hostId = u1.id where user_watch.watcherId = ? limit ?,?";
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
         List<Map<String, Object>> tempList = queryRunner.query(sql, new MapListHandler(), user.getId(), (currentPage - 1) * pageSize, pageSize);
@@ -123,6 +125,7 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
             list.add(article);
         }
 
+        //查询关注用户赞同的文章
         sql = "select article.id, uw.watcherId from article join article_agree aa on aa.aid = article.id join user u1 on u1.id = aa.uid join user_watch uw on uw.hostId = u1.id where uw.watcherId = ? limit ?,?";
         List<Map<String, Object>> list2 = queryRunner.query(sql, new MapListHandler(), user.getId(), (currentPage - 1) * pageSize, pageSize);
         for (Map<String, Object> map : list2) {
@@ -144,6 +147,20 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         List<Article> list = selectLimitByWhere(currentPage, pageSize, whereClause );
         for (Article article : list) {
             Article a = findAnswerById(article.getId(), null);
+            aList.add(a);
+        }
+        return aList;
+    }
+
+    @Override
+    public List<Article> findNewestArticlesInWatchedTopics(User user, int currentPage, int pageSize)
+            throws Exception {
+        List<Article> aList = new ArrayList<>(); 
+        String sql = "select article.id from article join topic t on t.id = article.tid join topic_watch tw on tw.tid = t.id where tw.uid = ? limit ?,?";
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        List<Article> list = queryRunner.query(sql, new BeanListHandler<>(Article.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
+        for (Article article : list) {
+            Article a = findAnswerById(article.getId(), user);
             aList.add(a);
         }
         return aList;

@@ -20,4 +20,6 @@ public interface IArticleDao extends IBaseDao<Article>{
     List<Article> findArticlesByUserWatch(User user, int currentPage, int pageSize) throws Exception;
 
     List<Article> findNewestArticles(int currentPage, int pageSize) throws Exception;
+
+    List<Article> findNewestArticlesInWatchedTopics(User user, int currentPage, int pageSize) throws Exception;
 }
