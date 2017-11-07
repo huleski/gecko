@@ -36,10 +36,17 @@
 					${s.content }
 				</div>
 				<div class="text-end">
-					<button class="btn btn-default">
-					<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">${s.agreeCount}</span></span>
-					</button>
-					<button class="btn btn-default">
+					<c:if test="${s.agree != 1 }">
+						<button class="btn btn-default agreebtn" onclick="agree(${s.id}, this, 1)">
+							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
+						</button>
+					</c:if>
+					<c:if test="${s.agree == 1 }">
+						<button class="btn btn-info active agreebtn" onclick="agree(${s.id}, this, 1)">
+							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
+						</button>
+					</c:if>
+					<button class="btn btn-default disagreebtn" onclick="disagree(${s.id}, this, 1)">
 						<span class="glyphicon glyphicon-chevron-down opinion"></span>
 					</button>
 					<span>
@@ -50,19 +57,19 @@
 							</span>
 							<span class="hidecomment" style="display: none;">收起评论</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-share-alt"></span>
 							<span>分享</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-star"></span>
 							<span>收藏</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-heart"></span>
 							<span>感谢</span>
 						</a>
-						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="#">没有帮助</a></li><li><a href="#">举报</a></li></ul>'>
+						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="javascript:void(0)">没有帮助</a></li><li><a href="javascript:void(0)">举报</a></li></ul>'>
 							···
 						</a>
 					</span>
@@ -111,10 +118,17 @@
 					${s.content }
 				</div>
 				<div class="text-end">
-					<button class="btn btn-default">
-					<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">${s.agreeCount}</span></span>
-					</button>
-					<button class="btn btn-default">
+					<c:if test="${s.agree != 1 }">
+						<button class="btn btn-default agreebtn" onclick="agree(${s.id}, this, 1)">
+							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
+						</button>
+					</c:if>
+					<c:if test="${s.agree == 1 }">
+						<button class="btn btn-info active agreebtn" onclick="agree(${s.id}, this, 1)">
+							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
+						</button>
+					</c:if>
+					<button class="btn btn-default disagreebtn" onclick="disagree(${s.id}, this, 1)">
 						<span class="glyphicon glyphicon-chevron-down opinion"></span>
 					</button>
 					<span>
@@ -125,19 +139,19 @@
 							</span>
 							<span class="hidecomment" style="display: none;">收起评论</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-share-alt"></span>
 							<span>分享</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-star"></span>
 							<span>收藏</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-heart"></span>
 							<span>感谢</span>
 						</a>
-						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="#">没有帮助</a></li><li><a href="#">举报</a></li></ul>'>
+						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="javascript:void(0)">没有帮助</a></li><li><a href="javascript:void(0)">举报</a></li></ul>'>
 							···
 						</a>
 					</span>
@@ -186,10 +200,17 @@
 					${s.content }
 				</div>
 				<div class="text-end">
-					<button class="btn btn-default">
-					<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">${s.agreeCount}</span></span>
-					</button>
-					<button class="btn btn-default">
+					<c:if test="${s.agree != 1 }">
+						<button class="btn btn-default agreebtn" onclick="agree(${s.id}, this, 1)">
+							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
+						</button>
+					</c:if>
+					<c:if test="${s.agree == 1 }">
+						<button class="btn btn-info active agreebtn" onclick="agree(${s.id}, this, 1)">
+							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
+						</button>
+					</c:if>
+					<button class="btn btn-default disagreebtn" onclick="disagree(${s.id}, this, 1)">
 						<span class="glyphicon glyphicon-chevron-down opinion"></span>
 					</button>
 					<span>
@@ -200,19 +221,19 @@
 							</span>
 							<span class="hidecomment" style="display: none;">收起评论</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-share-alt"></span>
 							<span>分享</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-star"></span>
 							<span>收藏</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-heart"></span>
 							<span>感谢</span>
 						</a>
-						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="#">没有帮助</a></li><li><a href="#">举报</a></li></ul>'>
+						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="javascript:void(0)">没有帮助</a></li><li><a href="javascript:void(0)">举报</a></li></ul>'>
 							···
 						</a>
 					</span>
@@ -258,13 +279,21 @@
 					<a class="expand">...阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>
 				</div>
 				<div class="text-all">
+					<div><img src="${pageContext.request.contextPath}/${s.titlePicture }" width="660px" height="400px"/></div>
 					${s.content }
 				</div>
 				<div class="text-end">
-					<button class="btn btn-default">
-					<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">${s.agreeCount}</span></span>
-					</button>
-					<button class="btn btn-default">
+					<c:if test="${s.agree != 1 }">
+						<button class="btn btn-default agreebtn" onclick="agree(${s.id}, this, 2)">
+							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
+						</button>
+					</c:if>
+					<c:if test="${s.agree == 1 }">
+						<button class="btn btn-info active agreebtn" onclick="agree(${s.id}, this, 2)">
+							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
+						</button>
+					</c:if>
+					<button class="btn btn-default disagreebtn" onclick="disagree(${s.id}, this, 2)">
 						<span class="glyphicon glyphicon-chevron-down opinion"></span>
 					</button>
 					<span>
@@ -275,19 +304,19 @@
 							</span>
 							<span class="hidecomment" style="display: none;">收起评论</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-share-alt"></span>
 							<span>分享</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-star"></span>
 							<span>收藏</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-heart"></span>
 							<span>感谢</span>
 						</a>
-						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="#">没有帮助</a></li><li><a href="#">举报</a></li></ul>'>
+						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="javascript:void(0)">没有帮助</a></li><li><a href="javascript:void(0)">举报</a></li></ul>'>
 							···
 						</a>
 					</span>
@@ -302,7 +331,7 @@
 					<!--评论回答-->
 					<div>
 						<input type="text" class="form-control commentInput" placeholder="写下你的评论"/>
-						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${s.id}, 1)">评论</button>
+						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${s.id}, 2)">评论</button>
 					</div>
 				</div>
 			</div>
@@ -335,10 +364,17 @@
 					${s.content }
 				</div>
 				<div class="text-end">
-					<button class="btn btn-default">
-					<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">${s.agreeCount}</span></span>
-					</button>
-					<button class="btn btn-default">
+					<c:if test="${s.agree != 1 }">
+						<button class="btn btn-default agreebtn" onclick="agree(${s.id}, this, 2)">
+							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
+						</button>
+					</c:if>
+					<c:if test="${s.agree == 1 }">
+						<button class="btn btn-info active agreebtn" onclick="agree(${s.id}, this, 2)">
+							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
+						</button>
+					</c:if>
+					<button class="btn btn-default disagreebtn" onclick="disagree(${s.id}, this, 2)">
 						<span class="glyphicon glyphicon-chevron-down opinion"></span>
 					</button>
 					<span>
@@ -349,19 +385,19 @@
 							</span>
 							<span class="hidecomment" style="display: none;">收起评论</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-share-alt"></span>
 							<span>分享</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-star"></span>
 							<span>收藏</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-heart"></span>
 							<span>感谢</span>
 						</a>
-						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="#">没有帮助</a></li><li><a href="#">举报</a></li></ul>'>
+						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="javascript:void(0)">没有帮助</a></li><li><a href="javascript:void(0)">举报</a></li></ul>'>
 							···
 						</a>
 					</span>
@@ -376,7 +412,7 @@
 					<!--评论回答-->
 					<div>
 						<input type="text" class="form-control commentInput" placeholder="写下你的评论"/>
-						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${s.id}, 1)">评论</button>
+						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${s.id}, 2)">评论</button>
 					</div>
 				</div>
 			</div>
@@ -409,10 +445,17 @@
 					${s.content }
 				</div>
 				<div class="text-end">
-					<button class="btn btn-default">
-					<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">${s.agreeCount}</span></span>
-					</button>
-					<button class="btn btn-default">
+					<c:if test="${s.agree != 1 }">
+						<button class="btn btn-default agreebtn" onclick="agree(${s.id}, this, 2)">
+							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
+						</button>
+					</c:if>
+					<c:if test="${s.agree == 1 }">
+						<button class="btn btn-info active agreebtn" onclick="agree(${s.id}, this, 2)">
+							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
+						</button>
+					</c:if>
+					<button class="btn btn-default disagreebtn" onclick="disagree(${s.id}, this, 2)">
 						<span class="glyphicon glyphicon-chevron-down opinion"></span>
 					</button>
 					<span>
@@ -423,19 +466,19 @@
 							</span>
 							<span class="hidecomment" style="display: none;">收起评论</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-share-alt"></span>
 							<span>分享</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-star"></span>
 							<span>收藏</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-heart"></span>
 							<span>感谢</span>
 						</a>
-						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="#">没有帮助</a></li><li><a href="#">举报</a></li></ul>'>
+						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="javascript:void(0)">没有帮助</a></li><li><a href="javascript:void(0)">举报</a></li></ul>'>
 							···
 						</a>
 					</span>
@@ -450,7 +493,7 @@
 					<!--评论回答-->
 					<div>
 						<input type="text" class="form-control commentInput" placeholder="写下你的评论"/>
-						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${s.id}, 1)">评论</button>
+						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${s.id}, 2)">评论</button>
 					</div>
 				</div>
 			</div>
@@ -476,19 +519,19 @@
 				<div class="text-end">
 					<span>
 						<a class="text-situation"> ${s.watchCount } 人关注 </a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-share-alt"></span>
 							<span>分享</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-star"></span>
 							<span>收藏</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-heart"></span>
 							<span>感谢</span>
 						</a>
-						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="#">没有帮助</a></li><li><a href="#">举报</a></li></ul>'>
+						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="javascript:void(0)">没有帮助</a></li><li><a href="javascript:void(0)">举报</a></li></ul>'>
 							···
 						</a>
 					</span>
@@ -517,19 +560,19 @@
 				<div class="text-end">
 					<span>
 						<a class="text-situation"> ${s.watchCount } 人关注 </a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-share-alt"></span>
 							<span>分享</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-star"></span>
 							<span>收藏</span>
 						</a>
-						<a href="#" class="text-situation">
+						<a href="javascript:void(0)" class="text-situation">
 							<span class="glyphicon glyphicon-heart"></span>
 							<span>感谢</span>
 						</a>
-						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="#">没有帮助</a></li><li><a href="#">举报</a></li></ul>'>
+						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="javascript:void(0)">没有帮助</a></li><li><a href="javascript:void(0)">举报</a></li></ul>'>
 							···
 						</a>
 					</span>
@@ -550,7 +593,6 @@
 				</div>
 			</div>
 		</c:if>
-		
 	</c:forEach>
 </body>
 </html>

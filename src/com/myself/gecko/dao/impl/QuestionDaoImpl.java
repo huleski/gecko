@@ -25,6 +25,7 @@ import com.myself.gecko.util.C3P0Utils;
 
 public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionDao {
 
+    //保存问题
 	@Override
 	public void save(Question question) throws Exception {
 		String sql = "insert into question values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -33,12 +34,14 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
 		CU(sql, params);
 	}
 
+	//根据UID分页查询问题
 	@Override
 	public List<Question> ajaxQueryByUid(int currentPage, int pageSize, int uid) throws SQLException {
 		String whereClause = "where uid = " + uid;
 		return selectLimitByWhere(currentPage, pageSize, whereClause);
 	}
 
+	//完善问题信息
 	@Override
 	public Question findQuestionById(int id, User user) throws Exception {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
@@ -93,6 +96,7 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
 		return question;
 	}
 
+	//关注问题
 	@Override
 	public void addWatch(int qid, User user) throws Exception {
 		int uid = user.getId();
@@ -105,6 +109,7 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
 		}
 	}
 
+	//取消关注问题
 	@Override
 	public void cancleWatch(int qid, User user) throws Exception {
 		int uid = user.getId();
@@ -113,12 +118,14 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
 		queryRunner.update(sql, qid, uid);
 	}
 
+	//查询相关问题(同一话题)
 	@Override
 	public List<Question> findRelativeQuestion(int tid) throws Exception {
 		String whereClause = "where tid = " + tid + " order by rand()";
 		return this.selectLimitByWhere(1, Constant.RELATIVE_QUESTION_COUNT, whereClause );
 	}
 
+	//更新问题查看次数
 	@Override
 	public void visitQuestion(int id) throws Exception {
 		String sql = "update question set lookCount = lookCount + 1 where id = ?";
@@ -126,21 +133,15 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
 		CU(sql, params);
 	}
 
+	//查询最近关注的问题
 	@Override
 	public List<Question> findLastWatchQuestionListByTid(int tid, int currentPage, int pageSize) throws Exception {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
 		String sql = "select distinct question.id, question.title from question left join question_watch on question.id = question_watch.qid where question.tid = ? order by question_watch.date desc limit ?, ?";
 		return queryRunner.query(sql, new BeanListHandler<>(Question.class), tid, (currentPage - 1) * pageSize, pageSize);
-		
-		/*String sql = "select date from user_login where uid = ? order by date limit " + count + ", 1";
-		Date date = (Date) queryRunner.query(sql, new ScalarHandler(), user.getId());
-		System.out.println(date);
-		
-		//如果查到登录时间之前了
-		sql = "select distinct question.id, question.title from question, question_watch where question.id = question_watch.qid and question.tid = ? and question_watch.date > ? order by question_watch.date desc limit ?, ?";
-		return queryRunner.query(sql, new BeanListHandler<>(Question.class), tid, date, 0, Constant.TOPIC_DYNAIC_LOAD_COUNT);*/
 	}
 
+	//查询该话题下最新添加的问题
     @Override
     public List<Question> findNewestQuestion(int topicId, int currentPage, int pageSize) throws Exception {
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
@@ -152,6 +153,7 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
         return list;
     }
 
+    //查询已关注的问题
     @Override
     public List<Question> findWatchedQuestion(int id) throws Exception {
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
@@ -159,6 +161,7 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
         return queryRunner.query(sql, new BeanListHandler<>(Question.class), id);
     }
 
+    //查询关注话题中新增的问题
     @Override
     public List<Question> findNewestQuestionInWatchedTopics(User user, int currentPage,
             int pageSize) throws Exception {
@@ -172,6 +175,7 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
         return list;
     }
 
+    //查询关注用户新关注的问题
     @Override
     public List<Question> findNewWatchedQuestionWithFriends(User user, int currentPage, int pageSize) throws Exception {
         List<Question> questions = new ArrayList<>();
@@ -189,6 +193,7 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
         return questions;
     }
 
+    //查询所有新增的问题
     @Override
     public List<Question> findNewestQuestions(int currentPage, int pageSize) throws Exception {
         String whereClause = "order by date desc";

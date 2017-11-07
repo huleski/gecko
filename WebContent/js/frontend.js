@@ -1,5 +1,5 @@
 function snapscreen() {
-	html2canvas($("body"), {
+	html2canvas($("window"), {
 		onrendered: function(canvas) {
 			alert(window.height);
 			var url = canvas.toDataURL(); //base64数据  
@@ -11,10 +11,6 @@ function snapscreen() {
 			$("#showScreen").append(image);
 		}
 	});
-}
-
-function readyLoadanswer() {
-	
 }
 
 /*function showApp() {

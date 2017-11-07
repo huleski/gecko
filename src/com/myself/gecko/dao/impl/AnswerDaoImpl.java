@@ -91,6 +91,7 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
 		CU(sql, params);
 	}
 
+	//点赞
 	@Override
 	public void agree(User user, int aid) throws Exception {
 		int uid = user.getId();
@@ -103,6 +104,7 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
 		}
 	}
 
+	//取消点赞
 	@Override
 	public void disagree(User user, int aid) throws Exception {
 		int uid = user.getId();

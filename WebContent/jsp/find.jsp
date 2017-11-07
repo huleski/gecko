@@ -480,7 +480,6 @@
 										</span>
 									</div>
 									<div class="text">
-										<img class="graphics" src="${pageContext.request.contextPath}/img/buy.jpg" />
 										<span class="word">穷狗答题，大部分20-60区间~基本每家店都买过~日系小清新欧美重口暗黑古着晚晚风什么的都有~对原单有好感，仁者见仁智者见智啦~ PS：答主只是一个年龄还没到能打工的穷狗，积蓄烧在鞋子上了，虽然推荐的便宜，但都是我买过或者持续观望很久的店~ —————…</span>
 										<span class="showall">显示全部</span>
 									</div>

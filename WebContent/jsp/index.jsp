@@ -123,6 +123,7 @@
 			
 			.text-all {
 				font-size: 15px;
+				margin-bottom: 15px;
 				display: none;
 			}
 			
@@ -277,6 +278,17 @@
 				display: inline;
 				margin: 15px 30px 15px 20px;
 			}
+			.disagreebtn {
+				color: deepskyblue;
+				font-size: 14px;
+				border: deepskyblue 1px solid;
+			}
+			.agreebtn {
+				color: deepskyblue;
+				font-size: 14px;
+				border: deepskyblue 1px solid;
+			}
+			
 		</style>
 
 		<script type="text/javascript">
@@ -300,7 +312,6 @@
 				$("#gotobtn").click(function() {
 					 $('body,html').animate({scrollTop:0}, 200);
 				});
-
 			});
 		</script>
 		<script type="text/javascript">
@@ -379,15 +390,12 @@
 					$(this).parents(".comment-reply").prev(".comment-situation").show();
 				});
 				
-				
 				//举报弹出框
 				$(".report").popover();
 				
 				//首次加载内容
 				ajaxLoadDynamic();
 			});
-
-			
 		
 			// 滑动到页面底部实现自动加载
 			var totalheight = 0;
@@ -442,6 +450,9 @@
 						function(result) {	
 						$(obj).prev(".commentInput").val("");
 						$(obj).attr("disabled", true);
+						var count = $(obj).parents(".answerblock").find(".comment-count").text();
+						count = count.substring(0,1);
+						$(obj).parents(".answerblock").find(".comment-count").text(Number(count) + 1 + " 条评论");
 						showComment(targetId, 1, type, obj);
 					});
 				}
@@ -479,7 +490,86 @@
 					}
 				});
 			});
-
+			
+			//赞同回答
+			function agree(aid, obj, type) {		//type : 1, 回答.   2,文章
+				if("${user}" == "") {	//若用户未登录,不能点赞
+					$('#loginModal').modal();
+					return;
+				}
+				
+				$(obj).toggleClass("btn-default"); 
+				$(obj).toggleClass("btn-info");
+				$(obj).toggleClass("active");
+				var $disagreebtn = $(obj).next(".disagreebtn");
+				var cls = $disagreebtn.attr("class");
+				if(cls.indexOf("active") != -1) {	
+					$disagreebtn.toggleClass("btn-default"); 
+					$disagreebtn.toggleClass("btn-info");
+					$disagreebtn.toggleClass("active");
+				}
+				
+				var count =  parseInt($(obj).find(".keepgap").text());
+				if(($(obj).attr("class").indexOf("active")) != -1) {	//点赞,发送ajax请求
+					if(type == 1) {
+						$.post("${pageContext.request.contextPath}/answerServlet", {"method":"agree", "aid":aid});
+					} else {
+						$.post("${pageContext.request.contextPath}/articleServlet", {"method":"agree", "aid":aid});
+					}
+					$(obj).find(".keepgap").text(count + 1);
+				} else {	//取消点赞,发送ajax请求
+					if(type == 1) {
+						$.post("${pageContext.request.contextPath}/answerServlet", {"method":"disagree", "aid":aid});
+					} else {
+						$.post("${pageContext.request.contextPath}/articleServlet", {"method":"disagree", "aid":aid});
+					}
+					$(obj).find(".keepgap").text(count - 1);
+				}
+			}
+			//反对回答(取消赞同)
+			function disagree(aid, obj, type) {		//type : 1, 回答.   2,文章
+				if("${user}" == "") {	//若用户未登录,不能点赞
+					$('#loginModal').modal();
+					return;
+				}
+				
+				$(obj).toggleClass("btn-default"); 
+				$(obj).toggleClass("btn-info");
+				$(obj).toggleClass("active");
+				var $agreebtn = $(obj).prev(".agreebtn");
+				var count =  parseInt($agreebtn.find(".keepgap").text());
+				var cls = $agreebtn.attr("class");
+				if(cls.indexOf("active") != -1) {
+					$agreebtn.toggleClass("btn-default"); 
+					$agreebtn.toggleClass("btn-info");
+					$agreebtn.toggleClass("active");
+					$agreebtn.find(".keepgap").text(count - 1);
+					if(type == 1) {
+						$.post("${pageContext.request.contextPath}/answerServlet", {"method":"disagree", "aid":aid});
+					} else {
+						$.post("${pageContext.request.contextPath}/articleServlet", {"method":"disagree", "aid":aid});
+					}
+				} 
+			}
+			
+			//赞同评论
+			function agreeComment(cid, obj) {
+				if("${user}" == "") {
+					$('#loginModal').modal();
+				} else {
+					var count = parseInt($(obj).find("span").text());
+					$(obj).find("i").toggle();
+					
+					var $agree = $(obj).find(".fa-thumbs-up");
+					if($agree.css("display") != "none") {
+						$(obj).find("span").text(count + 1);
+						$.post("${pageContext.request.contextPath}/commentServlet", {"method":"agree", "cid":cid});
+					} else {
+						$(obj).find("span").text(count - 1);
+						$.post("${pageContext.request.contextPath}/commentServlet", {"method":"disagree", "cid":cid});
+					}
+				}
+			}
 		</script>
 	</head>
 
@@ -496,13 +586,13 @@
 							<a href="javascript:writeQuestioin()">
 								<span class="glyphicon glyphicon-question-sign"></span> 提问
 							</a>
-							<a href="${pageContext.request.contextPath}/jsp/answer.jsp" style="margin-left: 40px;">
+							<a href="${pageContext.request.contextPath}/jsp/find.jsp" target="_blank" style="margin-left: 40px;">
 								<span class="glyphicon glyphicon-file"></span> 回答
 							</a>
-							<a href="${pageContext.request.contextPath}/jsp/articleedit.jsp" style="margin-left: 40px;">
+							<a href="${pageContext.request.contextPath}/jsp/articleedit.jsp" target="_blank" style="margin-left: 40px;">
 								<span class="glyphicon glyphicon-pencil"></span> 写文章
 							</a>
-							<a href="#" style="margin-left: 360px;">
+							<a href="javascript:void(0)" style="margin-left: 360px;">
 								草稿
 							</a>
 						</div>
@@ -515,31 +605,31 @@
 				<!--右侧导航栏div-->
 				<div id="rightDiv">
 					<div id="icoDiv">
-						<a id="alive" class="iconcls" href="#">
+						<a id="alive" class="iconcls" href="javascript:void(0)">
 							<button class="icobtn">
 						<span class="glyphicon glyphicon-flash" style="color: #FFCF00;font-size: 25px;"></span><br />
 						<span class="icoexplain" id="live">Live</span>
 						</button>
 						</a>
-						<a id="abookstore" class="iconcls" href="#">
+						<a id="abookstore" class="iconcls" href="javascript:void(0)">
 							<button class="icobtn">
 						<span class="glyphicon glyphicon-book" style="color: #43D480;font-size: 25px;"></span><br />
 						<span class="icoexplain" id="bookstore">书店</span>
 						</button>
 						</a>
-						<a id="acircletable" class="iconcls" href="#">
+						<a id="acircletable" class="iconcls" href="javascript:void(0)">
 							<button class="icobtn">
 						<span class="glyphicon glyphicon-asterisk" style="color: deepskyblue;font-size: 25px;"></span><br />
 						<span class="icoexplain" id="circletable">圆桌</span>
 						</button>
 						</a>
-						<a id="acolumn" class="iconcls" href="#">
+						<a id="acolumn" class="iconcls" href="javascript:void(0)">
 							<button class="icobtn">
 						<span class="glyphicon glyphicon-pencil" style="color: dodgerblue;font-size: 25px;"></span><br />
 						<span class="icoexplain" id="column">专栏</span>
 						</button>
 						</a>
-						<a id="apay" class="iconcls" href="#">
+						<a id="apay" class="iconcls" href="javascript:void(0)">
 							<button class="icobtn">
 						<span class="glyphicon glyphicon-usd" style="color: blueviolet;font-size: 25px;"></span><br />
 						<span class="icoexplain" id="pay">付费咨询</span>
@@ -549,13 +639,13 @@
 					<div id="navDiv">
 						<ul class="nav nav-pills nav-stacked">
 							<li>
-								<a href="#">
+								<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-star" style="margin-right: 10px;"></span>
 									<span> 我的收藏</span>
 								</a>
 							</li>
 							<li>
-								<a href="#">
+								<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-exclamation-sign"><span/>
  								<span>
  									我关注的问题
@@ -564,13 +654,13 @@
 								</a>
 							</li>
 							<li>
-								<a href="#">
+								<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-glass"><span/>
  								<span>我的邀请</span>
 								</a>
 							</li>
 							<li>
-								<a href="#">
+								<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-cutlery"><span/>
  								<span>社区服务中心</span>
 								</a>

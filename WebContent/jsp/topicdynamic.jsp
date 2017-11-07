@@ -97,9 +97,10 @@
 			
 			.thinking {
 				background-color: #EFF6FA;
-				color: deepskyblue;
+				color: steelblue;
 				border: 0;
 				border-radius: 3px;
+				/* padding: 0 15px; */
 			}
 			
 			.text {
@@ -223,10 +224,10 @@
 				});
 
 				$("#topicAnswer").on("mouseover", ".thinking", function() {
-					$(this).css({ color: "#EFF6FA", background: "deepskyblue" });
+					$(this).css({ color: "#EFF6FA", background: "steelblue" });
 				});
 				$("#topicAnswer").on("mouseout", ".thinking", function() {
-					$(this).css({ color: "deepskyblue", background: "#EFF6FA" });
+					$(this).css({ color: "steelblue", background: "#EFF6FA" });
 				});
 					
 

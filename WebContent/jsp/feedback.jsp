@@ -35,8 +35,8 @@
 						<div class="checkbox">
 							<br />
 							<label>
-    									<input type="checkbox" checked=""> 提交屏幕截图<br />
-  								</label>
+								<input type="checkbox" checked=""> 提交屏幕截图<br />
+							</label>
 						</div>
 					</div>
 					<div class="modal-footer" style="text-align: center;">
