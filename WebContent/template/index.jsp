@@ -13,11 +13,11 @@
 		<!-- 新增回答 -->
 			<div class="answerblock">
 				<div class="text-dynamic">
-					来自 话题 <a class="text-dynamic-a" href="${pageContext.request.contextPath}/topicServlet?method=findById&id=${s.topic.id}">${s.topic.name }</a>
+					来自话题 <a target="_blank" class="text-dynamic-a" href="${pageContext.request.contextPath}/topicServlet?method=findById&id=${s.topic.id}">${s.topic.name }</a>
 					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 				</div>
 				<div class="text-author">
-					<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.user.id}">
+					<a target="_blank" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.user.id}">
 						<img class="photo" src="${pageContext.request.contextPath}/${s.user.photo}" />
 						<span class="name">${s.user.name}</span>
 					</a>
@@ -26,7 +26,7 @@
 					</span>
 				</div>
 				<div class="text-title">
-					<a href="${pageContext.request.contextPath}/questionServlet?method=findById&id=${s.question.id}" class="text-title-a">${fn:substring(s.question.title, 0, 50) }...</a>
+					<a target="_blank" target="_blank" href="${pageContext.request.contextPath}/questionServlet?method=findById&id=${s.question.id}" class="text-title-a">${fn:substring(s.question.title, 0, 50) }...</a>
 				</div>
 				<div class="text-content">
 					${fn:substring(s.pureContent, 0, 120) }
@@ -88,11 +88,11 @@
 		<!-- 关注者新增回答 -->
 			<div class="answerblock">
 				<div class="text-dynamic">
-					<a class="text-dynamic-a" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.watcher.id}">${s.watcher.name }</a> 回答了问题
+					<a target="_blank" class="text-dynamic-a" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.watcher.id}">${s.watcher.name }</a> 回答了问题
 					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 				</div>
 				<div class="text-author">
-					<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.user.id}">
+					<a target="_blank" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.user.id}">
 						<img class="photo" src="${pageContext.request.contextPath}/${s.user.photo}" />
 						<span class="name">${s.user.name}</span>
 					</a>
@@ -101,7 +101,7 @@
 					</span>
 				</div>
 				<div class="text-title">
-					<a href="${pageContext.request.contextPath}/questionServlet?method=findById&id=${s.question.id}" class="text-title-a">${fn:substring(s.question.title, 0, 50) }...</a>
+					<a target="_blank" href="${pageContext.request.contextPath}/questionServlet?method=findById&id=${s.question.id}" class="text-title-a">${fn:substring(s.question.title, 0, 50) }...</a>
 				</div>
 				<div class="text-content">
 					${fn:substring(s.pureContent, 0, 120) }
@@ -163,11 +163,11 @@
 		<!-- 关注者赞同了回答 -->
 			<div class="answerblock">
 				<div class="text-dynamic">
-					<a class="text-dynamic-a" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.watcher.id}">${s.watcher.name }</a> 赞同了回答
+					<a target="_blank" class="text-dynamic-a" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.watcher.id}">${s.watcher.name }</a> 赞同了回答
 					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 				</div>
 				<div class="text-author">
-					<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.user.id}">
+					<a target="_blank" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.user.id}">
 						<img class="photo" src="${pageContext.request.contextPath}/${s.user.photo}" />
 						<span class="name">${s.user.name}</span>
 					</a>
@@ -176,7 +176,7 @@
 					</span>
 				</div>
 				<div class="text-title">
-					<a href="${pageContext.request.contextPath}/questionServlet?method=findById&id=${s.question.id}" class="text-title-a">${fn:substring(s.question.title, 0, 50) }...</a>
+					<a target="_blank" href="${pageContext.request.contextPath}/questionServlet?method=findById&id=${s.question.id}" class="text-title-a">${fn:substring(s.question.title, 0, 50) }...</a>
 				</div>
 				<div class="text-content">
 					${fn:substring(s.pureContent, 0, 120) }
@@ -238,11 +238,11 @@
 		<!-- 新增文章 -->
 			<div class="answerblock">
 				<div class="text-dynamic">
-					来自 话题  <a class="text-dynamic-a" href="${pageContext.request.contextPath}/topicServlet?method=findById&id=${s.topic.id}">${s.topic.name }</a>
+					来自话题  <a target="_blank" class="text-dynamic-a" href="${pageContext.request.contextPath}/topicServlet?method=findById&id=${s.topic.id}">${s.topic.name }</a>
 					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 				</div>
 				<div class="text-author">
-					<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.user.id}">
+					<a target="_blank" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.user.id}">
 						<img class="photo" src="${pageContext.request.contextPath}/${s.user.photo}" />
 						<span class="name">${s.user.name}</span>
 					</a>
@@ -251,7 +251,7 @@
 					</span>
 				</div>
 				<div class="text-title">
-					<a href="${pageContext.request.contextPath}/articleServlet?method=findById&aid=${s.id}" class="text-title-a">${fn:substring(s.title, 0, 50) }...</a>
+					<a  target="_blank"href="${pageContext.request.contextPath}/articleServlet?method=findById&aid=${s.id}" class="text-title-a">${fn:substring(s.title, 0, 50) }...</a>
 				</div>
 				<div class="text-content">
 					${fn:substring(s.pureContent, 0, 120) }
@@ -292,6 +292,18 @@
 						</a>
 					</span>
 					<button class="takeback btn btn-info btn-xs">收起</button>
+				</div>
+				<!-- 评论div -->
+				<div class="commentdiv">
+					<!-- 用户评论 -->
+					<div class="user-commentblock">
+					</div>
+					<div class="separator"></div>
+					<!--评论回答-->
+					<div>
+						<input type="text" class="form-control commentInput" placeholder="写下你的评论"/>
+						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${s.id}, 1)">评论</button>
+					</div>
 				</div>
 			</div>
 		</c:if>
@@ -300,11 +312,11 @@
 		<!-- 关注用户新增文章 -->
 			<div class="answerblock">
 				<div class="text-dynamic">
-					<a class="text-dynamic-a" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.watcher.id}">${s.watcher.name }</a> 发表了文章
+					<a target="_blank" class="text-dynamic-a" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.watcher.id}">${s.watcher.name }</a> 发表了文章
 					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 				</div>
 				<div class="text-author">
-					<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.user.id}">
+					<a target="_blank" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.user.id}">
 						<img class="photo" src="${pageContext.request.contextPath}/${s.user.photo}" />
 						<span class="name">${s.user.name}</span>
 					</a>
@@ -313,7 +325,7 @@
 					</span>
 				</div>
 				<div class="text-title">
-					<a href="${pageContext.request.contextPath}/articleServlet?method=findById&aid=${s.id}" class="text-title-a">${fn:substring(s.title, 0, 50) }...</a>
+					<a target="_blank" href="${pageContext.request.contextPath}/articleServlet?method=findById&aid=${s.id}" class="text-title-a">${fn:substring(s.title, 0, 50) }...</a>
 				</div>
 				<div class="text-content">
 					${fn:substring(s.pureContent, 0, 120) }
@@ -354,6 +366,18 @@
 						</a>
 					</span>
 					<button class="takeback btn btn-info btn-xs">收起</button>
+				</div>
+				<!-- 评论div -->
+				<div class="commentdiv">
+					<!-- 用户评论 -->
+					<div class="user-commentblock">
+					</div>
+					<div class="separator"></div>
+					<!--评论回答-->
+					<div>
+						<input type="text" class="form-control commentInput" placeholder="写下你的评论"/>
+						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${s.id}, 1)">评论</button>
+					</div>
 				</div>
 			</div>
 		</c:if>
@@ -362,11 +386,11 @@
 		<!-- 关注用户赞同文章 -->
 			<div class="answerblock">
 				<div class="text-dynamic">
-					<a class="text-dynamic-a" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.watcher.id}">${s.watcher.name }</a> 赞同了文章
+					<a target="_blank" class="text-dynamic-a" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.watcher.id}">${s.watcher.name }</a> 赞同了文章
 					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 				</div>
 				<div class="text-author">
-					<a href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.user.id}">
+					<a target="_blank" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.user.id}">
 						<img class="photo" src="${pageContext.request.contextPath}/${s.user.photo}" />
 						<span class="name">${s.user.name}</span>
 					</a>
@@ -375,7 +399,7 @@
 					</span>
 				</div>
 				<div class="text-title">
-					<a href="${pageContext.request.contextPath}/articleServlet?method=findById&aid=${s.id}" class="text-title-a">${fn:substring(s.title, 0, 50) }...</a>
+					<a target="_blank" href="${pageContext.request.contextPath}/articleServlet?method=findById&aid=${s.id}" class="text-title-a">${fn:substring(s.title, 0, 50) }...</a>
 				</div>
 				<div class="text-content">
 					${fn:substring(s.pureContent, 0, 120) }
@@ -417,6 +441,18 @@
 					</span>
 					<button class="takeback btn btn-info btn-xs">收起</button>
 				</div>
+				<!-- 评论div -->
+				<div class="commentdiv">
+					<!-- 用户评论 -->
+					<div class="user-commentblock">
+					</div>
+					<div class="separator"></div>
+					<!--评论回答-->
+					<div>
+						<input type="text" class="form-control commentInput" placeholder="写下你的评论"/>
+						<button class="btn btn-info commentSubmitBtn" disabled="disabled" type="button" onclick="submitAnswerComment(this, null, ${s.id}, 1)">评论</button>
+					</div>
+				</div>
 			</div>
 		</c:if>
 		
@@ -424,11 +460,11 @@
 		<!-- 新增问题 -->
 			<div class="answerblock">
 				<div class="text-dynamic">
-					来自 话题  <a class="text-dynamic-a" href="${pageContext.request.contextPath}/topicServlet?method=findById&id=${s.topic.id}">${s.topic.name }</a>
+					话题  <a target="_blank" class="text-dynamic-a" href="${pageContext.request.contextPath}/topicServlet?method=findById&id=${s.topic.id}">${s.topic.name }</a> 新增了问题:
 					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 				</div>
 				<div class="text-title">
-					<a href="${pageContext.request.contextPath}/questionServlet?method=findById&id=${s.id}" class="text-title-a">${fn:substring(s.title, 0, 50) }...</a>
+					<a target="_blank" href="${pageContext.request.contextPath}/questionServlet?method=findById&id=${s.id}" class="text-title-a">${fn:substring(s.title, 0, 50) }...</a>
 				</div>
 				<div class="text-content">
 					${fn:substring(s.pureContent, 0, 120)}
@@ -456,6 +492,7 @@
 							···
 						</a>
 					</span>
+					<button class="takeback btn btn-info btn-xs">收起</button>
 				</div>
 			</div>
 		</c:if>
@@ -464,11 +501,11 @@
 		<!-- 关注用户关注了问题 -->
 			<div class="answerblock">
 				<div class="text-dynamic">
-					<a class="text-dynamic-a" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.watcher.id}">${s.watcher.name }</a> 关注了问题
+					<a target="_blank" class="text-dynamic-a" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.watcher.id}">${s.watcher.name }</a> 关注了问题
 					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 				</div>
 				<div class="text-title">
-					<a href="${pageContext.request.contextPath}/questionServlet?method=findById&id=${s.id}" class="text-title-a">${fn:substring(s.title, 0, 50) }...</a>
+					<a target="_blank" href="${pageContext.request.contextPath}/questionServlet?method=findById&id=${s.id}" class="text-title-a">${fn:substring(s.title, 0, 50) }...</a>
 				</div>
 				<div class="text-content">
 					${fn:substring(s.pureContent, 0, 120)}
@@ -496,6 +533,7 @@
 							···
 						</a>
 					</span>
+					<button class="takeback btn btn-info btn-xs">收起</button>
 				</div>
 			</div>
 		</c:if>
@@ -504,11 +542,11 @@
 		<!-- 关注用户关注了话题 -->
 			<div class="answerblock">
 				<div class="text-dynamic">
-					<a class="text-dynamic-a" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.watcher.id}">${s.watcher.name }</a> 关注了话题
+					<a target="_blank" class="text-dynamic-a" href="${pageContext.request.contextPath}/userServlet?method=findById&id=${s.watcher.id}">${s.watcher.name }</a> 关注了话题
 					<span class="closeblock glyphicon glyphicon-remove btn" style="float: right;top: -10px;right: -10px;"></span>
 				</div>
 				<div class="text-title">
-					<a href="${pageContext.request.contextPath}/topicServlet?method=findById&id=${s.id}" class="text-title-a">${s.name}</a>
+					<a target="_blank" href="${pageContext.request.contextPath}/topicServlet?method=findById&id=${s.id}" class="text-title-a">${s.name}</a>
 				</div>
 			</div>
 		</c:if>

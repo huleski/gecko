@@ -18,10 +18,16 @@ public class IndexServlet extends BaseServlet {
 		try {
 		    int currentPage = Integer.parseInt(curPage);
 			Set set = indexService.getSet(user, currentPage);
-			request.setAttribute("set", set);
+			
+			if(set.isEmpty()) {
+			    response.getWriter().write("0");
+			} else {
+			    request.setAttribute("set", set);
+			    return "/template/index.jsp";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "/template/index.jsp";
+		return null;
 	}
 }
