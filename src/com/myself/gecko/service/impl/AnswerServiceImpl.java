@@ -2,6 +2,7 @@ package com.myself.gecko.service.impl;
 
 import java.util.List;
 
+import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IAnswerDao;
 import com.myself.gecko.dao.impl.AnswerDaoImpl;
 import com.myself.gecko.domain.Answer;
@@ -32,5 +33,15 @@ public class AnswerServiceImpl implements IAnswerService {
 	public void disagree(User user, int aid) throws Exception {
 		answerDao.disagree(user, aid);
 	}
+
+    @Override
+    public List<Answer> findHotday(int currentPage, User user) throws Exception {
+        return answerDao.findHotday(user, currentPage, Constant.FIND_ANSWER_COUNT);
+    }
+
+    @Override
+    public List<Answer> findHotmonth(int currentPage, User user) throws Exception {
+        return answerDao.findHotmonth(user, currentPage, Constant.FIND_ANSWER_COUNT);
+    }
 
 }

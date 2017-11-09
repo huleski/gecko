@@ -23,7 +23,12 @@ public class Question {
 	private List<Answer> answerList = new ArrayList<>();
 	private List<Comment> commentList = new ArrayList<>();
 
-	public User getWatcher() {
+	@Override
+    public String toString() {
+        return "Question [id=" + id + ", title=" + title + ", date=" + date + "]";
+    }
+
+    public User getWatcher() {
         return watcher;
     }
 
@@ -34,11 +39,6 @@ public class Question {
     public void setMark(Integer mark) {
         this.mark = mark;
     }
-
-	@Override
-	public String toString() {
-		return "Question [title=" + title + ", date=" + date + ", user=" + user.getName() +"]";
-	}
 
 	public Integer getMark() {
 		return mark;

@@ -1,5 +1,7 @@
 package com.myself.gecko.web.servlet;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +17,53 @@ import com.myself.gecko.service.impl.AnswerServiceImpl;
 public class AnswerServlet extends BaseServlet {
 	private static IAnswerService answerService = new AnswerServiceImpl();
 
+	
+	/**  
+	 * 查询本日最热回答  
+	 * @return  
+	 */
+	public String ajaxLoadHotday(HttpServletRequest request, HttpServletResponse response) {
+	    User user = (User) request.getSession().getAttribute("user");
+	    String currentPageStr = request.getParameter("currentPageDay");
+	    
+	    try {
+            int currentPage = Integer.parseInt(currentPageStr);
+            List<Answer> list = answerService.findHotday(currentPage, user);
+            if(list.isEmpty()) {
+                response.getWriter().write("0");
+                return null;
+            }
+            request.setAttribute("set", list);
+            return "/template/topicdynamic.jsp";
+        } catch (Exception e) {
+            e.printStackTrace();  
+        }
+	    return "/500.jsp";
+	}
+	
+	/**  
+	 * 查询本月最热回答 
+	 * @return  
+	 */
+	public String ajaxLoadHotmonth(HttpServletRequest request, HttpServletResponse response) {
+	    User user = (User) request.getSession().getAttribute("user");
+        String currentPageStr = request.getParameter("currentPageMonth");
+        
+        try {
+            int currentPage = Integer.parseInt(currentPageStr);
+            List<Answer> list = answerService.findHotmonth(currentPage, user);
+            if(list.isEmpty()) {
+                response.getWriter().write("0");
+                return null;
+            }
+            request.setAttribute("set", list);
+            return "/template/topicdynamic.jsp";
+        } catch (Exception e) {
+            e.printStackTrace();  
+        }
+        return "/500.jsp";
+	}
+	
 	/**
 	 * 点赞
 	 */
@@ -93,16 +142,8 @@ public class AnswerServlet extends BaseServlet {
 	}
 
 	/*
-	 * public String ajaxLoad(HttpServletRequest request, HttpServletResponse
-	 * response) { String pageStr = request.getParameter("currentPage"); String
-	 * qidStr = request.getParameter("qid"); try { int currentPage =
-	 * Integer.parseInt(pageStr); int qid = Integer.parseInt(qidStr);
-	 * 
-	 * String data = answerService.ajaxLoad(currentPage, qid);
-	 * response.getWriter().print(data); return null; } catch (Exception e) {
-	 * e.printStackTrace(); return "/500.jsp"; } }
+	 * ddlklklkjkljkj
 	 */
-
 	public String ajaxLoad(HttpServletRequest request, HttpServletResponse response) {
 		String pageStr = request.getParameter("currentPage");
 		String qidStr = request.getParameter("qid");

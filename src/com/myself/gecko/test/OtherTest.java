@@ -1,6 +1,8 @@
 package com.myself.gecko.test;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.junit.Test;
@@ -26,6 +28,15 @@ public class OtherTest {
 			System.out.println(string);
 			
 		}
+	}
+	
+	@Test
+	public void test3() {
+	    Date date = new Date();
+	    date.setHours(0);
+	    date.setMinutes(0);
+	    date.setSeconds(0);
+	    System.out.println(date.toLocaleString());
 	}
 
 }

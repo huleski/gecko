@@ -7,12 +7,16 @@ import com.myself.gecko.domain.User;
 
 public interface IAnswerService {
 
-	List<Answer> ajaxLoad(int currentPage, int qid, User user) throws Exception;
+    List<Answer> ajaxLoad(int currentPage, int qid, User user) throws Exception;
 
-	void save(Answer answer) throws Exception;
+    void save(Answer answer) throws Exception;
 
-	void agree(User user, int aid) throws Exception;
-	
-	void disagree(User user, int aid) throws Exception;
+    void agree(User user, int aid) throws Exception;
+
+    void disagree(User user, int aid) throws Exception;
+
+    List<Answer> findHotday(int currentPage, User user) throws Exception;
+
+    List<Answer> findHotmonth(int currentPage, User user) throws Exception;
 
 }

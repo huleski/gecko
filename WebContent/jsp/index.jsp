@@ -450,6 +450,7 @@
 						function(result) {	
 						$(obj).prev(".commentInput").val("");
 						$(obj).attr("disabled", true);
+						//更新评论数
 						var count = $(obj).parents(".answerblock").find(".comment-count").text();
 						count = count.substring(0,1);
 						$(obj).parents(".answerblock").find(".comment-count").text(Number(count) + 1 + " 条评论");
@@ -465,7 +466,11 @@
 				} else {
 					var content = $(obj).parent(".comment-reply-opr").prev(".comment-input").val();			
 					$.post("${pageContext.request.contextPath}/commentServlet", {"method":"add", "pid":pid, "type":type, "targetId": targetId, "content":content},
-						function(result) {	
+						function(result) {
+						//更新评论数
+						var count = $(obj).parents(".answerblock").find(".comment-count").text();
+						count = count.substring(0,1);
+						$(obj).parents(".answerblock").find(".comment-count").text(Number(count) + 1 + " 条评论");
 						showComment(targetId, 1, type, obj);
 					});
 				}
@@ -586,7 +591,7 @@
 							<a href="javascript:writeQuestioin()">
 								<span class="glyphicon glyphicon-question-sign"></span> 提问
 							</a>
-							<a href="${pageContext.request.contextPath}/jsp/find.jsp" target="_blank" style="margin-left: 40px;">
+							<a href="${pageContext.request.contextPath}/indexServlet?method=find" target="_blank" style="margin-left: 40px;">
 								<span class="glyphicon glyphicon-file"></span> 回答
 							</a>
 							<a href="${pageContext.request.contextPath}/jsp/articleedit.jsp" target="_blank" style="margin-left: 40px;">

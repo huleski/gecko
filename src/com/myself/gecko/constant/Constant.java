@@ -70,4 +70,9 @@ public interface Constant {
      * 首页加载关注用户的新增问题关注数
      */
     public static final int WATCHEDUSER_QUESTION_WATCH_COUNT = 2;
+
+    /**
+     *  发现中加载答案数
+     */
+    public static final int FIND_ANSWER_COUNT = 2;
 }

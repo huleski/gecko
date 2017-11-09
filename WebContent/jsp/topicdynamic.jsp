@@ -100,7 +100,6 @@
 				color: steelblue;
 				border: 0;
 				border-radius: 3px;
-				/* padding: 0 15px; */
 			}
 			
 			.text {
@@ -389,13 +388,9 @@
 				display: inline;
 				margin: 15px 30px 15px 20px;
 			}
-			.report{
-				font-size: 16px;
-				font-weight: bold;
-			}
 		</style>
 		<script type="text/javascript">
-		//点击 话题 按钮
+			//点击 话题 按钮
 			function clickWatchedTopic(tid) {
 				currentPage = 1;
 				topicId = tid;
@@ -428,6 +423,10 @@
 						function(result) {	
 						$(obj).prev(".commentInput").val("");
 						$(obj).attr("disabled", true);
+						//更新评论数
+						var count = $(obj).parents(".text-block").find(".text-comment").text();
+						count = count.substring(0,1);
+						$(obj).parents(".text-block").find(".text-comment").text(Number(count) + 1 + " 条评论");
 						showComment(targetId, 1, type, obj);
 					});
 				}
@@ -440,7 +439,11 @@
 				} else {
 					var content = $(obj).parent(".comment-reply-opr").prev(".comment-input").val();			
 					$.post("${pageContext.request.contextPath}/commentServlet", {"method":"add", "pid":pid, "type":type, "targetId": targetId, "content":content},
-						function(result) {	
+						function(result) {
+						//更新评论数
+						var count = $(obj).parents(".text-block").find(".text-comment").text();
+						count = count.substring(0,1);
+						$(obj).parents(".text-block").find(".text-comment").text(Number(count) + 1 + " 条评论");
 						showComment(targetId, 1, type, obj);
 					});
 				}
@@ -448,6 +451,7 @@
 
 			// ajax加载话题动态
 			function showTopicDynamic(){
+				$("#waitResult").show();
 				$.post("${pageContext.request.contextPath}/topicServlet", {"method":"findTopicDynamic", tid:topicId, orderStyle:orderStyle, currentPage:currentPage++}, function(result){
 					$("#waitResult").hide();
 					if(result != "0") {
@@ -525,11 +529,11 @@
 					
 					<!-- ajax加载话题答案 -->
 					<div>
+						<div id="topicAnswer"></div>
 						<div id="waitResult" style="text-align:center;padding:40px;color:deepskyblue;">
 							<i class="fa fa-spinner fa-pulse fa-5x"></i>
 							<span class="sr-only">Loading...</span>
 						</div>
-						<div id="topicAnswer"></div>
 					</div>
 					<!-- 查看更多回答 -->
 					<button id="showMoreDynamic" class="btn btn-default btn-block btn-lg" style="margin-bottom:100px;display:none" onclick='showTopicDynamic()'>查看更多动态</button>

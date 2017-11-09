@@ -26,4 +26,8 @@ public interface IAnswerDao extends IBaseDao<Answer> {
     List<Answer> findAnswersByUserWatch(User user, int currentPage, int pageSize) throws Exception;
 
     List<Answer> findNewestAnswers(int currentPage, int pageSize) throws Exception;
+
+    List<Answer> findHotday(User user, int currentPage, int pageSize) throws Exception;
+
+    List<Answer> findHotmonth(User user, int currentPage, int pageSize) throws Exception;
 }
