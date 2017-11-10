@@ -6,6 +6,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="${pageContext.request.contextPath}/font_awesome/css/font-awesome.css" rel="stylesheet" />
 <title>首页.主页导航栏</title>
+<style type="text/css">
+	#searchDiv {
+		height: 400px;
+		width: 600px;
+		border-radius:3px;
+		background-color:white;
+		position: fixed;
+		margin-left: 280px;
+		z-index: 8;
+		top:43px;
+		display:none;
+		border: red solid 1px;
+	}
+</style>
+<script type="text/javascript">
+	$(function(){
+		$("#search-input").bind({
+			focus: function(){$("#searchDiv").show();},
+			blur: function(){$("#searchDiv").hide();},
+			keyup: function(){
+				if(this.value != ""){//搜索输入框不为空
+					$("#searchDiv").empty();
+					$.getJSON("${pageContext.request.contextPath}/questionServlet", {method:"search",keywords:this.value}, function(result){
+						alert(result);
+					});
+				}
+			}
+		})
+		
+	});
+</script>
 </head>
 <body>
 	<!-- 提问模态框(包含登录模态框) -->
@@ -13,7 +44,7 @@
 
 	<!--导航栏-->
 	<div id="topbar">
-		<span style="position: relative;margin: auto;width: 1000px;">
+		<div style="position: relative;margin: auto;width: 1000px;">
 			<span style="font-size: 15px;">
 				<a href="${pageContext.request.contextPath}/jsp/index.jsp" style="font-size: 32px; color: deepskyblue;font-family: '黑体';">逼乎</a>
 				<span style="position: relative;top: -5px;">
@@ -22,9 +53,9 @@
 					<a class="topmenu" href="${pageContext.request.contextPath}/indexServlet?method=find" style="margin-left: 30px;">发现</a>
 					<form action="${pageContext.request.contextPath}/questionServlet" method="post" style="position: relative;display: inline;width:360px;">
 						<div class="input-group" style="width:350px;position: absolute;top:-8px;left: 20px;">
-					    	<input type="text" class="form-control" placeholder="搜索你感兴趣的内容...">
+					    	<input type="text" id="search-input" name="keywords" class="form-control" required placeholder="搜索你感兴趣的内容...">
 					    	<span class="input-group-btn">
-						        <button class="btn btn-default" type="button" style="height:34px;color:lightgray">
+						        <button class="btn btn-default" type="submit" style="height:34px;color:lightgray">
 									<i class="fa fa-search  fa-lg"></i>
 								</button>
 					      	</span>
@@ -32,7 +63,7 @@
 					</form>
 					<button type="button" class="btn btn-info" onclick="writeQuestioin()" style="width:60px;font-size: 14px;margin-left: 390px;position:relative;top:-2px">提问</button>
 					<c:if test="${empty user}">	
-						<button type="button" class="btn btn-info" style="width:60px;font-size: 14px;margin-left: 140px;" onclick="location.href='${pageContext.request.contextPath}/jsp/login.jsp'">登录</button>
+						<button type="button" class="btn btn-info" style="width:60px;font-size: 14px;margin-left: 120px;" onclick="location.href='${pageContext.request.contextPath}/jsp/login.jsp'">登录</button>
 						<button type="button" class="btn btn-default" style="font-size: 14px;margin-left: 20px;color:deepskyblue;border:1px deepskyblue solid;" onclick="location.href='${pageContext.request.contextPath}/jsp/login.jsp?register=1'">加入逼乎</button>
 					</c:if>
 					<c:if test="${not empty user}">
@@ -65,9 +96,11 @@
 					</c:if>
 				</span>
 			</span>
-				
-		</span>
+			<!-- 搜索结果 -->
+			<div id="searchDiv">searchDiv</div>	
+		</div>
 		<div style="height: 1px;background-color: lightgray;"></div>
 	</div>
+	
 </body>
 </html>

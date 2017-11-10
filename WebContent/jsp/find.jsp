@@ -256,21 +256,28 @@
 				$("#gotobtn").click(function() {
 					$('body,html').animate({ scrollTop: 0 }, 500);
 				});
-
+				
+				$(window).scroll( function() {
+					if($(this).scrollTop() > 1000) {
+						$("#gotobtn").show();
+					} else {
+						$("#gotobtn").hide();
+					}
+				});
 			});
 
-			window.onscroll = function() {
+			/* window.onscroll = function() {
 				if(document.body.scrollTop > 600) {
 					$("#gotobtn").show();
 				}
 				if(document.body.scrollTop < 600) {
 					$("#gotobtn").hide();
 				}
-			}
+			} */
 		</script>
 		<script type="text/javascript">
 			$(function() {
-				$("#hotdayContent").on("click", ".takebackspan", function() {
+				$("#findDiv").on("click", ".takebackspan", function() {
 					$(this).hide(1);
 					var $textBlock = $(this).parents(".text-block");
 					$textBlock.find(".text-all").hide(1, function() {
@@ -278,7 +285,7 @@
 					});
 				});
 
-				$("#hotdayContent").on("click", ".text", function() {
+				$("#findDiv").on("click", ".text", function() {
 					$(this).hide();
 					var $block = $(this).parent(".text-block");
 					$block.find(".text-all").show();
@@ -286,25 +293,25 @@
 					$block.find(".takebackspan").show();
 				});
 
-				$("#hotdayContent").on("mouseover", ".text-block", function() {
+				$("#findDiv").on("mouseover", ".text-block", function() {
 						$(this).find(".hidelabel").show();
 				});
-				$("#hotdayContent").on("mouseout", ".text-block", function() {
+				$("#findDiv").on("mouseout", ".text-block", function() {
 						$(this).find(".hidelabel").hide();
 				});
 
-				$("#hotdayContent").on("mouseover", ".thinking", function() {
+				$("#findDiv").on("mouseover", ".thinking", function() {
 					$(this).css({ color: "#EFF6FA", background: "steelblue" });
 				});
-				$("#hotdayContent").on("mouseout", ".thinking", function() {
+				$("#findDiv").on("mouseout", ".thinking", function() {
 					$(this).css({ color: "steelblue", background: "#EFF6FA" });
 				});
 					
-				$("#hotdayContent").on("click", ".text-comment", function() {
+				$("#findDiv").on("click", ".text-comment", function() {
 					$(this).parents(".text-block").find(".commentdiv").toggle();
 				});
 				
-				$("#hotdayContent").on("click", ".comment-replybtn", function() {
+				$("#findDiv").on("click", ".comment-replybtn", function() {
 					if("${user}" == "") {
 						$('#loginModal').modal();
 					} else {
@@ -313,13 +320,13 @@
 					}
 				});
 				
-				$("#hotdayContent").on("click", ".comment-cancel", function() {
+				$("#findDiv").on("click", ".comment-cancel", function() {
 					$(this).parents(".comment-reply").hide();
 					$(this).parents(".comment-reply").prev(".comment-situation").show();
 				});
 				
 				//检测答案评论输入框是否有值,有才能提交评论
-				$("#hotdayContent").on("keyup", ".commentInput", function() {
+				$("#findDiv").on("keyup", ".commentInput", function() {
 					if (this.value != "") {
 						$(this).next(".commentSubmitBtn").attr("disabled", false);
 					} else {
@@ -328,7 +335,7 @@
 				});
 				
 				//检测评论回复输入框是否有值,有才能提交评论
-				$("#hotdayContent").on("keyup", ".comment-input", function() {
+				$("#findDiv").on("keyup", ".comment-input", function() {
 					if (this.value != "") {
 						$(this).next(".comment-reply-opr").find(".comment-ok").attr("disabled", false);
 					} else {
@@ -337,7 +344,6 @@
 				});
 				
 				$("#showHotmonth").one("click", function(){
-					alert("one");
 					ajaxLoadHotmonth();
 				});
 				
@@ -490,7 +496,7 @@
 								</li>
 							</ul>
 						</div>
-						<div class="tab-content" style="padding-top: 20px;">
+						<div id="findDiv" class="tab-content" style="padding-top: 20px;">
 							<!--今日最热-->
 							<div class="tab-pane active" id="hotday">
 								<div id="hotdayContent"></div>
