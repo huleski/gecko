@@ -1,5 +1,7 @@
 package com.myself.gecko.service;
 
+import java.util.List;
+
 import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.User;
 
@@ -18,5 +20,7 @@ public interface IQuestionService {
 	String findRelativeQuestion(int tid) throws Exception;
 
 	void visitQuestion(int id) throws Exception;
+
+    List<Question> search(String keywords) throws Exception;
 
 }

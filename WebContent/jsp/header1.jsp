@@ -5,33 +5,55 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="${pageContext.request.contextPath}/font_awesome/css/font-awesome.css" rel="stylesheet" />
-<title>首页.主页导航栏</title>
 <style type="text/css">
 	#searchDiv {
-		height: 400px;
+		/* height: 400px; */
 		width: 600px;
-		border-radius:3px;
+		border-radius:5px;
 		background-color:white;
 		position: fixed;
-		margin-left: 280px;
+		margin-left: 290px;
 		z-index: 8;
 		top:43px;
 		display:none;
-		border: red solid 1px;
+		border: lightgray thin 1px;
+		box-shadow: 0px 1px 1px 1px #888888;
+		
+	}
+	
+	#searchDiv div{
+		text-align: left;
+		padding: 5px 8px;
 	}
 </style>
 <script type="text/javascript">
+	var timer;
+
 	$(function(){
 		$("#search-input").bind({
-			focus: function(){$("#searchDiv").show();},
+			/* focus: function(){$("#searchDiv").show();}, */
 			blur: function(){$("#searchDiv").hide();},
 			keyup: function(){
-				if(this.value != ""){//搜索输入框不为空
-					$("#searchDiv").empty();
-					$.getJSON("${pageContext.request.contextPath}/questionServlet", {method:"search",keywords:this.value}, function(result){
-						alert(result);
-					});
-				}
+				//设置定时器,延迟keyup触发事件
+				clearTimeout(timer);
+                timer = setTimeout(function() {
+					$("#nosearch").hide();
+					var keywords = $.trim($("#search-input").val());
+					if(keywords != ""){//搜索输入框不为空
+						$("#searchResult").empty();
+						$.getJSON("${pageContext.request.contextPath}/questionServlet", {method:"search","keywords":keywords}, function(result){
+							$("#searchDiv").show();
+							if(result != "0"){
+								$(result).each(function(i, obj){
+									$("#searchResult").append('<div><a href="${pageContext.request.contextPath}/questionServlet?method=findById&id='+obj.id+'">'+obj.title+'</a></div>');
+								});
+							}else{
+								$("#nosearch").show();
+							}
+							
+						});
+					}
+                }, 1000);
 			}
 		})
 		
@@ -53,7 +75,7 @@
 					<a class="topmenu" href="${pageContext.request.contextPath}/indexServlet?method=find" style="margin-left: 30px;">发现</a>
 					<form action="${pageContext.request.contextPath}/questionServlet" method="post" style="position: relative;display: inline;width:360px;">
 						<div class="input-group" style="width:350px;position: absolute;top:-8px;left: 20px;">
-					    	<input type="text" id="search-input" name="keywords" class="form-control" required placeholder="搜索你感兴趣的内容...">
+					    	<input type="text" id="search-input" name="keywords" autocomplete="off" class="form-control" required placeholder="搜索你感兴趣的内容...">
 					    	<span class="input-group-btn">
 						        <button class="btn btn-default" type="submit" style="height:34px;color:lightgray">
 									<i class="fa fa-search  fa-lg"></i>
@@ -67,7 +89,7 @@
 						<button type="button" class="btn btn-default" style="font-size: 14px;margin-left: 20px;color:deepskyblue;border:1px deepskyblue solid;" onclick="location.href='${pageContext.request.contextPath}/jsp/login.jsp?register=1'">加入逼乎</button>
 					</c:if>
 					<c:if test="${not empty user}">
-						<span style="margin-left: 130px;position:relative;top:5px">
+						<span style="margin-left: 100px;position:relative;top:5px">
 							<a href="#">
 								<span class="glyphicon glyphicon-bell topmenu" style="font-size: 22px;color: lightgray;"></span>
 								<span class="markcount">42</span>
@@ -97,10 +119,14 @@
 				</span>
 			</span>
 			<!-- 搜索结果 -->
-			<div id="searchDiv">searchDiv</div>	
+			<div id="searchDiv">
+				<div id="nosearch" style="display: block;">
+					没有搜索到相关的结果
+				</div>
+				<div id="searchResult"></div>
+			</div>	
 		</div>
 		<div style="height: 1px;background-color: lightgray;"></div>
 	</div>
-	
 </body>
 </html>

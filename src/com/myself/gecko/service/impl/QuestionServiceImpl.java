@@ -2,6 +2,8 @@ package com.myself.gecko.service.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IAnswerDao;
 import com.myself.gecko.dao.IQuestionDao;
@@ -61,5 +63,10 @@ public class QuestionServiceImpl implements IQuestionService {
 	public void visitQuestion(int id) throws Exception {
 		questionDao.visitQuestion(id);
 	}
+
+    @Override
+    public List<Question> search(String keywords) throws Exception {
+        return questionDao.search(keywords);
+    }
 
 }

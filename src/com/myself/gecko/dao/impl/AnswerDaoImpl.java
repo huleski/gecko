@@ -1,6 +1,5 @@
 package com.myself.gecko.dao.impl;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,6 @@ import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
 
