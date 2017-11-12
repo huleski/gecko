@@ -75,4 +75,9 @@ public interface Constant {
      *  发现中加载答案数
      */
     public static final int FIND_ANSWER_COUNT = 2;
+
+    /**  
+     * 搜索结果数
+     */
+    public static final int SEARCH_RESULT_COUNT = 2;
 }

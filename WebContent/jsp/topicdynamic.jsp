@@ -590,11 +590,5 @@
 
 		<!--反馈Modal-->
 		<%@ include file="/jsp/feedback.jsp" %>
-
-		<!--提问须知模态框-->
-		<%@ include file="/jsp/askrule.jsp" %>
-
-		</div>
 	</body>
-
 </html>

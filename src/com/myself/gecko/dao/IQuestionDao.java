@@ -36,6 +36,8 @@ public interface IQuestionDao extends IBaseDao<Question> {
 
     List<Question> findNewestQuestions(int currentPage, int pageSize) throws Exception;
 
-    List<Question> search(String keywords) throws Exception;
+    List<Question> findAssociated(String keywords) throws Exception;
+
+    List<Question> search(String keywords, int currentPage, int pageSize) throws Exception;
 
 }

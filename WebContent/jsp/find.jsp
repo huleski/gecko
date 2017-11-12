@@ -637,9 +637,6 @@
 			</div>
 		</div>
 
-		<!--提问Modal-->
-		<%@ include file="/jsp/askrule.jsp" %>
-
 		<!--反馈Modal-->
 		<%@ include file="/jsp/feedback.jsp" %>
 

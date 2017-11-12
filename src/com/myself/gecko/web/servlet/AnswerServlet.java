@@ -14,9 +14,38 @@ import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IAnswerService;
 import com.myself.gecko.service.impl.AnswerServiceImpl;
 
+import net.sf.json.JSONArray;
+
 public class AnswerServlet extends BaseServlet {
 	private static IAnswerService answerService = new AnswerServiceImpl();
 
+	/**
+     * 搜索问题
+     */
+    public String search(HttpServletRequest request, HttpServletResponse response) {
+        String keywords = request.getParameter("keywords");
+        String curPageStr = request.getParameter("currentPage");
+        int currentPage;
+        
+        try {
+            if(curPageStr != null) {
+                currentPage = Integer.parseInt(curPageStr);
+            }else {
+                currentPage = 1;
+            }
+            List<Answer> list = answerService.search(keywords, currentPage);
+            if (list.isEmpty()) {
+                response.getWriter().write("0");
+            } else {
+                String data = JSONArray.fromObject(list).toString();
+                response.getWriter().write(data);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
 	
 	/**  
 	 * 查询本日最热回答  

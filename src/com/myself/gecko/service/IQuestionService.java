@@ -21,6 +21,6 @@ public interface IQuestionService {
 
 	void visitQuestion(int id) throws Exception;
 
-    List<Question> search(String keywords) throws Exception;
+    List<Question> findAssociated(String keywords) throws Exception;
 
 }

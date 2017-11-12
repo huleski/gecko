@@ -223,12 +223,23 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
     }
 
     @Override
-    public List<Question> search(String keywords) throws Exception {
+    public List<Question> findAssociated(String keywords) throws Exception {
         keywords = keywords.trim();
         if (StringUtils.isNotEmpty(keywords)) {
             QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
             String sql = "select id, title from question where title like ? limit 0, 10";
             return queryRunner.query(sql, new BeanListHandler<>(Question.class), "%" + keywords + "%");
+        }
+        return null;
+    }
+
+    @Override
+    public List<Question> search(String keywords, int currentPage, int pageSize) throws Exception {
+        keywords = keywords.trim();
+        if (StringUtils.isNotEmpty(keywords)) {
+            QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+            String sql = "select q.id, q.title from question q left join answer a on a.qid = q.id where q.title like ? group by q.id order by count(a.id) desc limit ?, ?";
+            return queryRunner.query(sql, new BeanListHandler<>(Question.class), "%" + keywords + "%", (currentPage - 1) * pageSize, pageSize);
         }
         return null;
     }

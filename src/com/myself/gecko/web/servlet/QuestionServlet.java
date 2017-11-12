@@ -25,13 +25,14 @@ import net.sf.json.JSONArray;
 public class QuestionServlet extends BaseServlet {
     private static IQuestionService questionService = new QuestionServiceImpl();
 
+    
     /**
-     * 搜索问题
+     * 输入框联想搜索
      */
-    public String search(HttpServletRequest request, HttpServletResponse response) {
+    public String findAssociated(HttpServletRequest request, HttpServletResponse response) {
         String keywords = request.getParameter("keywords");
         try {
-            List<Question> list = questionService.search(keywords);
+            List<Question> list = questionService.findAssociated(keywords);
             if (list.isEmpty()) {
                 response.getWriter().write("0");
             } else {

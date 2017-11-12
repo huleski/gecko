@@ -31,8 +31,11 @@
 
 	$(function(){
 		$("#search-input").bind({
-			/* focus: function(){$("#searchDiv").show();}, */
-			blur: function(){$("#searchDiv").hide();},
+			blur: function(){
+				setTimeout(function(){
+					$("#searchDiv").hide();
+				}, 200);
+			},
 			keyup: function(){
 				//设置定时器,延迟keyup触发事件
 				clearTimeout(timer);
@@ -41,7 +44,7 @@
 					var keywords = $.trim($("#search-input").val());
 					if(keywords != ""){//搜索输入框不为空
 						$("#searchResult").empty();
-						$.getJSON("${pageContext.request.contextPath}/questionServlet", {method:"search","keywords":keywords}, function(result){
+						$.getJSON("${pageContext.request.contextPath}/questionServlet", {method:"findAssociated","keywords":keywords}, function(result){
 							$("#searchDiv").show();
 							if(result != "0"){
 								$(result).each(function(i, obj){
@@ -73,7 +76,8 @@
 					<a class="topmenu" href="${pageContext.request.contextPath}/jsp/index.jsp" style="margin-left: 30px;">首页</a>
 					<a class="topmenu" onclick="findWatchedTopic()" href="javascript:void(0)" style="margin-left: 30px;">话题</a>
 					<a class="topmenu" href="${pageContext.request.contextPath}/indexServlet?method=find" style="margin-left: 30px;">发现</a>
-					<form action="${pageContext.request.contextPath}/questionServlet" method="post" style="position: relative;display: inline;width:360px;">
+					<form action="${pageContext.request.contextPath}/answerServlet" method="post" style="position: relative;display: inline;width:360px;">
+						<input type="hidden" name="method" value="search"/>
 						<div class="input-group" style="width:350px;position: absolute;top:-8px;left: 20px;">
 					    	<input type="text" id="search-input" name="keywords" autocomplete="off" class="form-control" required placeholder="搜索你感兴趣的内容...">
 					    	<span class="input-group-btn">
@@ -120,7 +124,7 @@
 			</span>
 			<!-- 搜索结果 -->
 			<div id="searchDiv">
-				<div id="nosearch" style="display: block;">
+				<div id="nosearch">
 					没有搜索到相关的结果
 				</div>
 				<div id="searchResult"></div>
