@@ -1,6 +1,7 @@
 package com.myself.gecko.service.impl;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -111,5 +112,23 @@ public class IndexServiceImpl implements IIndexService {
             set.addAll(newWatchQuestions);
         }
         return set;
+    }
+
+    /**  
+     * 根据关键字搜索相关回答和文章
+     */
+    @Override
+    public List search(String keywords, int currentPage, User user) throws Exception {
+        ArrayList<Answer> answers = new ArrayList<>();
+        List<Question> questions = questionDao.findAssociatedByKeywords(keywords, currentPage, Constant.SEARCH_ANSWER_COUNT);
+        for (Question question : questions) {
+            Answer answer = answerDao.findAnswerByOrderStyle(question.getId(), user, "hot");
+            answers.add(answer);
+        }
+        
+        articleDao
+        // TODO
+        
+        return null;
     }
 }

@@ -19,7 +19,7 @@ public class AnswerServiceImpl implements IAnswerService {
 	
 	@Override
 	public List<Answer> ajaxLoad(int currentPage, int qid, User user) throws Exception {
-		return answerDao.ajaxLoad(currentPage, qid, user);
+		return answerDao.findListByQid(currentPage, Constant.ANSWER_AJAX_LOAD_COUNT, qid, user);
 	}
 
 	@Override
@@ -45,13 +45,6 @@ public class AnswerServiceImpl implements IAnswerService {
     @Override
     public List<Answer> findHotmonth(int currentPage, User user) throws Exception {
         return answerDao.findHotmonth(user, currentPage, Constant.FIND_ANSWER_COUNT);
-    }
-
-    @Override
-    public List<Answer> search(String keywords, int currentPage) throws Exception {
-        List<Question> questions =  questionDao.search(keywords, currentPage, Constant.SEARCH_RESULT_COUNT);
-        
-        return null; 
     }
 
 }

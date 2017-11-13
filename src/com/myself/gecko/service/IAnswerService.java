@@ -19,6 +19,4 @@ public interface IAnswerService {
 
     List<Answer> findHotmonth(int currentPage, User user) throws Exception;
 
-    List<Answer> search(String keywords, int currentPage) throws Exception;
-
 }

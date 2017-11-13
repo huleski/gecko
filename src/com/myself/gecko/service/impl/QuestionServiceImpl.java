@@ -28,7 +28,7 @@ public class QuestionServiceImpl implements IQuestionService {
 	public String ajaxQueryByUid(int currentPage, int uid) throws Exception {
 		List<Question> list = questionDao.ajaxQueryByUid(currentPage, Constant.QUESTION_AJAX_LOAD_COUNT, uid);
 		for (Question question : list) {
-			List<Answer> answerList = answerDao.findListByQid(question.getId());
+			List<Answer> answerList = answerDao.findAllByQid(question.getId());
 			question.getAnswerList().addAll(answerList);
 		}
 		return JsonUtil.list2json(list);
@@ -53,7 +53,7 @@ public class QuestionServiceImpl implements IQuestionService {
 	public String findRelativeQuestion(int tid) throws Exception {
 		List<Question> list = questionDao.findRelativeQuestion(tid);
 		for (Question question : list) {
-			List<Answer> answerList = answerDao.findListByQid(question.getId());
+			List<Answer> answerList = answerDao.findAllByQid(question.getId());
 			question.getAnswerList().addAll(answerList);
 		}
 		return JsonUtil.list2json(list);
@@ -66,7 +66,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Override
     public List<Question> findAssociated(String keywords) throws Exception {
-        return questionDao.findAssociated(keywords);
+        return questionDao.findAssociatedByKeywords(keywords, 0, 10);
     }
 
 }

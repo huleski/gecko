@@ -6,13 +6,45 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.myself.gecko.domain.Answer;
 import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IIndexService;
 import com.myself.gecko.service.impl.IndexServiceImpl;
 
+import net.sf.json.JSONArray;
+
 public class IndexServlet extends BaseServlet {
     private IIndexService indexService = new IndexServiceImpl();
+    
+    /**
+     * 搜索问题
+     */
+    public String search(HttpServletRequest request, HttpServletResponse response) {
+        String keywords = request.getParameter("keywords");
+        String curPageStr = request.getParameter("currentPage");
+        User user = (User) request.getSession().getAttribute("user");
+        int currentPage;
+        
+        try {
+            if(curPageStr != null) {
+                currentPage = Integer.parseInt(curPageStr);
+            }else {
+                currentPage = 1;
+            }
+            List list = indexService.search(keywords, currentPage, user);
+            if (list.isEmpty()) {
+                response.getWriter().write("0");
+            } else {
+                String data = JSONArray.fromObject(list).toString();
+                response.getWriter().write(data);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
     
     public String find(HttpServletRequest request, HttpServletResponse response) {
         

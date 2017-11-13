@@ -22,23 +22,28 @@ import com.myself.gecko.util.C3P0Utils;
 
 public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
 
+    /**  
+     * 根据Qid查询所有回答
+     */
     @Override
-    public List<Answer> findListByQid(int qid) throws Exception {
+    public List<Answer> findAllByQid(int qid) throws Exception {
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
         String sql = "select * from answer where qid = ?";
         return queryRunner.query(sql, new BeanListHandler<>(Answer.class), qid);
     }
 
+    /**  
+     * 根据Qid查询回答
+     */
     @Override
-    public List<Answer> ajaxLoad(int currentPage, int qid, User user) throws Exception {
+    public List<Answer> findListByQid(int currentPage,int pageSize, int qid, User user) throws Exception {
         int uid = 0;
         if (user != null) {
             uid = user.getId();
         }
 
         String whereClause = "where qid = " + qid;
-        List<Answer> list =
-                selectLimitByWhere(currentPage, Constant.ANSWER_AJAX_LOAD_COUNT, whereClause);
+        List<Answer> list = selectLimitByWhere(currentPage, pageSize, whereClause);
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
         for (Answer answer : list) {
             improveAnswerInfo(answer, queryRunner, uid);
@@ -46,6 +51,9 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         return list;
     }
 
+    /**  
+     * 完善回答
+     */
     public void improveAnswerInfo(Answer answer, QueryRunner queryRunner, int uid)
             throws Exception {
         // 查询作者
@@ -86,6 +94,9 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         }
     }
 
+    /**  
+     * 保存
+     */
     @Override
     public void save(Answer answer) throws Exception {
         String sql = "insert into answer values(?, ?, ?, ?, ?, ?, ?)";
@@ -116,13 +127,18 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         queryRunner.update(sql, aid, uid);
     }
 
+    /**  
+     * 按照不同排序方式查询回答
+     */
     @Override
     public Answer findAnswerByOrderStyle(int qid, User user, String orderStyle) throws Exception {
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
         String sql = null;
         if ("hot".equals(orderStyle)) {
+            //查询获赞最多的回答
             sql = "select * from answer where id = (select answer.id from answer left join answer_agree on answer.id = answer_agree.aid where answer.qid = ? group by answer.id order by count(answer_agree.id) desc limit 0, 1)";
         } else {
+            //查询最新的回答
             sql = "select * from answer where qid = ? order by date desc limit 0, 1";
         }
         Answer answer = queryRunner.query(sql, new BeanHandler<>(Answer.class), qid);
@@ -137,14 +153,9 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         return answer;
     }
 
-    @Override
-    public Answer findNewestAnswer(int id) throws Exception {
-        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        String sql = "select * from answer where qid = ? order by date limit 1";
-        sql = "select distinct question.id, question.title from question left join question_watch on question.id = question_watch.qid where question_watch.uid = ?";
-        return queryRunner.query(sql, new BeanHandler<>(Answer.class), id);
-    }
-
+    /**  
+     * 查看关注的问题中新增的回答  
+     */
     @Override
     public List<Answer> findNewestAnswerInWatchedQuestion(User user, int currentPage, int pageSize)
             throws Exception {
@@ -159,6 +170,9 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         return list;
     }
 
+    /**  
+     * 查看关注的用户添加/点赞的回答  
+     */
     @Override
     public List<Answer> findAnswersByUserWatch(User user, int currentPage, int pageSize)
             throws Exception {
@@ -191,6 +205,9 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         return list;
     }
 
+    /**  
+     * 查询最新的回答
+     */
     @Override
     public List<Answer> findNewestAnswers(int currentPage, int pageSize) throws Exception {
         String whereClause = "order by date desc";
@@ -201,6 +218,9 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         return list;
     }
 
+    /**  
+     * 查询今日最热回答
+     */
     @Override
     public List<Answer> findHotday(User user, int currentPage, int pageSize) throws Exception {
         Date date = new Date();
@@ -223,6 +243,9 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         return list;
     }
 
+    /**  
+     * 查询本月最热回答
+     */
     @Override
     public List<Answer> findHotmonth(User user, int currentPage, int pageSize) throws Exception {
         Date date = new Date();

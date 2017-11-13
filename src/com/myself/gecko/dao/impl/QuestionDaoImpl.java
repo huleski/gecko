@@ -222,19 +222,11 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
         return aList;
     }
 
+    /**
+     * 根据关键字查找相关联的问题
+     */
     @Override
-    public List<Question> findAssociated(String keywords) throws Exception {
-        keywords = keywords.trim();
-        if (StringUtils.isNotEmpty(keywords)) {
-            QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-            String sql = "select id, title from question where title like ? limit 0, 10";
-            return queryRunner.query(sql, new BeanListHandler<>(Question.class), "%" + keywords + "%");
-        }
-        return null;
-    }
-
-    @Override
-    public List<Question> search(String keywords, int currentPage, int pageSize) throws Exception {
+    public List<Question> findAssociatedByKeywords(String keywords, int currentPage, int pageSize) throws Exception {
         keywords = keywords.trim();
         if (StringUtils.isNotEmpty(keywords)) {
             QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());

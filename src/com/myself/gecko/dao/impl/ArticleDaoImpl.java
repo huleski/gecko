@@ -23,6 +23,9 @@ import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao {
 
+    /**  
+     * 保存
+     */
     @Override
     public void save(Article article) throws Exception {
         String sql = "insert into article values(?, ?, ?, ?, ?, ?, ?, ?)";
@@ -32,6 +35,9 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         CU(sql, params);
     }
 
+    /**  
+     * 点赞
+     */
     @Override
     public void agree(User user, int aid) throws Exception {
         int uid = user.getId();
@@ -44,6 +50,9 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         }
     }
 
+    /**  
+     * 取消点赞
+     */
     @Override
     public void disagree(User user, int aid) throws Exception {
         int uid = user.getId();
@@ -52,6 +61,9 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         queryRunner.update(sql, aid, uid);
     }
 
+    /**  
+     * 根据id查找文章
+     */
     @Override
     public Article findAnswerById(int aid, User user) throws Exception {
         Article article = findById(aid);
@@ -91,6 +103,9 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         return article;
     }
 
+    /**  
+     * 根据tid查询和排序方式查询文章
+     */
     @Override
     public List<Article> findArticleByOrderStyle(int tid, User user, String orderStyle,
             int currentPage, int pageSize) throws Exception {
@@ -112,6 +127,9 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         return list;
     }
 
+    /**  
+     * 查询关注的用户新添加/点赞的文章
+     */
     @Override
     public List<Article> findArticlesByUserWatch(User user, int currentPage, int pageSize) throws Exception {
         ArrayList<Article> list = new ArrayList<>();
@@ -140,6 +158,9 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         return list;
     }
 
+    /**  
+     * 查询最新的文章
+     */
     @Override
     public List<Article> findNewestArticles(int currentPage, int pageSize) throws Exception {
         String whereClause = "order by date desc";
@@ -152,6 +173,9 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         return aList;
     }
 
+    /**  
+     * 查询关注的话题中增加的文章
+     */
     @Override
     public List<Article> findNewestArticlesInWatchedTopics(User user, int currentPage, int pageSize)
             throws Exception {

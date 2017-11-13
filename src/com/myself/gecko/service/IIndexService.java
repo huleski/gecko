@@ -12,4 +12,5 @@ public interface IIndexService {
 
     List<Question> findNewestQuestion(int currentPage, int pageSize) throws Exception;
 
+    List search(String keywords, int currentPage, User user) throws Exception;
 }
