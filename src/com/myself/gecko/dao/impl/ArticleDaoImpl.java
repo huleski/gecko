@@ -189,4 +189,20 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         }
         return aList;
     }
+
+    /**  
+     * 根据关键字查询相关文章
+     */
+    @Override
+    public List<Article> findAssociatedByKeywords(String keywords, User user, int currentPage, int pageSize) throws Exception {
+        List<Article> aList = new ArrayList<>(); 
+        String sql = "select a.id from article a left join article_agree ag on a.id = ag.aid where a.title like ? group by a.id order by count(a.id) desc limit ?,?";
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        List<Article> list = queryRunner.query(sql, new BeanListHandler<>(Article.class), "%" + keywords + "%", (currentPage - 1) * pageSize, pageSize);
+        for (Article article : list) {
+            Article a = findAnswerById(article.getId(), user);
+            aList.add(a);
+        }
+        return aList;
+    }
 }

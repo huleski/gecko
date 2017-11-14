@@ -1,7 +1,5 @@
 package com.myself.gecko.web.servlet;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +23,6 @@ import net.sf.json.JSONArray;
 public class QuestionServlet extends BaseServlet {
     private static IQuestionService questionService = new QuestionServiceImpl();
 
-    
     /**
      * 输入框联想搜索
      */

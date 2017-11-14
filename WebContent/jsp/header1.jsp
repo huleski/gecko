@@ -76,8 +76,8 @@
 					<a class="topmenu" href="${pageContext.request.contextPath}/jsp/index.jsp" style="margin-left: 30px;">首页</a>
 					<a class="topmenu" onclick="findWatchedTopic()" href="javascript:void(0)" style="margin-left: 30px;">话题</a>
 					<a class="topmenu" href="${pageContext.request.contextPath}/indexServlet?method=find" style="margin-left: 30px;">发现</a>
-					<form action="${pageContext.request.contextPath}/answerServlet" method="post" style="position: relative;display: inline;width:360px;">
-						<input type="hidden" name="method" value="search"/>
+					<form action="${pageContext.request.contextPath}/indexServlet" method="post" style="position: relative;display: inline;width:360px;">
+						<input type="hidden" name="method" value="searchUI" />
 						<div class="input-group" style="width:350px;position: absolute;top:-8px;left: 20px;">
 					    	<input type="text" id="search-input" name="keywords" autocomplete="off" class="form-control" required placeholder="搜索你感兴趣的内容...">
 					    	<span class="input-group-btn">

@@ -66,7 +66,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Override
     public List<Question> findAssociated(String keywords) throws Exception {
-        return questionDao.findAssociatedByKeywords(keywords, 0, 10);
+        return questionDao.findAssociatedByKeywords(keywords, 1, 10);
     }
 
 }

@@ -114,21 +114,33 @@ public class IndexServiceImpl implements IIndexService {
         return set;
     }
 
-    /**  
+    /**
      * 根据关键字搜索相关回答和文章
      */
     @Override
     public List search(String keywords, int currentPage, User user) throws Exception {
+        List list = new ArrayList<>();
         ArrayList<Answer> answers = new ArrayList<>();
-        List<Question> questions = questionDao.findAssociatedByKeywords(keywords, currentPage, Constant.SEARCH_ANSWER_COUNT);
-        for (Question question : questions) {
-            Answer answer = answerDao.findAnswerByOrderStyle(question.getId(), user, "hot");
-            answers.add(answer);
+        List<Question> questions = questionDao.findAssociatedByKeywords(keywords, currentPage,
+                Constant.SEARCH_ANSWER_COUNT);
+        if (questions != null) {
+            for (Question question : questions) {
+                Answer answer = answerDao.findAnswerByOrderStyle(question.getId(), user, "hot");
+                if(answer != null) {
+                    answers.add(answer);
+                }
+            }
         }
-        
-        articleDao
-        // TODO
-        
-        return null;
+
+        List<Article> articles = articleDao.findAssociatedByKeywords(keywords, user, currentPage,
+                Constant.SEARCH_ARTICLE_COUNT);
+        if (!answers.isEmpty()) {
+            list.addAll(answers);
+        }
+        if (!articles.isEmpty()) {
+            list.addAll(articles);
+        }
+
+        return list;
     }
 }

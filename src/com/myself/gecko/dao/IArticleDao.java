@@ -22,4 +22,6 @@ public interface IArticleDao extends IBaseDao<Article>{
     List<Article> findNewestArticles(int currentPage, int pageSize) throws Exception;
 
     List<Article> findNewestArticlesInWatchedTopics(User user, int currentPage, int pageSize) throws Exception;
+
+    List<Article> findAssociatedByKeywords(String keywords,User user, int currentPage, int pageSize) throws Exception;
 }

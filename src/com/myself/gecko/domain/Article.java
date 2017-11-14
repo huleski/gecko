@@ -19,7 +19,12 @@ public class Article {
 	private Integer mark = 2;
 	private User watcher;
 	
-	public User getWatcher() {
+	@Override
+    public String toString() {
+        return "Article [id=" + id + ", title=" + title + ", mark=" + mark + "]";
+    }
+
+    public User getWatcher() {
         return watcher;
     }
 

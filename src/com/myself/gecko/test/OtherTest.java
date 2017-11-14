@@ -1,8 +1,7 @@
 package com.myself.gecko.test;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.junit.Test;
@@ -23,7 +22,7 @@ public class OtherTest {
 	
 	@Test
 	public void test2() {
-		ArrayList<String> list = null;
+		List<String> list = null;
 		for (String string : list) {
 			System.out.println(string);
 			

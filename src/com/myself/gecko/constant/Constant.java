@@ -80,4 +80,9 @@ public interface Constant {
      * 搜索回答数
      */
     public static final int SEARCH_ANSWER_COUNT = 2;
+    
+    /**  
+     * 搜索文章数
+     */
+    public static final int SEARCH_ARTICLE_COUNT = 2;
 }

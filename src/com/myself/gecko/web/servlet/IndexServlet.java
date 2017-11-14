@@ -6,13 +6,12 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.myself.gecko.domain.Answer;
+import org.apache.commons.lang.StringUtils;
+
 import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IIndexService;
 import com.myself.gecko.service.impl.IndexServiceImpl;
-
-import net.sf.json.JSONArray;
 
 public class IndexServlet extends BaseServlet {
     private IIndexService indexService = new IndexServiceImpl();
@@ -24,28 +23,41 @@ public class IndexServlet extends BaseServlet {
         String keywords = request.getParameter("keywords");
         String curPageStr = request.getParameter("currentPage");
         User user = (User) request.getSession().getAttribute("user");
-        int currentPage;
         
+System.out.println("keywords= " + keywords);
         try {
-            if(curPageStr != null) {
-                currentPage = Integer.parseInt(curPageStr);
-            }else {
-                currentPage = 1;
-            }
+            int currentPage = Integer.parseInt(curPageStr);
             List list = indexService.search(keywords, currentPage, user);
-            if (list.isEmpty()) {
+System.out.println(list);
+            if (list.size() == 0) {
                 response.getWriter().write("0");
+                return null;
             } else {
-                String data = JSONArray.fromObject(list).toString();
-                response.getWriter().write(data);
+                request.setAttribute("set", list);
+                return "/template/topicdynamic.jsp";
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        return null;
+        return "/500.jsp";
     }
     
+    /**  
+     * 返回searchresult页面
+     */
+    public String searchUI(HttpServletRequest request, HttpServletResponse response) {
+        String keywords = request.getParameter("keywords");
+        if(StringUtils.isEmpty(keywords)) {
+            return "/500.jsp";
+        }
+        request.setAttribute("keywords", keywords);
+        return "/jsp/searchresult.jsp";
+    }
+    
+    
+    /**  
+     * find页面
+     */
     public String find(HttpServletRequest request, HttpServletResponse response) {
         
         try {

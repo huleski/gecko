@@ -5,7 +5,7 @@
 <html>
 
 	<head>
-		<title>${topic.name }</title>
+		<title>${keywords }</title>
 		<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/bi.ico" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -438,7 +438,7 @@
 
 			// ajax加载话题动态
 			function showTopicDynamic(){
-				$.post("${pageContext.request.contextPath}/topicServlet", {"method":"findTopicDynamic", tid:topicId, orderStyle:orderStyle, currentPage:currentPage++}, function(result){
+				$.post("${pageContext.request.contextPath}/indexServlet", {"method":"search",keywords: "${keywords}", currentPage:currentPage++}, function(result){
 					$("#waitResult").hide();
 					if(result != "0") {
 						$("#topicAnswer").append(result);
@@ -456,8 +456,6 @@
 			// 滑动到页面底部实现自动加载
 			var totalheight = 0;
 			var currentPage = 1;
-			var topicId = "${topic.id}";
-			var orderStyle = "hot";
 			 $(window).scroll(function() {
 				totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
 				if((totalheight >= $(document).height()) && currentPage > 0 && currentPage <= 5) {
@@ -465,24 +463,6 @@
 				}
 			}); 
 			 
-			//热度排序
-			 function hotOrder(){
-				 $("#timeOrder").toggle();
-				 $("#hotOrder").toggle();
-				 $("#topicAnswer").html("");
-				 orderStyle="hot";
-				 currentPage = 1;
-				 showTopicDynamic();
-			 }
-			 //时间排序
-			 function timeOrder(){
-				 $("#timeOrder").toggle();
-				 $("#hotOrder").toggle();
-				 $("#topicAnswer").html("");
-				 orderStyle="time";
-				 currentPage = 1;
-				 showTopicDynamic();
-			 }
 		</script>
 	</head>
 
@@ -494,59 +474,17 @@
 			<!--话题动态展示-->
 			<div style="width: 1000px;margin: auto;margin-top: 80px;">
 				<div style="width:650px;float: left;">
-					<div style="margin-bottom:20px" class="row">
-						<div class="col-md-1">
-							<img width="50px" height="50px" src="${pageContext.request.contextPath}/${topic.photo }"/>
-						</div>
-						<div class="col-md-11" style="padding-left:20px">
-							<div style="font-size:18px;font-weight:bold;">${topic.name }</div>
-							<div class="topicnav">
-								<span style="font-weight:bold;">动态</span>
-								<a href="#">精华</a>
-								<a href="#">等待回答</a>
-							</div>
-						</div>
-					</div>
-					
-					
-					
-					<div style="height: 1px;background-color: lightgray;"></div>
-					<div style="margin:10px 0 20px 0;text-align:right;">
-						<span id="timeOrder"><span style="margin-left: 410px;">热门排序 |</span> <a href="javascript:timeOrder()">时间排序</a></span>
-						<span id="hotOrder" style="display: none;"><a style="margin-left: 410px;"  href="javascript:hotOrder()">热门排序 |</a> <span>时间排序</span></span>
-					</div>
-
 					<!-- ajax加载话题答案 -->
-					<div>
-						<div id="waitResult" style="text-align:center;padding:40px;color:deepskyblue;">
-							<i class="fa fa-spinner fa-pulse fa-5x"></i>
-							<span class="sr-only">Loading...</span>
-						</div>
-						<div id="topicAnswer"></div>
+					<div id="waitResult" style="text-align:center;padding:40px;color:deepskyblue;">
+						<i class="fa fa-spinner fa-pulse fa-5x"></i>
+						<span class="sr-only">Loading...</span>
 					</div>
+					<div id="topicAnswer"></div>
 				</div>
 			</div>
 	
 			<!-- 右边板块 -->
 			<div style="float:left;margin-left: 50px;width: 270px;">
-				<div style="position:relative;padding:8px 0;">
-					<c:if test="${topic.watched != 1 }">
-						<button id="watchTopic" onclick="watchTopic(${topic.id })" class="btn btn-default">关注</button>
-						<button id="cancleWatch" onclick="cancleWatch(${topic.id })" class="btn btn-info" style="display:none;">已关注</button>
-					</c:if>
-					<c:if test="${topic.watched == 1 }">
-						<button id="watchTopic" onclick="watchTopic(${topic.id })" class="btn btn-default" style="display:none;">关注</button>
-						<button id="cancleWatch" onclick="cancleWatch(${topic.id })" class="btn btn-info">已关注</button>
-					</c:if>
-					<span style="position:absolute;right:0;top:12px;"><span id="topicWatchCount">${topic.watchCount }</span> 人关注了该话题</span>
-				</div>
-				<div class="separator" style="margin: 25px 0;"></div>
-				<div style="margin:15px;">
-					<div style="margin-bottom:15px;font-weight:bold;">描述</div>
-					<div>
-						${topic.description }
-					</div>
-				</div>
 				<div class="separator"></div>
 				<div>
 					<div style="position:relative">
