@@ -9,8 +9,6 @@ public interface IQuestionService {
 
 	void save(Question question) throws Exception ;
 
-	String ajaxQueryByUid(int currentPage, int uid) throws Exception ;
-
 	Question findQuestioinById(int id, User user) throws Exception;
 
 	void addWatch(int qid, User user) throws Exception;

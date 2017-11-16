@@ -7,6 +7,63 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="${pageContext.request.contextPath}/font_awesome/css/font-awesome.css" rel="stylesheet" />
 <title>话题.发现导航栏</title>
+<style type="text/css">
+	#searchDiv {
+		/* height: 400px; */
+		width: 600px;
+		border-radius:5px;
+		background-color:white;
+		position: fixed;
+		margin-left: 265px;
+		z-index: 8;
+		top:43px;
+		display:none;
+		border: lightgray thin 1px;
+		box-shadow: 0px 1px 1px 1px #888888;
+		
+	}
+	
+	#searchDiv div{
+		text-align: left;
+		padding: 5px 8px;
+	}
+</style>
+<script type="text/javascript">
+	var timer;
+
+	$(function(){
+		$("#search-input").bind({
+			blur: function(){
+				setTimeout(function(){
+					$("#searchDiv").hide();
+				}, 200);
+			},
+			keyup: function(){
+				//设置定时器,延迟keyup触发事件
+				clearTimeout(timer);
+                timer = setTimeout(function() {
+					$("#nosearch").hide();
+					var keywords = $.trim($("#search-input").val());
+					if(keywords != ""){//搜索输入框不为空
+						$("#searchResult").empty();
+						$.getJSON("${pageContext.request.contextPath}/questionServlet", {method:"findAssociated","keywords":keywords}, function(result){
+							$("#searchDiv").show();
+							if(result != "0"){
+								$(result).each(function(i, obj){
+									$("#searchResult").append('<div><a href="${pageContext.request.contextPath}/questionServlet?method=findById&id='+obj.id+'">'+obj.title+'</a></div>');
+								});
+							}else{
+								$("#nosearch").show();
+							}
+							
+						});
+					}
+                }, 1000);
+			}
+		})
+		
+	});
+</script>
 </head>
 <body>
 	<!-- 提问模态框(包含登录模态框) -->
@@ -17,9 +74,10 @@
 		<div style="width: 1000px;margin: auto;">
 			<a href="${pageContext.request.contextPath}/jsp/index.jsp" style="font-size: 32px; color: white;font-family: '黑体';">逼乎</a>
 			<span style="position: relative;top: -5px;">
-				<form action="${pageContext.request.contextPath}/questionServlet" method="post" style="position: relative;display: inline;width:380px;">
+				<form action="${pageContext.request.contextPath}/indexServlet" method="post" style="position: relative;display: inline;width:380px;">
+					<input type="hidden" name="method" value="searchUI" />
 					<div class="input-group" style="width:370px;position: absolute;top:-8px;left: 20px;">
-				    	<input type="text" class="form-control" placeholder="搜索你感兴趣的内容...">
+					    <input type="text" id="search-input" name="keywords" autocomplete="off" class="form-control" required placeholder="搜索你感兴趣的内容...">
 				    	<span class="input-group-btn">
 					        <button class="btn btn-info" type="button" style="height:34px;color:white">
 								<i class="fa fa-search  fa-lg"></i>
@@ -62,6 +120,14 @@
 				
 			</span>
 		</div>
+		
+		<!-- 搜索结果 -->
+			<div id="searchDiv">
+				<div id="nosearch">
+					没有搜索到相关的结果
+				</div>
+				<div id="searchResult"></div>
+			</div>	
 	</div>
 	
 </body>

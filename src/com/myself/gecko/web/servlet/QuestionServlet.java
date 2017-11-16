@@ -125,25 +125,6 @@ public class QuestionServlet extends BaseServlet {
     }
 
     /**
-     * 根据用户uid查询该用户提出的问题
-     */
-    public String ajaxLoad(HttpServletRequest request, HttpServletResponse response) {
-        String currentPageStr = request.getParameter("currentPage");
-        String personIdStr = request.getParameter("personId");
-
-        try {
-            int currentPage = Integer.parseInt(currentPageStr);
-            int personId = Integer.parseInt(personIdStr);
-            String result = questionService.ajaxQueryByUid(currentPage, personId);
-            response.getWriter().print(result);
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "/500.jsp";
-    }
-
-    /**
      * 保存问题
      */
     public String addQuestion(HttpServletRequest request, HttpServletResponse response) {

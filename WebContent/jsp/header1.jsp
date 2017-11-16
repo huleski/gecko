@@ -89,7 +89,7 @@
 					</form>
 					<button type="button" class="btn btn-info" onclick="writeQuestioin()" style="width:60px;font-size: 14px;margin-left: 390px;position:relative;top:-2px">提问</button>
 					<c:if test="${empty user}">	
-						<button type="button" class="btn btn-info" style="width:60px;font-size: 14px;margin-left: 120px;" onclick="location.href='${pageContext.request.contextPath}/jsp/login.jsp'">登录</button>
+						<button type="button" class="btn btn-info" style="width:60px;font-size: 14px;margin-left: 100px;" onclick="location.href='${pageContext.request.contextPath}/jsp/login.jsp'">登录</button>
 						<button type="button" class="btn btn-default" style="font-size: 14px;margin-left: 20px;color:deepskyblue;border:1px deepskyblue solid;" onclick="location.href='${pageContext.request.contextPath}/jsp/login.jsp?register=1'">加入逼乎</button>
 					</c:if>
 					<c:if test="${not empty user}">

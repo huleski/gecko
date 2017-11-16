@@ -25,16 +25,6 @@ public class QuestionServiceImpl implements IQuestionService {
 	}
 
 	@Override
-	public String ajaxQueryByUid(int currentPage, int uid) throws Exception {
-		List<Question> list = questionDao.ajaxQueryByUid(currentPage, Constant.QUESTION_AJAX_LOAD_COUNT, uid);
-		for (Question question : list) {
-			List<Answer> answerList = answerDao.findAllByQid(question.getId());
-			question.getAnswerList().addAll(answerList);
-		}
-		return JsonUtil.list2json(list);
-	}
-
-	@Override
 	public Question findQuestioinById(int id, User user) throws Exception {
 		return questionDao.findQuestionById(id, user);
 	}

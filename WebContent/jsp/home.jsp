@@ -522,10 +522,10 @@
 				if((totalheight >= $(document).height()) && question_index >= 0) {
 					var tabId = $(".tab-pane:visible").attr("id");
 					if(tabId == "question") {
-						$.getJSON("${pageContext.request.contextPath}/questionServlet", 
-								{"method":"ajaxLoad","currentPage": ++question_index, "personId":"${person.id}"}, 
+						$.getJSON("${pageContext.request.contextPath}/userServlet", 
+								{"method":"findQuestionByUid","currentPage": ++question_index, "uid":"${person.id}"}, 
 								function(result) {
-									if(result != "") {
+									if(result != "0") {
 										$("#noQuestion").css("display", "none");
 										$(result).each(function(i, obj) {
 											$("#question").append(
