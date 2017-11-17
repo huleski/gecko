@@ -137,7 +137,7 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
         CU(sql, params);
     }
 
-    // 查询最近关注的问题
+    // 根据tid查询该话题下最近被关注的问题
     @Override
     public List<Question> findLastWatchQuestionListByTid(int tid, int currentPage, int pageSize)
             throws Exception {
@@ -148,10 +148,9 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
                 (currentPage - 1) * pageSize, pageSize);
     }
 
-    // 查询该话题下最新添加的问题
+    // 根据tid查询该话题下最新添加的问题
     @Override
-    public List<Question> findNewestQuestion(int topicId, int currentPage, int pageSize)
-            throws Exception {
+    public List<Question> findNewestQuestion(int topicId, int currentPage, int pageSize) throws Exception {
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
         String sql = "select * from question where tid = ? order by date desc limit ?, ?";
         List<Question> list = queryRunner.query(sql, new BeanListHandler<>(Question.class), topicId,
@@ -164,11 +163,10 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
 
     // 查询已关注的问题
     @Override
-    public List<Question> findWatchedQuestion(int id) throws Exception {
+    public List<Question> findWatchedQuestion(int uid, int currentPage, int pageSize) throws Exception {
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        String sql =
-                "select distinct question.id, question.title from question left join question_watch on question.id = question_watch.qid where question_watch.uid = ?";
-        return queryRunner.query(sql, new BeanListHandler<>(Question.class), id);
+        String sql = "select distinct question.id, question.title from question left join question_watch on question.id = question_watch.qid where question_watch.uid = ? limit ?, ?";
+        return queryRunner.query(sql, new BeanListHandler<>(Question.class), uid, (currentPage - 1) * pageSize, pageSize);
     }
 
     // 查询关注话题中新增的问题

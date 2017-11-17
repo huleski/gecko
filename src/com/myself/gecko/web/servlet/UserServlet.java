@@ -49,10 +49,12 @@ public class UserServlet extends BaseServlet {
      * 根据id查询该用户动态
      */
     public String findUserDynamic(HttpServletRequest request, HttpServletResponse response) {
-        String idStr = (String) request.getSession().getAttribute("id");
-        int id = Integer.parseInt(idStr);
+        String idStr = (String) request.getParameter("id");
+        String curPage = (String) request.getParameter("currentPage");
         try {
-            Set set = userService.findUserDynamic(id);
+            int id = Integer.parseInt(idStr);
+            int currentPage = Integer.parseInt(curPage);
+            Set set = userService.findUserDynamic(id, currentPage);
             if (!set.isEmpty()) {
                 request.setAttribute("set", set);
                 return "";

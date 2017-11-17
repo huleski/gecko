@@ -54,6 +54,9 @@ public class TopicDaoImpl extends BaseDaoImpl<Topic> implements ITopicDao {
 		return topic;
 	}
 
+	/**  
+	 * 查找其他话题
+	 */
 	@Override
 	public List<Topic> findOthers(User user) throws SQLException {
 		QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
@@ -78,6 +81,9 @@ public class TopicDaoImpl extends BaseDaoImpl<Topic> implements ITopicDao {
 		return queryRunner.query(sql, new BeanListHandler<>(Topic.class));
 	}
 
+	/**  
+	 * 取消关注
+	 */
 	@Override
 	public void cancleWatch(int tid, User user) throws SQLException {
 		int uid = user.getId();
@@ -86,6 +92,9 @@ public class TopicDaoImpl extends BaseDaoImpl<Topic> implements ITopicDao {
 		queryRunner.update(sql, tid, uid);
 	}
 
+	/**  
+	 * 添加关注
+	 */
 	@Override
 	public void addWatch(int tid, User user) throws SQLException {
 		int uid = user.getId();

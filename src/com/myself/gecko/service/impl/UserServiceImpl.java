@@ -1,28 +1,40 @@
 package com.myself.gecko.service.impl;
 
+import java.lang.reflect.Method;
 import java.sql.SQLException;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IAnswerDao;
+import com.myself.gecko.dao.IArticleDao;
 import com.myself.gecko.dao.IQuestionDao;
+import com.myself.gecko.dao.ITopicDao;
 import com.myself.gecko.dao.IUserDao;
 import com.myself.gecko.dao.impl.AnswerDaoImpl;
+import com.myself.gecko.dao.impl.ArticleDaoImpl;
 import com.myself.gecko.dao.impl.QuestionDaoImpl;
+import com.myself.gecko.dao.impl.TopicDaoImpl;
 import com.myself.gecko.dao.impl.UserDaoImpl;
 import com.myself.gecko.domain.Answer;
+import com.myself.gecko.domain.Article;
 import com.myself.gecko.domain.PersonInfo;
 import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IUserService;
 import com.myself.gecko.util.JsonUtil;
 
+@SuppressWarnings("all")
 public class UserServiceImpl implements IUserService {
 	private static UserServiceImpl userService;
 	private IUserDao userDao = UserDaoImpl.getUserDao();
 	private IQuestionDao questionDao = new QuestionDaoImpl();
 	private IAnswerDao answerDao = new AnswerDaoImpl();
+	private ITopicDao topicDao = TopicDaoImpl.getTopicDao();
+	private IArticleDao articleDao = new ArticleDaoImpl();
 	
 	private UserServiceImpl() {}
 	
@@ -87,12 +99,39 @@ public class UserServiceImpl implements IUserService {
 	}
 
     /**  
-     * 查询用户的动态: 关注了 问题/话题, 赞同过回答/文章
+     * 查询用户的动态: 关注了 问题, 赞同了回答/文章
+     * @throws Exception 
      */
     @Override
-    public Set findUserDynamic(int id) throws SQLException {
+    public Set findUserDynamic(int uid, int currentPage) throws Exception {
+        // 创建根据时间排序的TreeSet集合
+        TreeSet set = new TreeSet<>(new Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                try {
+                    Method method1 = o1.getClass().getMethod("getDate");
+                    Method method2 = o2.getClass().getMethod("getDate");
+                    Date d1 = (Date) method1.invoke(o1);
+                    Date d2 = (Date) method2.invoke(o2);
+                    return d1.compareTo(d2);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
         
-        return null;
+        // 关注了 问题 
+        List<Question> questions = questionDao.findWatchedQuestion(uid, currentPage, Constant.HOME_DYNAMIC_WATCH_COUNT);
+        
+        // 赞同过回答/文章
+        List<Answer> answers = answerDao.findAgreedAnswer(uid, currentPage, Constant.HOME_DYNAMIC_WATCH_COUNT);
+        List<Article> articles = articleDao.findAgreedArticle(uid, currentPage, Constant.HOME_DYNAMIC_WATCH_COUNT);
+        
+        set.add(answers);
+        set.add(questions);
+        set.add(articles);
+        return set;
     }
 
     @Override

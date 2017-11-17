@@ -85,4 +85,6 @@ public interface Constant {
      * 搜索文章数
      */
     public static final int SEARCH_ARTICLE_COUNT = 2;
+
+    public static final int HOME_DYNAMIC_WATCH_COUNT = 2;
 }

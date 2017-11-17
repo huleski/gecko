@@ -28,4 +28,6 @@ public interface IAnswerDao extends IBaseDao<Answer> {
     List<Answer> findHotday(User user, int currentPage, int pageSize) throws Exception;
 
     List<Answer> findHotmonth(User user, int currentPage, int pageSize) throws Exception;
+
+    List<Answer> findAgreedAnswer(int uid, int currentPage, int homeDynamicWatchCount) throws Exception;
 }

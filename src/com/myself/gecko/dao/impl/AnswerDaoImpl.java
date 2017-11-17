@@ -1,5 +1,8 @@
 package com.myself.gecko.dao.impl;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +23,7 @@ import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
 
+@SuppressWarnings("all")
 public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
 
     /**  
@@ -171,7 +175,7 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
     }
 
     /**  
-     * 查看关注的用户添加/点赞的回答  
+     * 查看关注的用户添加/点赞的回答
      */
     @Override
     public List<Answer> findAnswersByUserWatch(User user, int currentPage, int pageSize)
@@ -217,7 +221,7 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         }
         return list;
     }
-
+    
     /**  
      * 查询今日最热回答
      */
@@ -265,6 +269,27 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         }
         for (Answer answer : list) {
             improveAnswerInfo(answer, queryRunner, uid);
+        }
+        return list;
+    }
+
+    /**  
+     * 根据UID查询用户点过赞的回答
+     */
+    @Override
+    public List<Answer> findAgreedAnswer(int uid, int currentPage, int pageSize)
+            throws Exception {
+        ArrayList<Answer> list = new ArrayList<>();
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        String sql = "select answer.id from answer join answer_agree aa on aa.aid = answer.id where aa.uid = ? limit ?,?";
+        List<Map<String, Object>> list2 = queryRunner.query(sql, new MapListHandler(), uid,
+                (currentPage - 1) * pageSize, pageSize);
+        for (Map<String, Object> map : list2) {
+            Answer answer = findById((int) map.get("id"));
+            if(answer != null) {
+                improveAnswerInfo(answer, queryRunner, uid);
+                list.add(answer);
+            }
         }
         return list;
     }

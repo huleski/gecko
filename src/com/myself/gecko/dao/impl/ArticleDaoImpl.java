@@ -14,6 +14,7 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IArticleDao;
+import com.myself.gecko.domain.Answer;
 import com.myself.gecko.domain.Article;
 import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.Topic;
@@ -204,5 +205,28 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
             aList.add(a);
         }
         return aList;
+    }
+
+    /**  
+     * 根据UID查询用户点过赞的文章
+     */
+    @Override
+    public List<Article> findAgreedArticle(int uid, int currentPage, int pageSize)
+            throws Exception {
+        ArrayList<Article> list = new ArrayList<>();
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        String sql = "select article.id from article join article_agree aa on aa.aid = article.id where aa.uid = ? limit ?,?";
+        List<Map<String, Object>> list2 = queryRunner.query(sql, new MapListHandler(), uid,
+                (currentPage - 1) * pageSize, pageSize);
+        for (Map<String, Object> map : list2) {
+            int aid = (int) map.get("id");
+            User user = new User();
+            user.setId(uid);
+            Article a = findAnswerById(aid, user);
+            if(a != null) {
+                list.add(a);
+            }
+        }
+        return list;
     }
 }

@@ -17,6 +17,6 @@ public interface IUserService {
 	public abstract void addWatch(int uid, User user) throws SQLException;
 	public abstract PersonInfo findPersonInfo(int id) throws SQLException;
 	public abstract void visitHome(int id) throws SQLException;
-    public abstract Set findUserDynamic(int id) throws SQLException;
+    public abstract Set findUserDynamic(int uid, int currentPage) throws Exception;
     public abstract String findQuestionByUid(int currentPage, int personId) throws Exception;
 }
