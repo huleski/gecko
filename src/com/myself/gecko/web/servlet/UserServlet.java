@@ -23,7 +23,6 @@ import com.myself.gecko.service.impl.UserServiceImpl;
 public class UserServlet extends BaseServlet {
     private static final long serialVersionUID = 1L;
     private static IUserService userService = UserServiceImpl.getUserService();
-
     
     /**
      * 根据用户id查询该用户提出的问题
@@ -48,7 +47,7 @@ public class UserServlet extends BaseServlet {
     /**
      * 根据id查询该用户动态
      */
-    public String findUserDynamic(HttpServletRequest request, HttpServletResponse response) {
+    public String findUserDynamicByUid(HttpServletRequest request, HttpServletResponse response) {
         String idStr = (String) request.getParameter("id");
         String curPage = (String) request.getParameter("currentPage");
         try {

@@ -522,28 +522,7 @@
 				if((totalheight >= $(document).height()) && question_index >= 0) {
 					var tabId = $(".tab-pane:visible").attr("id");
 					if(tabId == "question") {
-						$.getJSON("${pageContext.request.contextPath}/userServlet", 
-								{"method":"findQuestionByUid","currentPage": ++question_index, "uid":"${person.id}"}, 
-								function(result) {
-									if(result != "0") {
-										$("#noQuestion").css("display", "none");
-										$(result).each(function(i, obj) {
-											$("#question").append(
-												"<div class='question-div'>"+
-												"<div><a class='question-title' href='${pageContext.request.contextPath}/questionServlet?method=findById&id="+obj.id+"'>" + obj.title + "</a></div>" +
-												"<div class='question-state'>"+
-												"<span>" + new Date(obj.date.time).format("yyyy-MM-dd") +"</span>"+
-												"<span>" + obj.answerList.length + " 个回答</span>"+
-												"<span>" + obj.watchCount + " 个关注</span>"+
-												"</div></div>" + 
-												"<div class='separator'></div>"
-											);
-										});
-									} else {
-										$("#question").append("<div style='height:30px; background-color:#F3F3F3;'/><h4 style='margin:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
-										question_index = -1;
-									}
-						});
+						ajaxLoadQuestion();
 					}
 				}
 			});
@@ -564,6 +543,33 @@
 			    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
 			    return fmt;
 			}
+			
+			function ajaxLoadQuestion() {
+				$.getJSON("${pageContext.request.contextPath}/userServlet", 
+					{"method":"findQuestionByUid",
+					"currentPage": ++question_index, 
+					"uid":"${person.id}"}, 
+					function(result) {
+						if(result != "0") {
+							$("#noQuestion").css("display", "none");
+							$(result).each(function(i, obj) {
+								$("#question").append(
+									"<div class='question-div'>"+
+									"<div><a class='question-title' href='${pageContext.request.contextPath}/questionServlet?method=findById&id="+obj.id+"'>" + obj.title + "</a></div>" +
+									"<div class='question-state'>"+
+									"<span>" + new Date(obj.date.time).format("yyyy-MM-dd") +"</span>"+
+									"<span>" + obj.answerList.length + " 个回答</span>"+
+									"<span>" + obj.watchCount + " 个关注</span>"+
+									"</div></div>" + 
+									"<div class='separator'></div>"
+								);
+							});
+						} else {
+							$("#question").append("<div style='height:30px; background-color:#F3F3F3;'/><h4 style='margin:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
+							question_index = -1;
+						}
+				});
+			}
 		</script>
 	</head>
 
@@ -578,7 +584,7 @@
 				<div id="topdiv"></div>
 				<div id="bottomdiv">
 					<div id="photoback">
-						<img src="${pageContext.request.contextPath}/img/default.jpg" id="personalimg" />
+						<img src="${pageContext.request.contextPath}/${person.photo}" id="personalimg" />
 					</div>
 					<div id="personalinfo">
 						<div id="simpleInfo">
