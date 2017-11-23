@@ -445,11 +445,12 @@
 					$(this).parents(".comment-reply").prev(".comment-situation").show();
 				});
 				
-				/*回到顶部*/
+				// 回到顶部
 				$("#gotobtn").click(function() {
 					 $('body,html').animate({scrollTop:0}, 500);
 				});
 				
+				// 显示回到顶部
 				$(window).scroll( function() {
 					if($(this).scrollTop() > 1000) {
 						$("#gotobtn").show();
@@ -517,6 +518,7 @@
 			// 滑动到页面底部实现自动加载
 			var totalheight = 0;
 			var question_index = 0;
+			var answer_index = 0;
 			$(window).scroll(function() {
 				totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
 				if((totalheight >= $(document).height()) && question_index >= 0) {
@@ -544,11 +546,12 @@
 			    return fmt;
 			}
 			
+			// 加载问题 
 			function ajaxLoadQuestion() {
 				$.getJSON("${pageContext.request.contextPath}/userServlet", 
 					{"method":"findQuestionByUid",
 					"currentPage": ++question_index, 
-					"uid":"${person.id}"}, 
+					"id":"${person.id}"}, 
 					function(result) {
 						if(result != "0") {
 							$("#noQuestion").css("display", "none");
@@ -565,11 +568,40 @@
 								);
 							});
 						} else {
-							$("#question").append("<div style='height:30px; background-color:#F3F3F3;'/><h4 style='margin:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
+							if(question_index != 1){
+								$("#question").append("<div style='height:30px; background-color:#F3F3F3;'/><h4 style='margin:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
+							}
 							question_index = -1;
 						}
 				});
 			}
+			
+			//加载动态 
+			function ajaxLoadDynamic() {
+				$.post("${pageContext.request.contextPath}/userServlet", 
+					{"method":"findUserDynamicByUid",
+					"currentPage": ++answer_index, 
+					"id":"${person.id}"}, 
+					function(result) {
+						if(result != "0") {
+							$("#noDynamic").css("display", "none");
+							$("#dynamic").append(result);
+						} else {
+							if(answer_index != 1){
+								$("#dynamic").append("<div style='height:30px; background-color:#F3F3F3;'/><h4 style='margin:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
+							}
+							answer_index = -1;
+						}
+				});
+			}
+			
+			$(function(){
+				ajaxLoadDynamic();
+				
+				$("#questionLi").one("click", function(){
+					ajaxLoadQuestion();
+				});
+			});
 		</script>
 	</head>
 
@@ -664,7 +696,7 @@
 						<li>
 							<a href="#answer" data-toggle="tab">回答 0</a>
 						</li>
-						<li>
+						<li id="questionLi">
 							<a href="#question" data-toggle="tab">提问 0</a>
 						</li>
 						<li>
@@ -707,375 +739,12 @@
 						<div style="padding: 12px 0 12px 20px;font-weight: bold;font-size: 15px;">我的动态</div>
 						
 						<div class="separator"></div>
-						<div class="answerblock">
-							<div class="text-dynamic">
-								赞同了回答
-								<span style="float: right;top: -10px;right: -10px;">5天前</span>
+						<div id="noDynamic" style="height: 280px;padding-top: 80px;">
+							<div align="center">
+								<img src="${pageContext.request.contextPath}/img/noqestion.png" />
 							</div>
-							<div class="text-title">
-								<a href="#" class="text-title-a">你有哪些一鸣惊人的操作？</a>
-							</div>
-							<div class="text-author">
-								<a href="#"><img class="photo" src="${pageContext.request.contextPath}/img/default.jpg" /></a>
-								<span class="personalmsg">
-									<div class="name">
-										<a href="#" style="color: black;">Seasee Youl</a>
-									</div>
-									<div class="signal">
-										为何中意我我这种无赖，是话你蠢还是太伟大
-									</div>
-								</span>
-							</div>
-							<div class="text-status">16188 人也赞同了该回答</div>
-							<div class="text-content">
-								某个远房亲戚，因为在某个国营企业里当个小领导有点钱，所以经常做一些仗势欺人的事。 比如吃饭的时候，他就大咧咧的坐在上席（也就是对着门的那个位置），但是懂礼数的人都知道那个位置一般是给家里老人坐的，他却一副老子天下第一的姿态坐那谈笑风生。 吃完饭后别人给他敬烟，一看别人发的是十几块钱的，就用手挡回去说不想抽，别人刚走开就拿出
-								<a class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>
-							</div>
-							<div class="text-all">
-								<p>因为毛子能死磕</p>
-								<p>上大学（哈工大计算机）的时候老师讲过一个段子：我系自然语言识别团队搞了一套语音识别，准确率还可以，就是这个性能实在是差，识别普通长度的话要10秒，这边的团队死活优化不了了。然后送给了毛子的科学家去优化，优化了2个月性能提高到了1.2秒。</p>
-								<p>然后我校师生们就好奇TMD毛子怎么干的啊，就开始撸毛子改过的C语音代码，然后就发在代码里现了一堆类似这样的东西：* * * * *struct —— 5层指针，懂C语言的都知道这意味着什么。代码的原作者们一脸懵逼——因为完全看不出来这特么是我写的代码。</p>
-								<p><br></p>
-								<p>而实际上毛子们在各个领域都有这种死磕精神：</p>
-								<p>航空：</p>
-								<blockquote>米格-25为了使速度达到3马赫， 至今仍是人类仅有的两种闯过热障的大气层内飞行器。那问题就来了，3.2马赫的速度造成了空气与机体强烈摩擦，温度可以达到300摄氏度以上，而当时最好的铝合金的工作温度也就130度。毛子是怎么解决这个问题的呢？美国科学家仿佛找到了一个答案:那就是苏联人一定是突破了大型钛合金部件的加工技术，使得米格25使用了大量钛合金材料。如果这是真的，那在当时的轰动程度不亚于中国队勇夺世界杯。不过美国科学家还是too young too simple，sometimes naive了，毛子自有毛子的解决方法，那就是，前无古人后无来者的使用不锈钢。真的太好了，完全没有烦恼了。不锈钢上千度都没事，怕他300度个卵。但是，不锈钢比铝合金要重好多，造成了米格25空重就达到20吨以上。<br>但是要把20吨重的【战斗机】推上天，发动机产生的热量会把发动机仓融化——丧心病狂的毛子工程师竟然为发动机外面加上了银网来把热辐射给反射回发动机。。。</blockquote>
-								<p>只能说毛子确实是开挂的民族。。。</p>
-								<p></p>
-							</div>
-							<div class="text-end">
-								<button class="btn btnpressed">
-							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">10K</span></span>
-						</button>
-								<button class="btn btn-default">
-							<span class="glyphicon glyphicon-chevron-down opinion"></span>
-						</button>
-								<span>
-								<a class="text-situation text-comment">
-									<span class="glyphicon glyphicon-comment"></span>
-									<span class="comment-count">900条评论</span>
-									<span class="hidecomment" style="display: none;">收起评论</span>
-								</a>
-								<a class="text-situation">
-									<span class="glyphicon glyphicon-share-alt"></span>
-									<span>分享</span>
-								</a>
-								<a class="text-situation">
-									<span class="glyphicon glyphicon-star"></span>
-									<span>收藏</span>
-								</a>
-								<a class="text-situation">
-									<span class="glyphicon glyphicon-heart"></span>
-									<span>感谢</span>
-								</a>
-								<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="#">没有帮助</a></li><li><a href="#">举报</a></li></ul>'>
-									···
-								</a>
-								</span>
-								<button class="takeback btn btn-info btn-xs">收起</button>
-							</div>
-							
-						<div class="commentdiv">
-							<div class="comment-title">
-								<span style="font-weight: bold;">11条评论</span>								
-								<a style="cursor: pointer;position: absolute;right: 20px;">切换为时间顺序</a>
-							</div>
-							<div class="separator" style="width: 100%;"></div>
-							
-							<!--用户评论-->
-							<div class="user-comment">
-								<div style="position:relative">
-									<a href="#">
-										<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
-										<span style="margin-left: 10px;color: black;">you conquer</span>
-									</a>
-									<span class="comment-time">2年前</span>
-								</div>
-								<div style="margin: 10px 0;">
-									阿法狗,阿萨德立即;ad离开家阿斯蒂芬;啊看见的
-								</div>
-								<div class="comment-situation">
-									<a>
-										<span class="glyphicon glyphicon-thumbs-up"></span>
-										<span>1973</span>
-									</a>
-									<a class="comment-replybtn">
-										<span class="glyphicon glyphicon-edit"></span>
-										<span>回复</span>
-									</a>
-									<a>
-										<span class="glyphicon glyphicon-thumbs-down"></span>
-										<span>踩</span>
-									</a>
-									<a>
-										<span class="glyphicon glyphicon-flag"></span>
-										<span>举报</span>
-									</a>
-								</div>
-								<div class="comment-reply" style="display: none;">
-									<form action="${pageContext.request.contextPath}/" method="post">
-										<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
-										<div style="text-align: right;">
-											<button type="button" class="btn btn-default comment-cancel">取消</button>
-											<button type="submit" class="btn btn-info comment-ok">评论</button>
-										</div>
-									</form>
-								</div>
-							</div>
-							<div class="separator"></div>
-							
-							<div class="user-comment">
-								<div style="position:relative">
-									<a href="#">
-										<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
-										<span style="margin-left: 10px;color: black;">you conquer</span>
-									</a>
-									<span class="comment-time">2年前</span>
-								</div>
-								<div style="margin: 10px 0;">
-									阿法狗,阿萨德立即;ad离开家阿斯蒂芬;啊看见的
-								</div>
-								<div class="comment-situation">
-									<a>
-										<span class="glyphicon glyphicon-thumbs-up"></span>
-										<span>1973</span>
-									</a>
-									<a class="comment-replybtn">
-										<span class="glyphicon glyphicon-edit"></span>
-										<span>回复</span>
-									</a>
-									<a>
-										<span class="glyphicon glyphicon-thumbs-down"></span>
-										<span>踩</span>
-									</a>
-									<a>
-										<span class="glyphicon glyphicon-flag"></span>
-										<span>举报</span>
-									</a>
-								</div>
-								<div class="comment-reply" style="display: none;">
-									<form action="${pageContext.request.contextPath}/" method="post">
-										<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
-										<div style="text-align: right;">
-											<button type="button" class="btn btn-default comment-cancel">取消</button>
-											<button type="submit" class="btn btn-info comment-ok">评论</button>
-										</div>
-									</form>
-								</div>
-							</div>
-							<div class="separator"></div>
-							
-							<div class="user-comment">
-								<div style="position:relative">
-									<a href="#">
-										<img class="comment-user-photo" src="${pageContext.request.contextPath}/img/default.jpg" />
-										<span style="margin-left: 10px;color: black;">you conquer</span>
-									</a>
-									<span class="comment-time">2年前</span>
-								</div>
-								<div style="margin: 10px 0;">
-									阿法狗,阿萨德立即;ad离开家阿斯蒂芬;啊看见的
-								</div>
-								<div class="comment-situation">
-									<a>
-										<span class="glyphicon glyphicon-thumbs-up"></span>
-										<span>1973</span>
-									</a>
-									<a class="comment-replybtn">
-										<span class="glyphicon glyphicon-edit"></span>
-										<span>回复</span>
-									</a>
-									<a>
-										<span class="glyphicon glyphicon-thumbs-down"></span>
-										<span>踩</span>
-									</a>
-									<a>
-										<span class="glyphicon glyphicon-flag"></span>
-										<span>举报</span>
-									</a>
-								</div>
-								<div class="comment-reply" style="display: none;">
-									<form action="${pageContext.request.contextPath}/" method="post">
-										<input type="text" class="form-control comment-input" placeholder="回复XXXX"/>
-										<div style="text-align: right;">
-											<button type="button" class="btn btn-default comment-cancel">取消</button>
-											<button type="submit" class="btn btn-info comment-ok">评论</button>
-										</div>
-									</form>
-								</div>
-							</div>
-							<div class="separator"></div>
-							
-							<!--回复评论-->
-							<div>
-								<form action="${pageContext.request.contextPath}/" method="post">
-									<input class="form-control commentAnswer" type="input" placeholder="写下你的评论"/>
-									<button class="btn btn-info" type="submit">评论</button>
-								</form>
-							</div>
-						</div>
-							
-					</div>
-						
-						<div class="separator"></div>
-						<div class="answerblock">
-							<div class="text-dynamic">
-								赞同了回答
-								<span style="float: right;top: -10px;right: -10px;">14天前</span>
-							</div>
-							<div class="text-title">华为做了哪些恶？</div>
-							<div class="text-author">
-								<img class="photo" src="${pageContext.request.contextPath}/img/default.jpg" />
-								<span class="personalmsg">
-								<div class="name">
-									阿噗
-								</div>
-								<div class="signal">
-									你才傲娇哼
-								</div>
-								</span>
-							</div>
-							<div class="text-status">23874人也赞同了该回答</div>
-							<div class="text-content">
-								由于供应链牛肉的严重缺货，我们不得不用猪肉代替！一顿火锅的整体口感不是某一种食材决定的,我们已经从火锅的底料、蘸料等环节进行了口味的优化调理，所以即使用猪肉甚至鸡肉都可以让您吃到正宗牛肉的味道！！！希望广大客户不要轻信友商的挑唆，一如既往的支持我们的火锅店！
-								<a href="#" class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span>
-								</a>
-							</div>
-							<div class="text-end">
-								<button class="btn btn-default active">
-							<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">1.8K</span></span>
-						</button>
-								<button class="btn btn-default">
-							<span class="glyphicon glyphicon-chevron-down opinion"></span>
-						</button>
-								<span>
-							<a href="#" class="text-situation">
-								<span class="glyphicon glyphicon-comment"></span>
-								<span>102条评论</span>
-								</a>
-								<a href="#" class="text-situation">
-									<span class="glyphicon glyphicon-share-alt"></span>
-									<span>分享</span>
-								</a>
-								<a href="#" class="text-situation">
-									<span class="glyphicon glyphicon-star"></span>
-									<span>收藏</span>
-								</a>
-								<a href="#" class="text-situation">
-									<span class="glyphicon glyphicon-heart"></span>
-									<span>感谢</span>
-								</a>
-								<a href="#" class="text-situation" style="font-size: 16px;font-weight: bold;">
-									···
-								</a>
-								</span>
-							</div>
-						</div>
-						<div class="answerblock">
-							<div class="separator"></div>
-							<div class="text-dynamic">
-								路人甲 赞同了回答1 天前
-								<span style="float: right;top: -10px;right: -10px;">15天前</span>
-							</div>
-							<div class="text-title">你最庆幸自己当初做了什么事？</div>
-							<div class="text-author">
-								<img class="photo" src="${pageContext.request.contextPath}/img/default.jpg" />
-								<span class="personalmsg">
-								<div class="name">
-							Seasee Youl
-						</div>
-								<div class="signal">
-							为何中意我我这种无赖，是话你蠢还是太伟大
-						</div>
-						</span>
-							</div>
-							<div class="text-status">5234人也赞同了该回答</div>
-							<div class="text-content">
-								半年前，我和朋友看完话剧出来，广州的友谊剧院离火车站很近，我们路过火车站附近的天桥时见到一个奇怪的人。 一个十七八岁的少年，蹲在地上哭泣。 他留着长头发，背着一个破旧的双肩包，把脸埋在头发之中，偶尔擦一下眼泪。周围的行人来来往往，注意到他这种奇怪的行径后拉着同伴匆匆而行。那时已经十点多了，这孩子蹲在天桥上无助的样子让我觉得
-								<a href="#" class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>
-							</div>
-							<div class="text-end">
-								<button class="btn btn-default active">
-									<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">19K</span></span>
-								</button>
-								<button class="btn btn-default">
-									<span class="glyphicon glyphicon-chevron-down opinion"></span>
-								</button>
-								<span>
-									<a href="#" class="text-situation">
-										<span class="glyphicon glyphicon-comment"></span>
-										<span>1120条评论</span>
-									</a>
-									<a href="#" class="text-situation">
-										<span class="glyphicon glyphicon-share-alt"></span>
-										<span>分享</span>
-									</a>
-									<a href="#" class="text-situation">
-										<span class="glyphicon glyphicon-star"></span>
-										<span>收藏</span>
-									</a>
-									<a href="#" class="text-situation">
-										<span class="glyphicon glyphicon-heart"></span>
-										<span>感谢</span>
-									</a>
-									<a href="#" class="text-situation" style="font-size: 16px;font-weight: bold;">
-										···
-									</a>
-								</span>
-							</div>
-						</div>
-						
-
-						<div class="separator"></div>
-						<div class="answerblock">
-							<div class="text-dynamic">
-								来自话题: 互联网
-								<span style="float: right;top: -10px;right: -10px;">20天前</span>
-							</div>
-							<div class="text-title">你为什么卸载美团？</div>
-							<div class="text-author">
-								<img class="photo" src="${pageContext.request.contextPath}/img/annoymouse.jpg" />
-								<span class="personalmsg">
-								<div class="name">
-							杨剑锋
-						</div>
-								<div class="signal">
-							 &nbsp;
-						</div>
-						</span>
-							</div>
-							<div class="text-status">5234人也赞同了该回答</div>
-							<div class="text-content">
-								 凭这个
-								<a href="#" class="expand">…阅读全文<span class="glyphicon glyphicon-chevron-down keepgap"></span></a>
-							</div>
-							<div class="text-end">
-								<button class="btn btn-default active">
-							<span class="glyphicon glyphicon-chevron-up opinion"><span class="keepgap">19K</span></span>
-						</button>
-								<button class="btn btn-default">
-							<span class="glyphicon glyphicon-chevron-down opinion"></span>
-						</button>
-								<span>
-							<a href="#" class="text-situation">
-								<span class="glyphicon glyphicon-comment"></span>
-								<span>738条评论</span>
-								</a>
-								<a href="#" class="text-situation">
-									<span class="glyphicon glyphicon-share-alt"></span>
-									<span>分享</span>
-								</a>
-								<a href="#" class="text-situation">
-									<span class="glyphicon glyphicon-star"></span>
-									<span>收藏</span>
-								</a>
-								<a href="#" class="text-situation">
-									<span class="glyphicon glyphicon-heart"></span>
-									<span>感谢</span>
-								</a>
-								<a href="#" class="text-situation" style="font-size: 16px;font-weight: bold;">
-									···
-								</a>
-								</span>
+							<div style="color: darkgray;font-size: 15px;text-align: center;">
+								还没有动态
 							</div>
 						</div>
 					</div>

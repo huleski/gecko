@@ -128,9 +128,13 @@ public class UserServiceImpl implements IUserService {
         List<Answer> answers = answerDao.findAgreedAnswer(uid, currentPage, Constant.HOME_DYNAMIC_WATCH_COUNT);
         List<Article> articles = articleDao.findAgreedArticle(uid, currentPage, Constant.HOME_DYNAMIC_WATCH_COUNT);
         
-        set.add(answers);
-        set.add(questions);
-        set.add(articles);
+        System.out.println(answers);
+        System.out.println(questions);
+        System.out.println(articles);
+        
+        set.addAll(answers);
+        set.addAll(questions);
+        set.addAll(articles);
         return set;
     }
 

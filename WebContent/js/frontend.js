@@ -1,5 +1,5 @@
 function snapscreen() {
-	html2canvas($("window"), {
+	html2canvas($("body"), {
 		onrendered: function(canvas) {
 			alert(window.height);
 			var url = canvas.toDataURL(); //base64数据  

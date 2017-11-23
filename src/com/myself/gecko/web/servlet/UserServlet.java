@@ -29,7 +29,7 @@ public class UserServlet extends BaseServlet {
      */
     public String findQuestionByUid(HttpServletRequest request, HttpServletResponse response) {
         String currentPageStr = request.getParameter("currentPage");
-        String uidStr = request.getParameter("uid");
+        String uidStr = request.getParameter("id");
 
         try {
             int currentPage = Integer.parseInt(currentPageStr);
@@ -56,7 +56,7 @@ public class UserServlet extends BaseServlet {
             Set set = userService.findUserDynamic(id, currentPage);
             if (!set.isEmpty()) {
                 request.setAttribute("set", set);
-                return "";
+                return "/template/topicdynamic.jsp";
             } else {
                 response.getWriter().write("0");
             }
