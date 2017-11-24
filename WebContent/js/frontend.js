@@ -1,7 +1,6 @@
 function snapscreen() {
 	html2canvas($("body"), {
 		onrendered: function(canvas) {
-			alert(window.height);
 			var url = canvas.toDataURL(); //base64数据  
 			var image = new Image();
 			image.src = url;

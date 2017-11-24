@@ -103,7 +103,7 @@ public class UserServiceImpl implements IUserService {
      * @throws Exception 
      */
     @Override
-    public Set findUserDynamic(int uid, int currentPage) throws Exception {
+    public Set findUserDynamic(User user, int uid, int currentPage) throws Exception {
         // 创建根据时间排序的TreeSet集合
         TreeSet set = new TreeSet<>(new Comparator() {
             @Override
@@ -125,12 +125,8 @@ public class UserServiceImpl implements IUserService {
         List<Question> questions = questionDao.findWatchedQuestion(uid, currentPage, Constant.HOME_DYNAMIC_WATCH_COUNT);
         
         // 赞同过回答/文章
-        List<Answer> answers = answerDao.findAgreedAnswer(uid, currentPage, Constant.HOME_DYNAMIC_WATCH_COUNT);
-        List<Article> articles = articleDao.findAgreedArticle(uid, currentPage, Constant.HOME_DYNAMIC_WATCH_COUNT);
-        
-        System.out.println(answers);
-        System.out.println(questions);
-        System.out.println(articles);
+        List<Answer> answers = answerDao.findAgreedAnswer(user, uid, currentPage, Constant.HOME_DYNAMIC_WATCH_COUNT);
+        List<Article> articles = articleDao.findAgreedArticle(user, uid, currentPage, Constant.HOME_DYNAMIC_WATCH_COUNT);
         
         set.addAll(answers);
         set.addAll(questions);
@@ -149,6 +145,16 @@ public class UserServiceImpl implements IUserService {
             return JsonUtil.list2json(list);
         }
         return "0"; 
+    }
+
+    @Override
+    public List<Answer> findUserAnswer(User user, int uid, int currentPage) throws Exception {
+        return answerDao.findByUid(user, uid, currentPage, Constant.HOME_ANSWER_COUNT);
+    }
+
+    @Override
+    public List<Article> findUserArticle(User user, int uid, int currentPage) throws Exception {
+        return articleDao.findByUid(user, uid, currentPage, Constant.HOME_ARTICLE_COUNT);
     }
 
 }

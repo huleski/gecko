@@ -390,9 +390,6 @@
 					$(this).parents(".comment-reply").prev(".comment-situation").show();
 				});
 				
-				//举报弹出框
-				$(".report").popover();
-				
 				//首次加载内容
 				ajaxLoadDynamic();
 			});

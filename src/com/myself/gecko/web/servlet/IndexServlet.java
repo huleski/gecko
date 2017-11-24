@@ -24,11 +24,9 @@ public class IndexServlet extends BaseServlet {
         String curPageStr = request.getParameter("currentPage");
         User user = (User) request.getSession().getAttribute("user");
         
-System.out.println("keywords= " + keywords);
         try {
             int currentPage = Integer.parseInt(curPageStr);
             List list = indexService.search(keywords, currentPage, user);
-System.out.println(list);
             if (list.size() == 0) {
                 response.getWriter().write("0");
                 return null;

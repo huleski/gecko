@@ -211,7 +211,7 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
      * 根据UID查询用户点过赞的文章
      */
     @Override
-    public List<Article> findAgreedArticle(int uid, int currentPage, int pageSize)
+    public List<Article> findAgreedArticle(User user, int uid, int currentPage, int pageSize)
             throws Exception {
         ArrayList<Article> list = new ArrayList<>();
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
@@ -220,11 +220,26 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
                 (currentPage - 1) * pageSize, pageSize);
         for (Map<String, Object> map : list2) {
             int aid = (int) map.get("id");
-            User user = new User();
-            user.setId(uid);
             Article a = findAnswerById(aid, user);
             if(a != null) {
                 list.add(a);
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<Article> findByUid(User user, int uid, int currentPage, int pageSize)
+            throws Exception {
+        List<Article> list = new ArrayList<>();
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        String sql = "select id from article where uid = ? limit ?, ?";
+        List<Map<String, Object>> mapList = queryRunner.query(sql, new MapListHandler(), uid, (currentPage - 1) * pageSize, pageSize);
+        
+        for (Map<String, Object> map : mapList) {
+            Article article = findAnswerById((int) map.get("id"), user);
+            if(article != null) {
+                list.add(article);
             }
         }
         return list;

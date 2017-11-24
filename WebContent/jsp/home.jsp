@@ -6,7 +6,7 @@
 <html>
 
 	<head>
-		<title>个人主页</title>
+		<title>${person.name } --逼乎</title>
 		<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/bi.ico" />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -102,6 +102,7 @@
 				font-family: "微软雅黑";
 				font-weight: bold;
 				font-size: 15px;
+				color: black;
 			}
 			
 			.text-author .signal {
@@ -244,7 +245,7 @@
 			#topdiv {
 				width: 1015px;
 				height: 240px;
-				background:url(${pageContext.request.contextPath}/${user.backphoto});
+				background:url(${pageContext.request.contextPath}/${person.backphoto});
 			}
 			
 			#bottomdiv {
@@ -389,62 +390,81 @@
 				margin-right:20px;
 			}
 		</style>
+		
+		<style type="text/css">
+			.disagreebtn {
+				color: deepskyblue;
+				font-size: 14px;
+				border: deepskyblue 1px solid;
+			}
+			.agreebtn {
+				color: deepskyblue;
+				font-size: 14px;
+				border: deepskyblue 1px solid;
+			}
+			.commentInput {
+				width: 75%;
+				display: inline;
+				margin: 15px 30px 15px 20px;
+			}
+		</style>
 
 		<script type="text/javascript">
 			$(function() {
 				$(".topmenu").hover(function() {
-						$(this).css("color", "lightslategray");
-					},
-					function() {
-						$(this).css("color", "darkgray");
-					});
-
-				$(".text-content").hover(function() {
+					$(this).css("color", "lightslategray");
+				},
+				function() {
 					$(this).css("color", "darkgray");
-				}, function() {
+				});
+				
+				$("#tabPanes").on("mouseover", ".text-content", function() {
+					$(this).css("color", "gray");
+					});
+				$("#tabPanes").on("mouseout", ".text-content", function() {
 					$(this).css("color", "black");
+					}); 
+
+				$("#tabPanes").on("hover", ".answerblock", function() {
+					$(this).find(".closeblock").toggle();
 				});
 
-				$(".answerblock").hover(function() {
-					$(this).find(".closeblock").show();
-				}, function() {
-					$(this).find(".closeblock").hide();
-				});
-
-				$(".text-content").click(function() {
+				$("#tabPanes").on("click", ".text-content", function() {
 					$(this).hide();
 					var $answer = $(this).parent(".answerblock");
 					$answer.find(".text-all").show();
 					$answer.find(".takeback").show();
 				});
-				$(".takeback").click(function() {
+				$("#tabPanes").on("click", ".takeback", function() {
 					$(this).hide();
 					var $answerblock = $(this).parents(".answerblock");
 					$answerblock.find(".text-all").hide();
 					$answerblock.find(".text-content").show();
 				});
-				$(".closeblock").click(function() {
+				$("#tabPanes").on("click",".closeblock", function() {
 					$(this).parents(".answerblock").hide();
 				});
 				
-				$(".report").popover();
-				
-				$(".text-comment").click(function() {
+				$("#tabPanes").on("click", ".text-comment", function() {
 					$(this).parents(".answerblock").find(".commentdiv").toggle();
 					$(this).find(".comment-count").toggle();
 					$(this).find(".hidecomment").toggle();
 				});
 				
-				$(".comment-replybtn").click(function() {
-					$(this).parent(".comment-situation").hide();
-					$(this).parent(".comment-situation").next(".comment-reply").show();
+				$("#tabPanes").on("click", ".comment-replybtn", function() {
+					if("${user}" == "") {
+						$('#loginModal').modal();
+					} else {
+						$(this).parent(".comment-situation").hide();
+						$(this).parent(".comment-situation").next(".comment-reply").show();
+					}
 				});
 				
-				$(".comment-cancel").click(function() {
+				$("#tabPanes").on("click", ".comment-cancel", function() {
 					$(this).parents(".comment-reply").hide();
 					$(this).parents(".comment-reply").prev(".comment-situation").show();
 				});
-				
+
 				// 回到顶部
 				$("#gotobtn").click(function() {
 					 $('body,html').animate({scrollTop:0}, 500);
@@ -459,14 +479,14 @@
 					}
 				});
 				
-				//查看详细资料
+				// 查看详细资料
 				$("#moreMsg").click(function() {
 					$(this).hide();
 					$("#scrollMsg").show();
 					$("#simpleInfo").hide();
 					$("#completedInfo").show();
 				});
-				//收起详细资料
+				// 收起详细资料
 				$("#scrollMsg").click(function() {
 					$(this).hide();
 					$("#moreMsg").show();
@@ -498,6 +518,7 @@
 							}
 					});
 			}
+			
 			//取消作者关注
 			function cancleWatch(uid) {
 				if("${user}" == "") {	//若用户未登录,不能取消关注
@@ -507,24 +528,32 @@
 				$("#addWatch").toggle();
 				$("#cancleWatch").toggle();
 				$.post("${pageContext.request.contextPath}/userServlet", {"method":"cancleWatch", "uid":uid},
-						function(result) {
-							if(result == 1){
-								var count = parseInt($("#authorWatchCount").text());
-								$("#authorWatchCount").text(count - 1);
-							}
+					function(result) {
+						if(result == 1){
+							var count = parseInt($("#authorWatchCount").text());
+							$("#authorWatchCount").text(count - 1);
+						}
 					});
 			}
 			
 			// 滑动到页面底部实现自动加载
 			var totalheight = 0;
 			var question_index = 0;
+			var dynamic_index = 0;
 			var answer_index = 0;
+			var article_index = 0;
 			$(window).scroll(function() {
 				totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
-				if((totalheight >= $(document).height()) && question_index >= 0) {
+				if((totalheight >= $(document).height())) {
 					var tabId = $(".tab-pane:visible").attr("id");
-					if(tabId == "question") {
+					if(tabId == "question" && question_index > 0) {
 						ajaxLoadQuestion();
+					}else if (tabId == "dynamic" && dynamic_index > 0) {
+						ajaxLoadDynamic();
+					}else if (tabId == "answer" && answer_index > 0) {
+						ajaxLoadAnswer();
+					}else if (tabId == "article" && article_index > 0) {
+						ajaxLoadArticle();
 					}
 				}
 			});
@@ -580,17 +609,58 @@
 			function ajaxLoadDynamic() {
 				$.post("${pageContext.request.contextPath}/userServlet", 
 					{"method":"findUserDynamicByUid",
-					"currentPage": ++answer_index, 
+					"currentPage": ++dynamic_index, 
 					"id":"${person.id}"}, 
 					function(result) {
 						if(result != "0") {
 							$("#noDynamic").css("display", "none");
 							$("#dynamic").append(result);
+							$(".report").popover();
 						} else {
-							if(answer_index != 1){
+							if(dynamic_index != 1){
 								$("#dynamic").append("<div style='height:30px; background-color:#F3F3F3;'/><h4 style='margin:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
 							}
+							dynamic_index = -1;
+						}
+				});
+			}
+			
+			//加载回答
+			function ajaxLoadAnswer() {
+				$.post("${pageContext.request.contextPath}/userServlet",
+					{"method":"findAnswerByUid",
+					"currentPage": ++answer_index, 
+					"id":"${person.id}"}, 
+					function(result) {
+						if(result != "0") {
+							$("#noAnswer").css("display", "none");
+							$("#answer").append(result);
+							$(".report").popover();
+						} else {
+							if(answer_index != 1){
+								$("#answer").append("<div style='height:30px; background-color:#F3F3F3;'/><h4 style='margin:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
+							}
 							answer_index = -1;
+						}
+				});
+			}
+			
+			//加载文章
+			function ajaxLoadArticle() {
+				$.post("${pageContext.request.contextPath}/userServlet",
+					{"method":"findArticleByUid",
+					"currentPage": ++article_index, 
+					"id":"${person.id}"}, 
+					function(result) {
+						if(result != "0") {
+							$("#noArticle").css("display", "none");
+							$("#article").append(result);
+							$(".report").popover();
+						} else {
+							if(article_index != 1){
+								$("#article").append("<div style='height:30px; background-color:#F3F3F3;'/><h4 style='margin:80px 0;text-align:center'>全部装填完毕,没有更多了</h4>");
+							}
+							article_index = -1;
 						}
 				});
 			}
@@ -601,7 +671,159 @@
 				$("#questionLi").one("click", function(){
 					ajaxLoadQuestion();
 				});
+				
+				$("#answerLi").one("click", function(){
+					ajaxLoadAnswer();
+				});
+				
+				$("#articleLi").one("click", function(){
+					ajaxLoadArticle();
+				});
 			});
+			
+			//ajax加载评论
+			function showComment(aid, curPage, type, obj) {
+				var $commentblock = $(obj).parents(".answerblock").find(".user-commentblock");
+				$.post("${pageContext.request.contextPath}/commentServlet", {"method":"ajaxLoad","targetId":aid, "currentPage": curPage, "type":type}, function(result) {
+					$commentblock.html(result);
+				}); 
+			}
+
+			//ajax提交答案评论
+			function submitAnswerComment(obj, pid, targetId, type) {
+				if("${user}" == "") {
+					$('#loginModal').modal();
+				} else {
+					var content = $(obj).prev(".commentInput").val();
+					$.post("${pageContext.request.contextPath}/commentServlet", {"method":"add", "pid":pid, "type":type, "targetId": targetId, "content":content},
+						function(result) {	
+						$(obj).prev(".commentInput").val("");
+						$(obj).attr("disabled", true);
+						//更新评论数
+						var count = $(obj).parents(".answerblock").find(".comment-count").text();
+						count = count.substring(0,1);
+						$(obj).parents(".answerblock").find(".comment-count").text(Number(count) + 1 + " 条评论");
+						showComment(targetId, 1, type, obj);
+					});
+				}
+			}
+			
+			//ajax提交评论回复
+			function submitCommentReply(obj, pid, targetId, type) {
+				if("${user}" == "") {
+					$('#loginModal').modal();
+				} else {
+					var content = $(obj).parent(".comment-reply-opr").prev(".comment-input").val();			
+					$.post("${pageContext.request.contextPath}/commentServlet", {"method":"add", "pid":pid, "type":type, "targetId": targetId, "content":content},
+						function(result) {
+						//更新评论数
+						var count = $(obj).parents(".answerblock").find(".comment-count").text();
+						count = count.substring(0,1);
+						$(obj).parents(".answerblock").find(".comment-count").text(Number(count) + 1 + " 条评论");
+						showComment(targetId, 1, type, obj);
+					});
+				}
+			}
+			
+			$(function(){
+				//检测答案评论输入框是否有值,有才能提交评论
+				$("#tabPanes").on("keyup", ".commentInput", function() {
+					if (this.value != "") {
+						$(this).next(".commentSubmitBtn").attr("disabled", false);
+					} else {
+						$(this).next(".commentSubmitBtn").attr("disabled", true);
+					}
+				});
+				
+				//检测评论回复输入框是否有值,有才能提交评论
+				$("#tabPanes").on("keyup", ".comment-input", function() {
+					if (this.value != "") {
+						$(this).next(".comment-reply-opr").find(".comment-ok").attr("disabled", false);
+					} else {
+						$(this).next(".comment-reply-opr").find(".comment-ok").attr("disabled", true);
+					}
+				});
+			});
+			
+			//赞同回答
+			function agree(aid, obj, type) {		//type : 1, 回答.   2,文章
+				if("${user}" == "") {	//若用户未登录,不能点赞
+					$('#loginModal').modal();
+					return;
+				}
+				
+				$(obj).toggleClass("btn-default"); 
+				$(obj).toggleClass("btn-info");
+				$(obj).toggleClass("active");
+				var $disagreebtn = $(obj).next(".disagreebtn");
+				var cls = $disagreebtn.attr("class");
+				if(cls.indexOf("active") != -1) {	
+					$disagreebtn.toggleClass("btn-default"); 
+					$disagreebtn.toggleClass("btn-info");
+					$disagreebtn.toggleClass("active");
+				}
+				
+				var count =  parseInt($(obj).find(".keepgap").text());
+				if(($(obj).attr("class").indexOf("active")) != -1) {	//点赞,发送ajax请求
+					if(type == 1) {
+						$.post("${pageContext.request.contextPath}/answerServlet", {"method":"agree", "aid":aid});
+					} else {
+						$.post("${pageContext.request.contextPath}/articleServlet", {"method":"agree", "aid":aid});
+					}
+					$(obj).find(".keepgap").text(count + 1);
+				} else {	//取消点赞,发送ajax请求
+					if(type == 1) {
+						$.post("${pageContext.request.contextPath}/answerServlet", {"method":"disagree", "aid":aid});
+					} else {
+						$.post("${pageContext.request.contextPath}/articleServlet", {"method":"disagree", "aid":aid});
+					}
+					$(obj).find(".keepgap").text(count - 1);
+				}
+			}
+			//反对回答(取消赞同)
+			function disagree(aid, obj, type) {		//type : 1, 回答.   2,文章
+				if("${user}" == "") {	//若用户未登录,不能点赞
+					$('#loginModal').modal();
+					return;
+				}
+				
+				$(obj).toggleClass("btn-default"); 
+				$(obj).toggleClass("btn-info");
+				$(obj).toggleClass("active");
+				var $agreebtn = $(obj).prev(".agreebtn");
+				var count =  parseInt($agreebtn.find(".keepgap").text());
+				var cls = $agreebtn.attr("class");
+				if(cls.indexOf("active") != -1) {
+					$agreebtn.toggleClass("btn-default"); 
+					$agreebtn.toggleClass("btn-info");
+					$agreebtn.toggleClass("active");
+					$agreebtn.find(".keepgap").text(count - 1);
+					if(type == 1) {
+						$.post("${pageContext.request.contextPath}/answerServlet", {"method":"disagree", "aid":aid});
+					} else {
+						$.post("${pageContext.request.contextPath}/articleServlet", {"method":"disagree", "aid":aid});
+					}
+				} 
+			}
+			
+			//赞同评论
+			function agreeComment(cid, obj) {
+				if("${user}" == "") {
+					$('#loginModal').modal();
+				} else {
+					var count = parseInt($(obj).find("span").text());
+					$(obj).find("i").toggle();
+					
+					var $agree = $(obj).find(".fa-thumbs-up");
+					if($agree.css("display") != "none") {
+						$(obj).find("span").text(count + 1);
+						$.post("${pageContext.request.contextPath}/commentServlet", {"method":"agree", "cid":cid});
+					} else {
+						$(obj).find("span").text(count - 1);
+						$.post("${pageContext.request.contextPath}/commentServlet", {"method":"disagree", "cid":cid});
+					}
+				}
+			}
 		</script>
 	</head>
 
@@ -693,13 +915,13 @@
 						<li class="active">
 							<a href="#dynamic" data-toggle="tab">动态</a>
 						</li>
-						<li>
+						<li id="answerLi">
 							<a href="#answer" data-toggle="tab">回答 0</a>
 						</li>
 						<li id="questionLi">
 							<a href="#question" data-toggle="tab">提问 0</a>
 						</li>
-						<li>
+						<li id="articleLi">
 							<a href="#article" data-toggle="tab">文章 0</a>
 						</li>
 						<li>
@@ -732,7 +954,7 @@
 				</div>
 
 				<!-- Tab panes -->
-				<div class="tab-content">
+				<div class="tab-content" id="tabPanes">
 					<!-- 动态板块 -->
 					<div class="tab-pane active" id="dynamic">
 						<div style="height: 1px;background-color: #F0F2F7;"></div>
@@ -757,7 +979,7 @@
 							<a href="#" style="margin-left: 510px;font-weight: 100;">按时间排序</a>
 						</div>
 						<div class="separator"></div>
-						<div style="height: 280px;padding-top: 80px;">
+						<div id="noAnswer" style="height: 280px;padding-top: 80px;">
 							<div align="center">
 								<img src="${pageContext.request.contextPath}/img/noanswer.png" />
 							</div>
@@ -794,7 +1016,7 @@
 							<a href="#" style="margin-left: 510px;font-weight: 100;">按时间排序</a>
 						</div>
 						<div class="separator"></div>
-						<div style="height: 280px;padding-top: 80px;">
+						<div id="noArticle" style="height: 280px;padding-top: 80px;">
 							<div align="center">
 								<img src="${pageContext.request.contextPath}/img/noworks.png" />
 							</div>

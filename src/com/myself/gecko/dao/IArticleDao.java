@@ -25,5 +25,7 @@ public interface IArticleDao extends IBaseDao<Article>{
 
     List<Article> findAssociatedByKeywords(String keywords,User user, int currentPage, int pageSize) throws Exception;
 
-    List<Article> findAgreedArticle(int uid, int currentPage, int homeDynamicWatchCount) throws Exception;
+    List<Article> findAgreedArticle(User user, int uid, int currentPage, int homeDynamicWatchCount) throws Exception;
+
+    List<Article> findByUid(User user, int uid, int currentPage, int homeArticleCount) throws Exception;
 }

@@ -87,4 +87,8 @@ public interface Constant {
     public static final int SEARCH_ARTICLE_COUNT = 2;
 
     public static final int HOME_DYNAMIC_WATCH_COUNT = 2;
+
+    public static final int HOME_ANSWER_COUNT = 2;
+
+    public static final int HOME_ARTICLE_COUNT = 2;
 }

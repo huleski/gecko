@@ -2,6 +2,7 @@ package com.myself.gecko.dao.impl;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -277,19 +278,42 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
      * 根据UID查询用户点过赞的回答
      */
     @Override
-    public List<Answer> findAgreedAnswer(int uid, int currentPage, int pageSize)
+    public List<Answer> findAgreedAnswer(User user, int uid, int currentPage, int pageSize)
             throws Exception {
         ArrayList<Answer> list = new ArrayList<>();
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
         String sql = "select answer.id from answer join answer_agree aa on aa.aid = answer.id where aa.uid = ? limit ?,?";
         List<Map<String, Object>> list2 = queryRunner.query(sql, new MapListHandler(), uid,
                 (currentPage - 1) * pageSize, pageSize);
+        int id = 0;
+        if(user != null) {
+            id = user.getId();
+        }
         for (Map<String, Object> map : list2) {
             Answer answer = findById((int) map.get("id"));
             if(answer != null) {
-                improveAnswerInfo(answer, queryRunner, uid);
+                improveAnswerInfo(answer, queryRunner, id);
                 list.add(answer);
             }
+        }
+        return list;
+    }
+    
+    /**  
+     * 根据用户查询该用户的回答
+     * @throws Exception 
+     */
+    @Override
+    public List<Answer> findByUid(User user, int uid, int currentPage, int pageSize) throws Exception {
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        String whereClause = "where uid = " + uid;
+        List<Answer> list = selectLimitByWhere(currentPage, pageSize, whereClause);
+        int id = 0;
+        if(user != null) {
+            id = user.getId();
+        }
+        for (Answer answer : list) {
+            improveAnswerInfo(answer, queryRunner, id);
         }
         return list;
     }

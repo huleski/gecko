@@ -2,6 +2,7 @@ package com.myself.gecko.web.servlet;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import com.myself.gecko.domain.Answer;
+import com.myself.gecko.domain.Article;
 import com.myself.gecko.domain.PersonInfo;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.service.IUserService;
@@ -23,6 +26,56 @@ import com.myself.gecko.service.impl.UserServiceImpl;
 public class UserServlet extends BaseServlet {
     private static final long serialVersionUID = 1L;
     private static IUserService userService = UserServiceImpl.getUserService();
+    
+    /**
+     * 根据用户id查询该用户写下的文章
+     */
+    public String findArticleByUid(HttpServletRequest request, HttpServletResponse response) {
+        String idStr = (String) request.getParameter("id");
+        String curPage = (String) request.getParameter("currentPage");
+        User user = (User) request.getSession().getAttribute("user");
+        
+        try {
+            int id = Integer.parseInt(idStr);
+            int currentPage = Integer.parseInt(curPage);
+            List<Article> list = userService.findUserArticle(user, id, currentPage);
+            if (!list.isEmpty()) {
+                request.setAttribute("set", list);
+                return "/template/homearticle.jsp";
+            } else {
+                response.getWriter().write("0");
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "/500.jsp";
+    }
+    
+    /**
+     * 根据用户id查询该用户的回答
+     */
+    public String findAnswerByUid(HttpServletRequest request, HttpServletResponse response) {
+        String idStr = (String) request.getParameter("id");
+        String curPage = (String) request.getParameter("currentPage");
+        User user = (User) request.getSession().getAttribute("user");
+        
+        try {
+            int id = Integer.parseInt(idStr);
+            int currentPage = Integer.parseInt(curPage);
+            List<Answer> list = userService.findUserAnswer(user, id, currentPage);
+            if (!list.isEmpty()) {
+                request.setAttribute("set", list);
+                return "/template/homeanswer.jsp";
+            } else {
+                response.getWriter().write("0");
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "/500.jsp";
+    }
     
     /**
      * 根据用户id查询该用户提出的问题
@@ -50,15 +103,18 @@ public class UserServlet extends BaseServlet {
     public String findUserDynamicByUid(HttpServletRequest request, HttpServletResponse response) {
         String idStr = (String) request.getParameter("id");
         String curPage = (String) request.getParameter("currentPage");
+        User user = (User) request.getSession().getAttribute("user");
+
         try {
             int id = Integer.parseInt(idStr);
             int currentPage = Integer.parseInt(curPage);
-            Set set = userService.findUserDynamic(id, currentPage);
+            Set set = userService.findUserDynamic(user, id, currentPage);
             if (!set.isEmpty()) {
                 request.setAttribute("set", set);
-                return "/template/topicdynamic.jsp";
+                return "/template/homedynamic.jsp";
             } else {
                 response.getWriter().write("0");
+                return null;
             }
         } catch (Exception e) {
             e.printStackTrace();

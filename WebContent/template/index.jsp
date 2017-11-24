@@ -42,7 +42,7 @@
 						</button>
 					</c:if>
 					<c:if test="${s.agree == 1 }">
-						<button class="btn btn-info active agreebtn" onclick="agree(${s.id}, this, 1)">
+						<button class="btn btn-info active agreebtn" onclick="disagree(${s.id}, this, 1)">
 							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
 						</button>
 					</c:if>
@@ -124,7 +124,7 @@
 						</button>
 					</c:if>
 					<c:if test="${s.agree == 1 }">
-						<button class="btn btn-info active agreebtn" onclick="agree(${s.id}, this, 1)">
+						<button class="btn btn-info active agreebtn" onclick="disagree(${s.id}, this, 1)">
 							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
 						</button>
 					</c:if>
@@ -206,7 +206,7 @@
 						</button>
 					</c:if>
 					<c:if test="${s.agree == 1 }">
-						<button class="btn btn-info active agreebtn" onclick="agree(${s.id}, this, 1)">
+						<button class="btn btn-info active agreebtn" onclick="disagree(${s.id}, this, 1)">
 							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
 						</button>
 					</c:if>
@@ -289,7 +289,7 @@
 						</button>
 					</c:if>
 					<c:if test="${s.agree == 1 }">
-						<button class="btn btn-info active agreebtn" onclick="agree(${s.id}, this, 2)">
+						<button class="btn btn-info active agreebtn" onclick="disagree(${s.id}, this, 2)">
 							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
 						</button>
 					</c:if>
@@ -370,7 +370,7 @@
 						</button>
 					</c:if>
 					<c:if test="${s.agree == 1 }">
-						<button class="btn btn-info active agreebtn" onclick="agree(${s.id}, this, 2)">
+						<button class="btn btn-info active agreebtn" onclick="disagree(${s.id}, this, 2)">
 							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
 						</button>
 					</c:if>
@@ -451,7 +451,7 @@
 						</button>
 					</c:if>
 					<c:if test="${s.agree == 1 }">
-						<button class="btn btn-info active agreebtn" onclick="agree(${s.id}, this, 2)">
+						<button class="btn btn-info active agreebtn" onclick="disagree(${s.id}, this, 2)">
 							<span class="glyphicon glyphicon-chevron-up"><span class="keepgap">${s.agreeCount}</span></span>
 						</button>
 					</c:if>
