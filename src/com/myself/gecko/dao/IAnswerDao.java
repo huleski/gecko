@@ -32,4 +32,8 @@ public interface IAnswerDao extends IBaseDao<Answer> {
     List<Answer> findAgreedAnswer(User user, int uid, int currentPage, int homeDynamicWatchCount) throws Exception;
 
     List<Answer> findByUid(User user, int uid, int currentPage, int pagesize) throws Exception;
+
+    int findAuthorByAid(int aid) throws Exception;
+
+    void deleteByAid(int aid) throws Exception;
 }

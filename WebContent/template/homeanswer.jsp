@@ -61,6 +61,11 @@
 						<a class="text-situation report" data-placement="bottom" data-html="true" data-content='<ul class="nav nav-pills nav-stacked"><li><a href="javascript:void(0)">没有帮助</a></li><li><a href="javascript:void(0)">举报</a></li></ul>'>
 							···
 						</a>
+						<c:if test="${user.id == personId }">
+							<a href="javascript:void(0)" onclick="deleteAnswer(this, ${s.id })"  style="position:absolute;right:10px;top:5px;" >
+								删除
+							</a>
+						</c:if>
 					</span>
 					<button class="takeback btn btn-info btn-xs">收起</button>
 				</div>

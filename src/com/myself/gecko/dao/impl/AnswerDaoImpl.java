@@ -15,17 +15,22 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.ietf.jgss.Oid;
 
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IAnswerDao;
 import com.myself.gecko.domain.Answer;
+import com.myself.gecko.domain.Comment;
 import com.myself.gecko.domain.Question;
 import com.myself.gecko.domain.Topic;
 import com.myself.gecko.domain.User;
 import com.myself.gecko.util.C3P0Utils;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 @SuppressWarnings("all")
 public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
+
+    private Answer comment;
 
     /**  
      * 根据Qid查询所有回答
@@ -317,4 +322,27 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         }
         return list;
     }
+
+    @Override
+    public int findAuthorByAid(int aid) throws Exception {
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        String sql = "select uid from answer where id = ?";
+        return (int) queryRunner.query(sql, new ScalarHandler(), aid);
+    }
+
+    /**  
+     * 根据aid删除回答
+     */
+    @Override
+    public void deleteByAid(int aid) throws Exception {
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        // ----------------删除回答赞同----------------
+        String sql = "delete from answer_agree where aid = ?";
+        queryRunner.update(sql, aid);
+        
+        //-------------------删除回答-----------------------
+        sql = "delete from answer where id = ?";
+        queryRunner.update(sql, aid);
+    }
+    
 }

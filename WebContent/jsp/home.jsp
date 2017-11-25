@@ -630,6 +630,7 @@
 				$.post("${pageContext.request.contextPath}/userServlet",
 					{"method":"findAnswerByUid",
 					"currentPage": ++answer_index, 
+					"personId": "${person.id}",
 					"id":"${person.id}"}, 
 					function(result) {
 						if(result != "0") {
@@ -650,6 +651,7 @@
 				$.post("${pageContext.request.contextPath}/userServlet",
 					{"method":"findArticleByUid",
 					"currentPage": ++article_index, 
+					"personId": "${person.id}",
 					"id":"${person.id}"}, 
 					function(result) {
 						if(result != "0") {
@@ -824,6 +826,18 @@
 					}
 				}
 			}
+			
+			// 删除回答
+			function deleteAnswer(obj, aid){
+				$(obj).parents(".answerblock").hide();
+				$.post("${pageContext.request.contextPath}/userServlet", {"id":aid,method:"deleteAnswerById"});
+			}
+			
+			//删除文章
+			function deleteArticle(obj, aid){
+				$(obj).parents(".answerblock").hide();
+				$.post("${pageContext.request.contextPath}/userServlet", {"id":aid,method:"deleteArticleById"});
+			}
 		</script>
 	</head>
 
@@ -831,6 +845,7 @@
 		<div>
 			<!-- 引入导航栏 -->
 			<%@ include file="/jsp/header1.jsp" %>
+			<c:set value="${person.id }" var="personId"/>
 
 			<!--个人展示div-->
 			<div id="personalshow">
@@ -913,22 +928,22 @@
 				<div style="font-size: 16px;padding: 5px 0 5px 5px;">
 					<ul class="nav nav-pills" id="personalnav">
 						<li class="active">
-							<a href="#dynamic" data-toggle="tab">动态</a>
+							<a href="#dynamic" data-toggle="tab"> 动态 </a>
 						</li>
 						<li id="answerLi">
-							<a href="#answer" data-toggle="tab">回答 0</a>
+							<a href="#answer" data-toggle="tab"> 回答 </a>
 						</li>
 						<li id="questionLi">
-							<a href="#question" data-toggle="tab">提问 0</a>
+							<a href="#question" data-toggle="tab"> 提问 </a>
 						</li>
 						<li id="articleLi">
-							<a href="#article" data-toggle="tab">文章 0</a>
+							<a href="#article" data-toggle="tab"> 文章 </a>
 						</li>
 						<li>
-							<a href="#column" data-toggle="tab">专栏 0</a>
+							<a href="#column" data-toggle="tab"> 专栏 </a>
 						</li>
 						<li>
-							<a href="#share" data-toggle="tab">分享 0</a>
+							<a href="#share" data-toggle="tab"> 分享 </a>
 						</li>
 						<li class="btn-group">
 							<a href="#" data-toggle="dropdown" class="dropdown-toggle">

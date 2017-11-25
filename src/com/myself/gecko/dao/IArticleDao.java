@@ -28,4 +28,8 @@ public interface IArticleDao extends IBaseDao<Article>{
     List<Article> findAgreedArticle(User user, int uid, int currentPage, int homeDynamicWatchCount) throws Exception;
 
     List<Article> findByUid(User user, int uid, int currentPage, int homeArticleCount) throws Exception;
+
+    int findAuthorByAid(int aid) throws Exception;
+
+    void deleteByAid(int aid) throws Exception;
 }

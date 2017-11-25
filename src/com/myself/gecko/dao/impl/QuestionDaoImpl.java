@@ -165,8 +165,16 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
     @Override
     public List<Question> findWatchedQuestion(int uid, int currentPage, int pageSize) throws Exception {
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        String sql = "select distinct question.id, question.title, question.date from question left join question_watch on question.id = question_watch.qid where question_watch.uid = ? limit ?, ?";
-        return queryRunner.query(sql, new BeanListHandler<>(Question.class), uid, (currentPage - 1) * pageSize, pageSize);
+        String sql = "select distinct question.id from question left join question_watch on question.id = question_watch.qid where question_watch.uid = ? limit ?, ?";
+        List<Question> list = queryRunner.query(sql, new BeanListHandler<>(Question.class), uid, (currentPage - 1) * pageSize, pageSize);
+        List<Question> questions= new ArrayList<Question>();
+        
+        
+        for (Question question : list) {
+            Question q = findQuestionById(question.getId(), null);
+            questions.add(q);
+        }
+        return questions;
     }
 
     // 查询关注话题中新增的问题

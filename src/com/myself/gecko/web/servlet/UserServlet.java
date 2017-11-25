@@ -26,7 +26,39 @@ import com.myself.gecko.service.impl.UserServiceImpl;
 public class UserServlet extends BaseServlet {
     private static final long serialVersionUID = 1L;
     private static IUserService userService = UserServiceImpl.getUserService();
+
+    /**
+     * 根据id删除article
+     */
+    public String deleteArticleById(HttpServletRequest request, HttpServletResponse response) {
+        String aidStr = (String) request.getParameter("id");
+        User user = (User) request.getSession().getAttribute("user");
+        
+        try {
+            int aid = Integer.parseInt(aidStr);
+            userService.deleteArticleById(user, aid);
+        }catch( Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     
+    /**
+     * 根据id删除answer
+     */
+    public String deleteAnswerById(HttpServletRequest request, HttpServletResponse response) {
+        String aidStr = (String) request.getParameter("id");
+        User user = (User) request.getSession().getAttribute("user");
+        
+        try {
+            int aid = Integer.parseInt(aidStr);
+            userService.deleteAnswerById(user, aid);
+        }catch( Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * 根据用户id查询该用户写下的文章
      */
@@ -34,13 +66,15 @@ public class UserServlet extends BaseServlet {
         String idStr = (String) request.getParameter("id");
         String curPage = (String) request.getParameter("currentPage");
         User user = (User) request.getSession().getAttribute("user");
-        
+        String personId = (String) request.getParameter("personId");
+
         try {
             int id = Integer.parseInt(idStr);
             int currentPage = Integer.parseInt(curPage);
             List<Article> list = userService.findUserArticle(user, id, currentPage);
             if (!list.isEmpty()) {
                 request.setAttribute("set", list);
+                request.setAttribute("personId", personId);
                 return "/template/homearticle.jsp";
             } else {
                 response.getWriter().write("0");
@@ -51,13 +85,14 @@ public class UserServlet extends BaseServlet {
         }
         return "/500.jsp";
     }
-    
+
     /**
      * 根据用户id查询该用户的回答
      */
     public String findAnswerByUid(HttpServletRequest request, HttpServletResponse response) {
         String idStr = (String) request.getParameter("id");
         String curPage = (String) request.getParameter("currentPage");
+        String personId = (String) request.getParameter("personId");
         User user = (User) request.getSession().getAttribute("user");
         
         try {
@@ -66,6 +101,7 @@ public class UserServlet extends BaseServlet {
             List<Answer> list = userService.findUserAnswer(user, id, currentPage);
             if (!list.isEmpty()) {
                 request.setAttribute("set", list);
+                request.setAttribute("personId", personId);
                 return "/template/homeanswer.jsp";
             } else {
                 response.getWriter().write("0");
@@ -76,7 +112,7 @@ public class UserServlet extends BaseServlet {
         }
         return "/500.jsp";
     }
-    
+
     /**
      * 根据用户id查询该用户提出的问题
      */
@@ -96,7 +132,6 @@ public class UserServlet extends BaseServlet {
         return "/500.jsp";
     }
 
-    
     /**
      * 根据id查询该用户动态
      */

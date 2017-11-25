@@ -1,5 +1,6 @@
 package com.myself.gecko.dao.impl;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -83,4 +84,43 @@ public class CommentDaoImpl extends BaseDaoImpl<Comment> implements ICommentDao 
 		String sql = "delete from comment_agree where cid = ? and uid = ?";
 		queryRunner.update(sql, cid, uid);
 	}
+
+    /**  
+     * 根据目标id和type删除评论
+     */
+    @Override
+    public void deleteByTargetIdAndType(int targetId, int type) throws Exception {
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        //查询评论id
+        String sql = "select id from comment where targetId = ? and type = ?";
+        List<Comment> comments = queryRunner.query(sql, new BeanListHandler<>(Comment.class), targetId, type);
+        // 删除评论的赞同
+        for (Comment comment : comments) {
+            sql = "delete from comment_agree where cid = ?";
+            queryRunner.update(sql, comment.getId());
+        }
+        
+        //查询pid为null的评论(顶层评论)
+        sql = "select id from comment where pid is null and targetId = ? and type = ?";
+        List<Comment> topComments = queryRunner.query(sql, new BeanListHandler<>(Comment.class), targetId, type);
+        //递归删除评论
+        for (Comment comment : topComments) {
+            recurseDeleteComment(sql, queryRunner, comment.getId());
+        }
+    }
+    
+    /**  
+     * 递归删除评论
+     */
+    public void recurseDeleteComment(String sql, QueryRunner queryRunner,  int cid) throws SQLException {
+        sql = "select id from comment where pid = ?";
+        List<Comment> topComments = queryRunner.query(sql, new BeanListHandler<>(Comment.class), cid);
+
+        for (Comment comment : topComments) {
+            recurseDeleteComment(sql, queryRunner, comment.getId());
+        }
+        
+        sql = "delete from comment where id = ?";
+        queryRunner.update(sql, cid);
+    }
 }

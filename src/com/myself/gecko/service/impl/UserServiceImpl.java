@@ -11,11 +11,13 @@ import java.util.TreeSet;
 import com.myself.gecko.constant.Constant;
 import com.myself.gecko.dao.IAnswerDao;
 import com.myself.gecko.dao.IArticleDao;
+import com.myself.gecko.dao.ICommentDao;
 import com.myself.gecko.dao.IQuestionDao;
 import com.myself.gecko.dao.ITopicDao;
 import com.myself.gecko.dao.IUserDao;
 import com.myself.gecko.dao.impl.AnswerDaoImpl;
 import com.myself.gecko.dao.impl.ArticleDaoImpl;
+import com.myself.gecko.dao.impl.CommentDaoImpl;
 import com.myself.gecko.dao.impl.QuestionDaoImpl;
 import com.myself.gecko.dao.impl.TopicDaoImpl;
 import com.myself.gecko.dao.impl.UserDaoImpl;
@@ -35,6 +37,7 @@ public class UserServiceImpl implements IUserService {
 	private IAnswerDao answerDao = new AnswerDaoImpl();
 	private ITopicDao topicDao = TopicDaoImpl.getTopicDao();
 	private IArticleDao articleDao = new ArticleDaoImpl();
+	private ICommentDao commentDao = new CommentDaoImpl();
 	
 	private UserServiceImpl() {}
 	
@@ -155,6 +158,39 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<Article> findUserArticle(User user, int uid, int currentPage) throws Exception {
         return articleDao.findByUid(user, uid, currentPage, Constant.HOME_ARTICLE_COUNT);
+    }
+
+    /**  
+     * 根据aid删除答案
+     */
+    @Override
+    public void deleteAnswerById(User user, int aid) throws Exception {
+        int uid = answerDao.findAuthorByAid(aid);   //查询作者id
+        if(user == null || user.getId() != uid ) {  //没有登录或者不是作者本人就直接返回
+            return ;
+        }
+        // 先删除回答的评论
+        commentDao.deleteByTargetIdAndType(aid, 1);
+        
+        // 删除回答
+        answerDao.deleteByAid(aid);
+    }
+    
+    /**  
+     * 根据aid删除文章
+     */
+    @Override
+    public void deleteArticleById(User user, int aid) throws Exception {
+        int uid = articleDao.findAuthorByAid(aid);   //查询作者id
+        if(user == null || user.getId() != uid ) {  //没有登录或者不是作者本人就直接返回
+            return ;
+        }
+        
+        // 先删除文章的评论
+        commentDao.deleteByTargetIdAndType(aid, 2);
+        
+        // 删除文章
+        articleDao.deleteByAid(aid);
     }
 
 }

@@ -244,4 +244,29 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         }
         return list;
     }
+    
+    /**  
+     * 查询文章的作者id
+     */
+    @Override
+    public int findAuthorByAid(int aid) throws Exception {
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        String sql = "select uid from article where id = ?";
+        return (int) queryRunner.query(sql, new ScalarHandler(), aid);
+    }
+
+    /**  
+     * 根据id删除文章
+     */
+    @Override
+    public void deleteByAid(int aid) throws Exception {
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        //删除文章赞同--
+        String sql = "delete from article_agree where aid = ?";
+        queryRunner.update(sql, aid);
+        
+        //-删除文章
+        sql = "delete from article where id = ?";
+        queryRunner.update(sql, aid);
+    }
 }

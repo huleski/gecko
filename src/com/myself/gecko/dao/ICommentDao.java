@@ -18,4 +18,6 @@ public interface ICommentDao extends IBaseDao<Comment> {
 	
 	void disagree(User user, int cid) throws Exception;
 
+    void deleteByTargetIdAndType(int aid, int i) throws Exception;
+
 }
