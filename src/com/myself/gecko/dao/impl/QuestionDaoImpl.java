@@ -1,5 +1,7 @@
 package com.myself.gecko.dao.impl;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,8 +47,7 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
     }
 
     // 完善问题信息
-    @Override
-    public Question findQuestionById(int id, User user) throws Exception {
+    /*public Question findQuestionById(int id, User user) throws Exception {
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
         // 查询问题
         String sql = "select * from question where id = ?";
@@ -98,6 +99,59 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
         User asker = queryRunner.query(sql, new BeanHandler<>(User.class), uid);
         question.setUser(asker);
         return question;
+    }*/
+    
+    /**  
+     * 完善问题信息
+     */
+    @Override
+    public void improveQuestionInfo(Question question, User user) throws Exception {
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        // 查询话题并封装
+        String sql = "select topic.id, topic.name from topic join question on question.tid = topic.id where question.id = ?";
+        Map<String, Object> map = queryRunner.query(sql, new MapHandler(), question.getId());
+        Topic topic = new Topic();
+        BeanUtils.populate(topic, map);
+        question.setTopic(topic);
+        
+        // 查询是否已经关注
+        if (user != null) {
+            int uid = user.getId();
+            sql = "select count(*) from question_watch where uid = ? and qid = ?";
+            Long count = (Long) queryRunner.query(sql, new ScalarHandler(), uid, question.getId());
+            question.setWatched(count.intValue());
+        }
+        
+        // 查询回答并封装
+        sql = "select id from answer where qid = ?";
+        List<Map<String, Object>> list = queryRunner.query(sql, new MapListHandler(), question.getId());
+        for (Map<String, Object> map2 : list) {
+            question.getAnswerList().add(new Answer());
+        }
+        
+        // 查询关注数并封装
+        sql = "select count(*) from question_watch where qid = ?";
+        Long watchCount = (Long) queryRunner.query(sql, new ScalarHandler(), question.getId());
+        question.setWatchCount(watchCount.intValue());
+        
+        // 查询评论并封装
+        sql = "select id from comment where targetId = ? and type = ?";
+        List<Map<String, Object>> list3 =
+                queryRunner.query(sql, new MapListHandler(), question.getId(), Constant.COMMENT_TYPE_QUESTION);
+        for (Map<String, Object> map4 : list3) {
+            question.getCommentList().add(new Comment());
+        }
+        
+        // 查询提问者并封装
+        sql = "select uid from question where id = ?";
+        int uid = -1;
+        List<Map<String, Object>> list4 = queryRunner.query(sql, new MapListHandler(), question.getId());
+        for (Map<String, Object> map4 : list4) {
+            uid = (int) map4.get("uid");
+        }
+        sql = "select * from user where id = ?";
+        User asker = queryRunner.query(sql, new BeanHandler<>(User.class), uid);
+        question.setUser(asker);
     }
 
     // 关注问题
@@ -156,39 +210,34 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
         List<Question> list = queryRunner.query(sql, new BeanListHandler<>(Question.class), topicId,
                 (currentPage - 1) * pageSize, pageSize);
         for (Question question : list) {
-            question = findQuestionById(question.getId(), null);
+            improveQuestionInfo(question, null);
         }
         return list;
     }
 
     // 查询已关注的问题
     @Override
-    public List<Question> findWatchedQuestion(int uid, int currentPage, int pageSize) throws Exception {
+    public List<Question> findWatchedQuestion(User user, int currentPage, int pageSize) throws Exception {
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        String sql = "select distinct question.id from question left join question_watch on question.id = question_watch.qid where question_watch.uid = ? limit ?, ?";
-        List<Question> list = queryRunner.query(sql, new BeanListHandler<>(Question.class), uid, (currentPage - 1) * pageSize, pageSize);
-        List<Question> questions= new ArrayList<Question>();
-        
+        String sql = "select distinct question.* from question left join question_watch on question.id = question_watch.qid where question_watch.uid = ? limit ?, ?";
+        List<Question> list = queryRunner.query(sql, new BeanListHandler<>(Question.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
         
         for (Question question : list) {
-            Question q = findQuestionById(question.getId(), null);
-            questions.add(q);
+            improveQuestionInfo(question, user);
         }
-        return questions;
+        return list;
     }
 
     // 查询关注话题中新增的问题
     @Override
     public List<Question> findNewestQuestionInWatchedTopics(User user, int currentPage,
             int pageSize) throws Exception {
-        ArrayList<Question> list = new ArrayList<>();
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        String sql =
-                "select distinct question.id from question left join topic on topic.id = question.tid join topic_watch on topic.id = topic_watch.tid where topic_watch.uid = ? order by question.date desc limit ?, ?";
-        List<Map<String, Object>> mapList = queryRunner.query(sql, new MapListHandler(),
+        String sql = "select question.* from question left join topic on topic.id = question.tid join topic_watch on topic.id = topic_watch.tid where topic_watch.uid = ? order by question.date desc limit ?, ?";
+        List<Question> list = queryRunner.query(sql, new BeanListHandler<>(Question.class),
                 user.getId(), (currentPage - 1) * pageSize, pageSize);
-        for (Map<String, Object> map : mapList) {
-            list.add(findQuestionById((int) map.get("id"), user));
+        for (Question question : list) {
+            improveQuestionInfo(question, user);
         }
         return list;
     }
@@ -204,10 +253,10 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
         List<Map<String, Object>> list = queryRunner.query(sql, new MapListHandler(), user.getId(),
                 (currentPage - 1) * pageSize, pageSize);
         for (Map<String, Object> map : list) {
-            Question question = findQuestionById((int) map.get("id"), user);
+            Question question = findById((int) map.get("id"));
+            improveQuestionInfo(question, user);
             sql = "select id, name from user where id = ?";
-            User watcher =
-                    queryRunner.query(sql, new BeanHandler<>(User.class), (int) map.get("hostId"));
+            User watcher = queryRunner.query(sql, new BeanHandler<>(User.class), (int) map.get("hostId"));
             question.setWatcher(watcher);
             question.setMark(13);
             questions.add(question);
@@ -219,13 +268,11 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
     @Override
     public List<Question> findNewestQuestions(int currentPage, int pageSize) throws Exception {
         String whereClause = "order by date desc";
-        List<Question> aList = new ArrayList<>();
         List<Question> list = selectLimitByWhere(currentPage, pageSize, whereClause);
         for (Question question : list) {
-            Question q = findQuestionById(question.getId(), null);
-            aList.add(q);
+            improveQuestionInfo(question, null);
         }
-        return aList;
+        return list;
     }
 
     /**

@@ -16,7 +16,9 @@ public class ArticleServiceImpl implements IArticleServive {
 
 	@Override
 	public Article findById(int aid, User user) throws Exception {
-		return articleDao.findAnswerById(aid, user);
+	    Article article = articleDao.findById(aid);
+	    articleDao.improveArticleInfo(article, user);
+		return article;
 	}
 
 	@Override

@@ -125,7 +125,7 @@ public class UserServiceImpl implements IUserService {
         });
         
         // 关注了 问题 
-        List<Question> questions = questionDao.findWatchedQuestion(uid, currentPage, Constant.HOME_DYNAMIC_WATCH_COUNT);
+        List<Question> questions = questionDao.findWatchedQuestion(user, currentPage, Constant.HOME_DYNAMIC_WATCH_COUNT);
         
         // 赞同过回答/文章
         List<Answer> answers = answerDao.findAgreedAnswer(user, uid, currentPage, Constant.HOME_DYNAMIC_WATCH_COUNT);
@@ -191,6 +191,11 @@ public class UserServiceImpl implements IUserService {
         
         // 删除文章
         articleDao.deleteByAid(aid);
+    }
+
+    @Override
+    public User findUserByName(String name) throws Exception {
+        return answerDao.findUserByName(name);
     }
 
 }

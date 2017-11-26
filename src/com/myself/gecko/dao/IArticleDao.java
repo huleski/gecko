@@ -13,8 +13,6 @@ public interface IArticleDao extends IBaseDao<Article>{
 
 	void agree(User user, int aid) throws Exception;
 
-	Article findAnswerById(int aid, User user) throws Exception;
-
 	List<Article> findArticleByOrderStyle(int tid, User user, String orderStyle, int currentPage, int pageSize) throws Exception;
 
     List<Article> findArticlesByUserWatch(User user, int currentPage, int pageSize) throws Exception;
@@ -32,4 +30,6 @@ public interface IArticleDao extends IBaseDao<Article>{
     int findAuthorByAid(int aid) throws Exception;
 
     void deleteByAid(int aid) throws Exception;
+
+    void improveArticleInfo(Article article, User user) throws Exception;
 }

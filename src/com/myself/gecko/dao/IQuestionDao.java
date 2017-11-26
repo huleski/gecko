@@ -12,8 +12,6 @@ public interface IQuestionDao extends IBaseDao<Question> {
 	
 	List<Question> ajaxQueryByUid(int currentPage, int pageSize, int uid) throws SQLException;
 
-	Question findQuestionById(int id, User user) throws Exception;
-
 	void addWatch(int qid, User user) throws Exception;
 	
 	void cancleWatch(int qid, User user) throws Exception;
@@ -26,7 +24,7 @@ public interface IQuestionDao extends IBaseDao<Question> {
 
     List<Question> findNewestQuestion(int topicId, int currentPage, int pageSize) throws Exception;
 
-    List<Question> findWatchedQuestion(int uid, int currentPage, int pageSize) throws Exception;
+    List<Question> findWatchedQuestion(User user, int currentPage, int pageSize) throws Exception;
 
     List<Question> findNewestQuestionInWatchedTopics(User user, int currentPage,
             int pageSize) throws Exception;
@@ -40,5 +38,7 @@ public interface IQuestionDao extends IBaseDao<Question> {
      * 根据关键字查找相关联的问题
      */
     List<Question> findAssociatedByKeywords(String keywords, int currentPage, int pageSize) throws Exception;
+
+    void improveQuestionInfo(Question question, User user) throws Exception;
 
 }

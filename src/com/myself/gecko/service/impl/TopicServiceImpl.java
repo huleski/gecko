@@ -120,7 +120,8 @@ public class TopicServiceImpl implements ITopicService {
 				answer.setQuestion(question);
 				set.add(answer);
 			} else { // 还没有回答
-				Question q = questionDao.findQuestionById(question.getId(), user);
+			    Question q = questionDao.findById(question.getId());
+			    questionDao.improveQuestionInfo(q, user);
 				set.add(q);
 			}
 		}

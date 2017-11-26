@@ -58,10 +58,30 @@
 				}, "请输入正确的手机号");
 				
 				//判断是否是注册
-				if("${param.register}" == 1) {
+				if("${param.register}" == 1 || "${register}" == 1) {
 					$("#registerLi a").click();
 				}
+				
+				var timer;
+				// 验证用户名是否存在
+				$("#username-input").keyup(function(){
+					//设置定时器,延迟keyup触发事件
+					clearTimeout(timer);
+	                timer = setTimeout(function() {
+						var name = $.trim($("#username-input").val());
+						if(name != ""){//搜索输入框不为空
+							$.getJSON("${pageContext.request.contextPath}/userServlet", {method:"findUserByName","name":name}, function(result){
+								alert(result);
+							});
+						}
+	                }, 1000);
+				});
 			});
+			
+			//更换验证码
+			function changeCode(obj){
+				obj.src="${pageContext.request.contextPath}/template/validatecode.jsp?" + new Date();
+			}
 		</script>
 		<style type="text/css">
 			body {
@@ -161,13 +181,13 @@
 									<form id="registerForm" action="${pageContext.request.contextPath}/userServlet" method="post">
 										<div style="height: 210px;margin-bottom: 15px;">
 											<input type="hidden" name="method" value="register" />
-											<div class="errordiv"><input name="name" type="text" class="input" placeholder="用户名"><label class="errorPlace"></label></div>
+											<div class="errordiv"><input name="name" type="text" class="input" id="username-input" value="${fail }" placeholder="用户名"><label class="errorPlace"></label></div>
 											<div class="errordiv"><input name="password" type="password" class="input" placeholder="密码"><label class="errorPlace"></label></div>
 											<div class="errordiv"><input name="phone" type="text" class="input" placeholder="手机号"><label class="errorPlace"></label></div>
 											<div class="errordiv">
-												<input name="code" type="text" class="input" style="width: 210px;position: absolute;left: 0;" placeholder="验证码">
+												<input name="code" type="text" class="input" style="width: 210px;position: absolute;left: 0;" placeholder="验证码" value="${codeError }">
 												<label class="errorPlace" style="right: 115px;"></label>
-												<img src="${pageContext.request.contextPath}/img/check.jpg" width="90px" style="position: absolute;right: 0;margin: 4px 10px 20px;" />
+												<img onclick="changeCode(this)" src="${pageContext.request.contextPath}/template/validatecode.jsp" width="110px" height="50px" style="position: absolute;right: 0;" />
 											</div>
 										</div>
 										<button type="submit" class="btn btn-info btn-lg btn-block">注册逼乎</button>

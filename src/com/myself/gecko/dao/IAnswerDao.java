@@ -36,4 +36,6 @@ public interface IAnswerDao extends IBaseDao<Answer> {
     int findAuthorByAid(int aid) throws Exception;
 
     void deleteByAid(int aid) throws Exception;
+
+    User findUserByName(String name) throws Exception;
 }

@@ -344,5 +344,15 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements IAnswerDao {
         sql = "delete from answer where id = ?";
         queryRunner.update(sql, aid);
     }
+
+    /**  
+     * 根据用户名查询用户
+     */
+    @Override
+    public User findUserByName(String name) throws Exception {
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        String sql = "select * from user where name = ?";
+        return queryRunner.query(sql, new BeanHandler(User.class), name);
+    }
     
 }

@@ -24,7 +24,7 @@ import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao {
 
-    /**  
+    /**
      * 保存
      */
     @Override
@@ -36,7 +36,7 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         CU(sql, params);
     }
 
-    /**  
+    /**
      * 点赞
      */
     @Override
@@ -51,7 +51,7 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         }
     }
 
-    /**  
+    /**
      * 取消点赞
      */
     @Override
@@ -62,11 +62,10 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         queryRunner.update(sql, aid, uid);
     }
 
-    /**  
+    /**
      * 根据id查找文章
      */
-    @Override
-    public Article findAnswerById(int aid, User user) throws Exception {
+    /*public Article findAnswerById(int aid, User user) throws Exception {
         Article article = findById(aid);
 
         String sql = "select uid, tid from article where id = ?";
@@ -102,9 +101,48 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
             article.setAgree(agree.intValue());
         }
         return article;
+    }*/
+
+    /**
+     * 根据id查找文章
+     */
+    @Override
+    public void improveArticleInfo(Article article, User user) throws Exception {
+        String sql = "select uid, tid from article where id = ?";
+        QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
+        Map<String, Object> map = queryRunner.query(sql, new MapHandler(), article.getId());
+
+        // 封装作者
+        sql = "select * from user where id = ?";
+        User author = queryRunner.query(sql, new BeanHandler<>(User.class), map.get("uid"));
+        article.setUser(author);
+
+        // 封装话题
+        sql = "select * from topic where id = ?";
+        Topic topic = queryRunner.query(sql, new BeanHandler<>(Topic.class), map.get("tid"));
+        article.setTopic(topic);
+
+        // 查询赞同数
+        sql = "select count(*) from article_agree where aid = ?";
+        Long agreeCount = (Long) queryRunner.query(sql, new ScalarHandler(), article.getId());
+        article.setAgreeCount(agreeCount.intValue());
+
+        // 查询评论数
+        sql = "select count(*) from comment where type = ? and targetId = ?";
+        Long commentCount = (Long) queryRunner.query(sql, new ScalarHandler(),
+                Constant.COMMENT_TYPE_ARTICLE, article.getId());
+        article.setCommentCount(commentCount.intValue());
+
+        // 查询是否点过赞
+        if (user != null) {
+            int uid = user.getId();
+            sql = "select count(*) from article_agree where aid = ? and uid = ?";
+            Long agree = (Long) queryRunner.query(sql, new ScalarHandler(), article.getId(), uid);
+            article.setAgree(agree.intValue());
+        }
     }
 
-    /**  
+    /**
      * 根据tid查询和排序方式查询文章
      */
     @Override
@@ -113,42 +151,45 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
         String sql = null;
         if ("hot".equals(orderStyle)) {
-            sql = "select article.id from article left join article_agree on article.id = article_agree.aid where tid = ? group by article.id order by count(article_agree.id) desc limit ?, ?";
+            sql = "select article.* from article left join article_agree on article.id = article_agree.aid where tid = ? group by article.id order by count(article_agree.id) desc limit ?, ?";
         } else {
-            sql = "select id from article where tid = ? order by date desc limit ?, ?";
+            sql = "select * from article where tid = ? order by date desc limit ?, ?";
         }
         List<Article> aList = queryRunner.query(sql, new BeanListHandler<>(Article.class), tid,
                 (currentPage - 1) * pageSize, pageSize);
-        List<Article> list = new ArrayList<>();
 
         for (Article article : aList) {
-            article = findAnswerById(article.getId(), user);
-            list.add(article);
+            improveArticleInfo(article, user);
         }
-        return list;
+        return aList;
     }
 
-    /**  
+    /**
      * 查询关注的用户新添加/点赞的文章
      */
     @Override
-    public List<Article> findArticlesByUserWatch(User user, int currentPage, int pageSize) throws Exception {
+    public List<Article> findArticlesByUserWatch(User user, int currentPage, int pageSize)
+            throws Exception {
         ArrayList<Article> list = new ArrayList<>();
-        //查询关注用户新增的文章
-        String sql = "select article.id from article join user u1 on u1.id = article.uid join user_watch on user_watch.hostId = u1.id where user_watch.watcherId = ? limit ?,?";
+        // 查询关注用户新增的文章
+        String sql =
+                "select article.* from article join user u1 on u1.id = article.uid join user_watch on user_watch.hostId = u1.id where user_watch.watcherId = ? limit ?,?";
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        List<Map<String, Object>> tempList = queryRunner.query(sql, new MapListHandler(), user.getId(), (currentPage - 1) * pageSize, pageSize);
-        for (Map<String, Object> map : tempList) {
-            Article article = findAnswerById((int) map.get("id"), user);
+        List<Article> articles = queryRunner.query(sql, new BeanListHandler<>(Article.class),
+                user.getId(), (currentPage - 1) * pageSize, pageSize);
+        for (Article article : articles) {
+            improveArticleInfo(article, user);
             article.setMark(12);
-            list.add(article);
         }
+        list.addAll(articles);
 
-        //查询关注用户赞同的文章
+        // 查询关注用户赞同的文章
         sql = "select article.id, uw.watcherId from article join article_agree aa on aa.aid = article.id join user u1 on u1.id = aa.uid join user_watch uw on uw.hostId = u1.id where uw.watcherId = ? limit ?,?";
-        List<Map<String, Object>> list2 = queryRunner.query(sql, new MapListHandler(), user.getId(), (currentPage - 1) * pageSize, pageSize);
+        List<Map<String, Object>> list2 = queryRunner.query(sql, new MapListHandler(), user.getId(),
+                (currentPage - 1) * pageSize, pageSize);
         for (Map<String, Object> map : list2) {
-            Article article = findAnswerById((int) map.get("id"), user);
+            Article article = findById((int) map.get("id"));
+            improveArticleInfo(article, user);
             article.setMark(22);
             int uid = (int) map.get("watcherId");
             sql = "select id, name from user where id = ?";
@@ -159,71 +200,65 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         return list;
     }
 
-    /**  
+    /**
      * 查询最新的文章
      */
     @Override
     public List<Article> findNewestArticles(int currentPage, int pageSize) throws Exception {
         String whereClause = "order by date desc";
-        List<Article> aList = new ArrayList<>(); 
-        List<Article> list = selectLimitByWhere(currentPage, pageSize, whereClause );
+        List<Article> list = selectLimitByWhere(currentPage, pageSize, whereClause);
         for (Article article : list) {
-            Article a = findAnswerById(article.getId(), null);
-            aList.add(a);
+            improveArticleInfo(article, null);
         }
-        return aList;
+        return list;
     }
 
-    /**  
+    /**
      * 查询关注的话题中增加的文章
      */
     @Override
     public List<Article> findNewestArticlesInWatchedTopics(User user, int currentPage, int pageSize)
             throws Exception {
-        List<Article> aList = new ArrayList<>(); 
-        String sql = "select article.id from article join topic t on t.id = article.tid join topic_watch tw on tw.tid = t.id where tw.uid = ? limit ?,?";
+        String sql =
+                "select article.* from article join topic t on t.id = article.tid join topic_watch tw on tw.tid = t.id where tw.uid = ? limit ?,?";
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        List<Article> list = queryRunner.query(sql, new BeanListHandler<>(Article.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
+        List<Article> list = queryRunner.query(sql, new BeanListHandler<>(Article.class),
+                user.getId(), (currentPage - 1) * pageSize, pageSize);
         for (Article article : list) {
-            Article a = findAnswerById(article.getId(), user);
-            aList.add(a);
+            improveArticleInfo(article, user);
         }
-        return aList;
+        return list;
     }
 
-    /**  
+    /**
      * 根据关键字查询相关文章
      */
     @Override
-    public List<Article> findAssociatedByKeywords(String keywords, User user, int currentPage, int pageSize) throws Exception {
-        List<Article> aList = new ArrayList<>(); 
-        String sql = "select a.id from article a left join article_agree ag on a.id = ag.aid where a.title like ? group by a.id order by count(a.id) desc limit ?,?";
+    public List<Article> findAssociatedByKeywords(String keywords, User user, int currentPage,
+            int pageSize) throws Exception {
+        String sql =
+                "select a.* from article a left join article_agree ag on a.id = ag.aid where a.title like ? group by a.id order by count(a.id) desc limit ?,?";
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        List<Article> list = queryRunner.query(sql, new BeanListHandler<>(Article.class), "%" + keywords + "%", (currentPage - 1) * pageSize, pageSize);
+        List<Article> list = queryRunner.query(sql, new BeanListHandler<>(Article.class),
+                "%" + keywords + "%", (currentPage - 1) * pageSize, pageSize);
         for (Article article : list) {
-            Article a = findAnswerById(article.getId(), user);
-            aList.add(a);
+            improveArticleInfo(article, user);
         }
-        return aList;
+        return list;
     }
 
-    /**  
+    /**
      * 根据UID查询用户点过赞的文章
      */
     @Override
     public List<Article> findAgreedArticle(User user, int uid, int currentPage, int pageSize)
             throws Exception {
-        ArrayList<Article> list = new ArrayList<>();
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        String sql = "select article.id from article join article_agree aa on aa.aid = article.id where aa.uid = ? limit ?,?";
-        List<Map<String, Object>> list2 = queryRunner.query(sql, new MapListHandler(), uid,
+        String sql = "select article.* from article join article_agree aa on aa.aid = article.id where aa.uid = ? limit ?,?";
+        List<Article> list = queryRunner.query(sql, new BeanListHandler<>(Article.class), uid,
                 (currentPage - 1) * pageSize, pageSize);
-        for (Map<String, Object> map : list2) {
-            int aid = (int) map.get("id");
-            Article a = findAnswerById(aid, user);
-            if(a != null) {
-                list.add(a);
-            }
+        for (Article article : list) {
+            improveArticleInfo(article, user);
         }
         return list;
     }
@@ -231,21 +266,17 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
     @Override
     public List<Article> findByUid(User user, int uid, int currentPage, int pageSize)
             throws Exception {
-        List<Article> list = new ArrayList<>();
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        String sql = "select id from article where uid = ? limit ?, ?";
-        List<Map<String, Object>> mapList = queryRunner.query(sql, new MapListHandler(), uid, (currentPage - 1) * pageSize, pageSize);
-        
-        for (Map<String, Object> map : mapList) {
-            Article article = findAnswerById((int) map.get("id"), user);
-            if(article != null) {
-                list.add(article);
-            }
+        String sql = "select * from article where uid = ? limit ?, ?";
+        List<Article> list = queryRunner.query(sql, new BeanListHandler<>(Article.class), uid,
+                (currentPage - 1) * pageSize, pageSize);
+        for (Article article : list) {
+            improveArticleInfo(article, user);
         }
         return list;
     }
-    
-    /**  
+
+    /**
      * 查询文章的作者id
      */
     @Override
@@ -255,17 +286,17 @@ public class ArticleDaoImpl extends BaseDaoImpl<Article> implements IArticleDao 
         return (int) queryRunner.query(sql, new ScalarHandler(), aid);
     }
 
-    /**  
+    /**
      * 根据id删除文章
      */
     @Override
     public void deleteByAid(int aid) throws Exception {
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
-        //删除文章赞同--
+        // 删除文章赞同--
         String sql = "delete from article_agree where aid = ?";
         queryRunner.update(sql, aid);
-        
-        //-删除文章
+
+        // -删除文章
         sql = "delete from article where id = ?";
         queryRunner.update(sql, aid);
     }

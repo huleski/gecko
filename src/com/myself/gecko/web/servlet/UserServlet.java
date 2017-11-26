@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.myself.gecko.domain.Answer;
 import com.myself.gecko.domain.Article;
@@ -33,27 +34,27 @@ public class UserServlet extends BaseServlet {
     public String deleteArticleById(HttpServletRequest request, HttpServletResponse response) {
         String aidStr = (String) request.getParameter("id");
         User user = (User) request.getSession().getAttribute("user");
-        
+
         try {
             int aid = Integer.parseInt(aidStr);
             userService.deleteArticleById(user, aid);
-        }catch( Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-    
+
     /**
      * 根据id删除answer
      */
     public String deleteAnswerById(HttpServletRequest request, HttpServletResponse response) {
         String aidStr = (String) request.getParameter("id");
         User user = (User) request.getSession().getAttribute("user");
-        
+
         try {
             int aid = Integer.parseInt(aidStr);
             userService.deleteAnswerById(user, aid);
-        }catch( Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -94,7 +95,7 @@ public class UserServlet extends BaseServlet {
         String curPage = (String) request.getParameter("currentPage");
         String personId = (String) request.getParameter("personId");
         User user = (User) request.getSession().getAttribute("user");
-        
+
         try {
             int id = Integer.parseInt(idStr);
             int currentPage = Integer.parseInt(curPage);
@@ -286,29 +287,61 @@ public class UserServlet extends BaseServlet {
     }
 
     /**
+     * 查询用户名是否存在
+     */
+    public String findUserByName(HttpServletRequest request, HttpServletResponse response) {
+        String name = request.getParameter("name");
+
+        try {
+            User user = userService.findUserByName(name);
+            if (user != null) {
+                response.getWriter().write("1");
+            } else {
+                response.getWriter().write("0");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 注册
      */
     public String register(HttpServletRequest request, HttpServletResponse response) {
+        String validateCode = (String) request.getSession().getAttribute("validateCode");
+
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         String phone = request.getParameter("phone");
+        String code = request.getParameter("code");
 
-        User user = new User();
-        user.setName(name);
-        user.setPassword(password);
-        user.setPhone(phone);
-        user.setPhoto("img/default.jpg");
-        user.setBackphoto("img/backphoto.png");
-        user.setVisitedCount(0);
+        // 校验验证码
+        if (StringUtils.isNotEmpty(code) && code.equals(validateCode)) {
+            User user = new User();
+            user.setName(name);
+            user.setPassword(password);
+            user.setPhone(phone);
+            user.setPhoto("img/default.jpg");
+            user.setBackphoto("img/backphoto.png");
+            user.setVisitedCount(0);
 
-        try {
-            userService.register(user);
-            response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "/500.jsp";
+            try {
+                userService.register(user);
+                response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
+                return null;
+            } catch (Exception e) {
+                e.printStackTrace();
+                request.setAttribute("fail", "注册失败");
+                request.setAttribute("register", 1);
+                return "/jsp/login.jsp";
+            }
+        } else {
+            request.setAttribute("codeError", "验证码错误");
+            request.setAttribute("register", "1");
+            return "/jsp/login.jsp";
         }
+
     }
 
     /**

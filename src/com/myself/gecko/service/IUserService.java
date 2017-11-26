@@ -26,4 +26,5 @@ public interface IUserService {
     public abstract List<Article> findUserArticle(User user, int id, int currentPage) throws Exception;
     public abstract void deleteAnswerById(User user, int aid) throws Exception;
     public abstract void deleteArticleById(User user, int aid) throws Exception;
+    public abstract User findUserByName(String name) throws Exception;
 }

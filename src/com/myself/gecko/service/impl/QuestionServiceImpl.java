@@ -26,7 +26,9 @@ public class QuestionServiceImpl implements IQuestionService {
 
 	@Override
 	public Question findQuestioinById(int id, User user) throws Exception {
-		return questionDao.findQuestionById(id, user);
+	    Question question = questionDao.findById(id);
+	    questionDao.improveQuestionInfo(question, user);
+		return question;
 	}
 
 	@Override
