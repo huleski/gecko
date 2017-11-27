@@ -294,9 +294,9 @@ public class UserServlet extends BaseServlet {
 
         try {
             User user = userService.findUserByName(name);
-            if (user != null) {
+            if (user != null) { //用户已经存在
                 response.getWriter().write("1");
-            } else {
+            } else {        //用户不存在
                 response.getWriter().write("0");
             }
         } catch (Exception e) {

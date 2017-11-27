@@ -71,7 +71,11 @@
 						var name = $.trim($("#username-input").val());
 						if(name != ""){//搜索输入框不为空
 							$.getJSON("${pageContext.request.contextPath}/userServlet", {method:"findUserByName","name":name}, function(result){
-								alert(result);
+								if(result == "1") {//用户名已存在
+									$("#imp").html("<font color='red'>无效</font>");
+								}else{	//用户名不存在
+									$("#imp").html("<font color='green'>可用</font>");
+								}
 							});
 						}
 	                }, 1000);
@@ -119,6 +123,12 @@
 			}
 			#xieyi a {
 				text-decoration: none;
+			}
+			#imp{
+				position:absolute;
+				top: 15px;
+				right: -30px;
+				font-weight: bold;
 			}
 		</style>
 	</head>
@@ -181,7 +191,7 @@
 									<form id="registerForm" action="${pageContext.request.contextPath}/userServlet" method="post">
 										<div style="height: 210px;margin-bottom: 15px;">
 											<input type="hidden" name="method" value="register" />
-											<div class="errordiv"><input name="name" type="text" class="input" id="username-input" value="${fail }" placeholder="用户名"><label class="errorPlace"></label></div>
+											<div class="errordiv"><input name="name" type="text" class="input" id="username-input" value="${fail }" placeholder="用户名"><label class="errorPlace"></label><div id="imp"></div></div>
 											<div class="errordiv"><input name="password" type="password" class="input" placeholder="密码"><label class="errorPlace"></label></div>
 											<div class="errordiv"><input name="phone" type="text" class="input" placeholder="手机号"><label class="errorPlace"></label></div>
 											<div class="errordiv">
