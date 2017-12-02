@@ -7,7 +7,6 @@
 <link href="${pageContext.request.contextPath}/font_awesome/css/font-awesome.css" rel="stylesheet" />
 <style type="text/css">
 	#searchDiv {
-		/* height: 400px; */
 		width: 600px;
 		border-radius:5px;
 		background-color:white;

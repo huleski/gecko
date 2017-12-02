@@ -878,19 +878,29 @@
 							<c:if test="${count < 3}">
 								<c:if test="${not empty person.education}"><div><i class="fa fa-graduation-cap fa-fw fa-lg"></i><span class="icoValue">${person.education }</span></div><c:set value="${count + 1 }" var="count"/></c:if>
 							</c:if>		
-							<c:if test="${count < 3}">
-								<c:if test="${not empty person.description}"><div><i class="fa fa-info-circle fa-fw fa-lg"></i><span class="icoValue">${person.description }</span></div><c:set value="${count + 1 }" var="count"/></c:if>
+							<c:if test="${count < 1}">
+								<div style="height: 30px;"></div>
 							</c:if>		
 						</div>
 						
 						<div id="completedInfo">
-							<c:if test="${not empty person.sex}"><div><label>性别</label><span class="icoValue">${person.sex }</span></div></c:if>
-							<c:if test="${not empty person.sentence}"><div><label>一句话介绍</label><span class="icoValue">${person.sentence }</span></div></c:if>
-							<c:if test="${not empty person.address}"><div><label>居住地</label><span class="icoValue">${person.address }</span></div></c:if>
-							<c:if test="${not empty person.industry}"><div><label>所在行业</label><span class="icoValue">${person.industry }</span></div></c:if>
-							<c:if test="${not empty person.profession}"><div><label>职业经历</label><span class="icoValue">${person.profession }</span></div></c:if>
-							<c:if test="${not empty person.education}"><div><label>教育经历</label><span class="icoValue">${person.education }</span></div></c:if>
-							<c:if test="${not empty person.description}"><div><label>个人简介</label><span class="icoValue">${person.description }</span></div></c:if>
+							<c:set value="0" var="infocount"/>
+							<c:if test="${not empty person.sex}"><div><label>性别</label><span class="icoValue">${person.sex }</span></div><c:set value="${infocount + 1 }" var="infocount"/></c:if>
+							<c:if test="${not empty person.sentence}"><div><label>一句话介绍</label><span class="icoValue">${person.sentence }</span></div><c:set value="${infocount + 1 }" var="infocount"/></c:if>
+							<c:if test="${not empty person.address}"><div><label>居住地</label><span class="icoValue">${person.address }</span></div><c:set value="${infocount + 1 }" var="infocount"/></c:if>
+							<c:if test="${not empty person.industry}"><div><label>所在行业</label><span class="icoValue">${person.industry }</span></div><c:set value="${infocount + 1 }" var="infocount"/></c:if>
+							<c:if test="${not empty person.profession}"><div><label>职业经历</label><span class="icoValue">${person.profession }</span></div><c:set value="${infocount + 1 }" var="infocount"/></c:if>
+							<c:if test="${not empty person.education}"><div><label>教育经历</label><span class="icoValue">${person.education }</span></div><c:set value="${infocount + 1 }" var="infocount"/></c:if>
+							<c:if test="${not empty person.description}"><div><label>个人简介</label><span class="icoValue">${person.description }</span></div><c:set value="${infocount + 1 }" var="infocount"/></c:if>
+							<c:if test="${infocount <1 }">
+								<div style="height: 35px;"></div>
+							</c:if>
+							<c:if test="${infocount <2 }">
+								<div style="height: 25px;"></div>
+							</c:if>
+							<c:if test="${infocount <3 }">
+								<div style="height: 5px;"></div>
+							</c:if>
 						</div>
 						
 						<div style="padding:15px 0;">
@@ -910,7 +920,7 @@
 						</c:if>
 						<c:if test="${user.id != person.id}">
 							<c:if test="${person.watched != 1}">
-								<button type="button" class="btn btn-default watchOrEdit" id="addWatch" style="border: deepskyblue 1px solid;color: deepskyblue;" onclick="addWatch(${person.id})">关注Ta</button>
+								<button type="button" class="btn btn-default watchOrEdit" id="addWatch" style="border:deepskyblue 1px solid;color: deepskyblue;" onclick="addWatch(${person.id})">关注Ta</button>
 								<button type="button" class="btn btn-info watchOrEdit" id="cancleWatch" onclick="cancleWatch(${person.id})" style="display:none;">已关注</button>
 							</c:if>
 							<c:if test="${person.watched == 1}">
@@ -951,7 +961,7 @@
 							</a>
 							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
 								<li>
-									<a href="#">收藏 5</a>
+									<a href="#">收藏 </a>
 								</li>
 								<li>
 									<a href="#">关注</a>

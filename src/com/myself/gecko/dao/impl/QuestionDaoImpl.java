@@ -217,10 +217,10 @@ public class QuestionDaoImpl extends BaseDaoImpl<Question> implements IQuestionD
 
     // 查询已关注的问题
     @Override
-    public List<Question> findWatchedQuestion(User user, int currentPage, int pageSize) throws Exception {
+    public List<Question> findWatchedQuestion(User user, int uid, int currentPage, int pageSize) throws Exception {
         QueryRunner queryRunner = new QueryRunner(C3P0Utils.getDataSource());
         String sql = "select distinct question.* from question left join question_watch on question.id = question_watch.qid where question_watch.uid = ? limit ?, ?";
-        List<Question> list = queryRunner.query(sql, new BeanListHandler<>(Question.class), user.getId(), (currentPage - 1) * pageSize, pageSize);
+        List<Question> list = queryRunner.query(sql, new BeanListHandler<>(Question.class), uid, (currentPage - 1) * pageSize, pageSize);
         
         for (Question question : list) {
             improveQuestionInfo(question, user);

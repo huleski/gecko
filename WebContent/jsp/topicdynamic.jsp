@@ -300,6 +300,13 @@
 				$("#gotobtn").click(function() {
 					 $('body,html').animate({scrollTop:0}, 500);
 				});
+				
+				// 判断是否没有关注任何话题
+				if("${list}" == ""){
+					$("#waitResult").hide();
+					$("#topicAnswer").append("<h4 style='padding:80px 0;text-align:center'>您还没有关注任何话题</h4>");
+					currentPage = -1;
+				}
 
 			});
 

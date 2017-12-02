@@ -9,14 +9,13 @@
 <title>话题.发现导航栏</title>
 <style type="text/css">
 	#searchDiv {
-		/* height: 400px; */
 		width: 600px;
 		border-radius:5px;
 		background-color:white;
 		position: fixed;
-		margin-left: 265px;
+		margin-left: 110px;
 		z-index: 8;
-		top:43px;
+		top:42px;
 		display:none;
 		border: lightgray thin 1px;
 		box-shadow: 0px 1px 1px 1px #888888;
@@ -71,7 +70,7 @@
 
 	<!--导航栏-->
 	<div id="topbar">
-		<div style="width: 1000px;margin: auto;">
+		<div style="position:relative;width: 1000px;margin: auto;">
 			<a href="${pageContext.request.contextPath}/jsp/index.jsp" style="font-size: 32px; color: white;font-family: '黑体';">逼乎</a>
 			<span style="position: relative;top: -5px;">
 				<form action="${pageContext.request.contextPath}/indexServlet" method="post" style="position: relative;display: inline;width:380px;">
@@ -119,16 +118,14 @@
 				</c:if>
 				
 			</span>
-		</div>
-		
-		<!-- 搜索结果 -->
+			<!-- 搜索结果 -->
 			<div id="searchDiv">
 				<div id="nosearch">
 					没有搜索到相关的结果
 				</div>
 				<div id="searchResult"></div>
 			</div>	
+		</div>
 	</div>
-	
 </body>
 </html>

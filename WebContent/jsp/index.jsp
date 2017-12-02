@@ -416,7 +416,9 @@
 								if(htm_index == 3) {
 									$("#showMoreAnswer").show();
 								}
-							} else if (htm_index == 1) {
+							} else if (result == "0" && htm_index == 1) {
+								$("#browseDiv").append("<div style='margin-top:30px;'>");
+								$("#browseDiv").append("<h4 style='padding:80px 0;text-align:center;background-color:white'><a href='${pageContext.request.contextPath}/jsp/topicground.jsp'>去添加我擅长的装逼领域</a></h4></div>");
 								htm_index = -1;
 							} else {
 								$("#showMoreAnswer").hide();
