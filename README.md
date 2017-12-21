@@ -8,7 +8,7 @@ Gecko is a faker of website named [**ZhiHu**](http://www.zhihu.com), just for fu
 
 Gecko是仿照[**知乎**](http://www.zhihu.com)写的一个社交平台, 初衷是为了好玩以及学习. 
 
-##The technology used##
+## The technology used
 
 * jQuery 1.11.3
 * Bootstrap 3.3.5
