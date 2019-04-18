@@ -61,8 +61,6 @@ Gecko是仿照[**知乎**](http://www.zhihu.com)写的一个社交平台, 初衷
 
 
 ## Contact Me
-
-* holeski@126.com
 * huleski@gmail.com
 
 
